@@ -5,11 +5,14 @@ import ErrorBoundary from './hoc/ErrorBoundary/ErrorBoundary';
 
 import './App.css';
 
-function App() {
+const App = () => {
+
+
   return (
     <div className="App">
       <ErrorBoundary>
-        <Layout>videos here</Layout>
+        <Layout>
+        </Layout>
       </ErrorBoundary>
     </div>
   );

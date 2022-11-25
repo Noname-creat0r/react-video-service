@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Backdrop from '../../UI/Backdrop/Backdrop';
+import NavigationItems from '../NavigationItems/NavigationItems';
 
 import './SideDrawer.css';
 
@@ -14,9 +15,7 @@ const sideDrawer = (props) => {
         <div>
             <Backdrop show={props.isOpen} clicked={props.close}/>
             <div className={classes} onClick={props.close}>
-                <div>
-                    SideDrawer
-                </div>
+                <NavigationItems />
             </div>
         </div>
     );

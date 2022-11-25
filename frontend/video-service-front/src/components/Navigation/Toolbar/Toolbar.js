@@ -7,23 +7,19 @@ import UserName from "../../UI/User/UserName/UserName";
 
 import './Toolbar.css';
 
-const toolbar = (props) => {
+const toolbar = (props) => (
+    <header>
+        <nav className="navbar">
+            <DrawerToggle clicked={props.drawerToggleClicked}/>
+            <SearchInput />
+            
+            <div className="d-flex me-2">
+                <UserIcon />
+                <UserName />
+            </div>
+        </nav>
 
-    // TODO: do something with User-section (wrapper component ?)
-    return (
-        <header>
-            <nav className="navbar">
-                <DrawerToggle clicked={props.drawerToggleClicked}/>
-                <SearchInput />
-                
-                <div className="d-flex me-2">
-                    <UserIcon />
-                    <UserName />
-                </div>
-            </nav>
-
-        </header>
-    );
-};
+    </header>
+);
 
 export default toolbar;
