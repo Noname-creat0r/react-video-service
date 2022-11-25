@@ -1,9 +1,15 @@
+import React from 'react';
+
+import Layout from './containers/Layout/Layout';
+
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello, from Geo the future SEO</h1>
+      <Layout>
+        content here
+      </Layout>
     </div>
   );
 }
