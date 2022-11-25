@@ -1,23 +1,24 @@
 import React from 'react';
 
 import Backdrop from '../../UI/Backdrop/Backdrop';
-import Wrapper from '../../../hoc/Wrapper/Wrapper';
 
 import './SideDrawer.css';
 
 const sideDrawer = (props) => {
     let classes = 'SideDrawer Close';
-    if (props.open){
+    if (props.isOpen){
         classes = 'SideDrawer Open';
     }
 
     return (
-        <Wrapper>
-            <Backdrop />
-            <div className={classes}>
-                content
+        <div>
+            <Backdrop show={props.isOpen} clicked={props.close}/>
+            <div className={classes} onClick={props.close}>
+                <div>
+                    SideDrawer
+                </div>
             </div>
-        </Wrapper>
+        </div>
     );
 };
 

@@ -9,13 +9,12 @@
     background-color: white;
     padding: 32px 16px;
     box-sizing: border-box;
+    transform: translateX(100%);
     transition: transform 0.3s ease-out;
 }
 
 @media (min-width: 500px) {
-    .SideDrawer {
-        display: none;
-    }
+   
 }
 
 .Open {
