@@ -1,3 +1,3 @@
-const wrapper = (props) => props.childern;
+const Wrapper = (props) => props.childern;
 
-export default wrapper;
+export default Wrapper;

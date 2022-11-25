@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Backdrop from '../../UI/Backdrop/Backdrop';
-import Aux from '../../../hoc/Aux/Aux';
+import Wrapper from '../../../hoc/Wrapper/Wrapper';
 
 import './SideDrawer.css';
 
@@ -12,12 +12,12 @@ const sideDrawer = (props) => {
     }
 
     return (
-        <Aux>
-            <Backdrop show={props.open} clicked={props.clicked}/>
+        <Wrapper>
+            <Backdrop />
             <div className={classes}>
                 content
             </div>
-        </Aux>
+        </Wrapper>
     );
 };
 
