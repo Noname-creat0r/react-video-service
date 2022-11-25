@@ -1,0 +1,12 @@
+:root{
+    --main-toollbar-color: #9C528B;
+    --main-toolbar-text-color: #1D1E2C;
+}
+
+header .navbar {
+    display: flex;
+    background-color: var(--main-toollbar-color); 
+    color: var(--main-toolbar-text-color);
+    font-size: 1.4rem;
+}
+
