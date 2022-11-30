@@ -1,24 +1,19 @@
 import React from 'react';
 
-import Backdrop from '../../UI/Backdrop/Backdrop';
 import NavigationItems from '../NavigationItems/NavigationItems';
+import OffCanvas from 'react-bootstrap/Offcanvas';
 
-import './SideDrawer.css';
+//import './SideDrawer.css';
 
-const sideDrawer = (props) => {
-    let classes = 'SideDrawer Close';
-    if (props.isOpen){
-        classes = 'SideDrawer Open';
-    }
-
-    return (
-        <div>
-            <Backdrop show={props.isOpen} clicked={props.close}/>
-            <div className={classes} onClick={props.close}>
-                <NavigationItems />
-            </div>
-        </div>
-    );
-};
+const sideDrawer = (props) => (
+    <OffCanvas show={props.isOpen} onHide={props.close}>
+        <OffCanvas.Header>
+            <OffCanvas.Title>Menu</OffCanvas.Title>
+        </OffCanvas.Header>
+        <OffCanvas.Body onClick={props.close}>
+            <NavigationItems />
+        </OffCanvas.Body>
+    </OffCanvas>
+);
 
 export default sideDrawer;
