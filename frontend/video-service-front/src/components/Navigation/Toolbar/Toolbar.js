@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import DrawerToggle from "../SideDrawer/DrawerToggle/DrawerToggle";
 import SearchInput from "../SearchInput/SearchInput";
@@ -8,9 +8,6 @@ import UserName from "../../UI/User/UserName/UserName";
 
 import './Toolbar.css';
 
-const userClickHandler = () => {
-    <Navigate to="/auth" replace={true}/>;
-};
 
 const toolbar = (props) => (
     // TODO: Wrapper for User section
@@ -20,11 +17,12 @@ const toolbar = (props) => (
             <DrawerToggle clicked={props.drawerToggleClicked}/>
             <SearchInput />
             
-            <div className="d-flex me-2"
-                onClick={() => userClickHandler}>
+            <NavLink 
+                className="d-flex me-2 text-decoration-none text-dark"
+                to="/profile">
                 <UserIcon />
                 <UserName />
-            </div>
+            </NavLink>
         </nav>
 
     </header>
