@@ -4,6 +4,7 @@ import { Route, Routes} from 'react-router-dom';
 import Layout from './containers/Layout/Layout';
 import ErrorBoundary from './hoc/ErrorBoundary/ErrorBoundary';
 import Auth from './containers/Auth/Auth';
+import Profile from './containers/User/Profile/Profile';
 
 import './App.css';
 
@@ -14,6 +15,7 @@ const App = () => {
   let routes = (
     <Routes>
       <Route path="/auth" element={<Auth />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="/" element={Home} />
     </Routes>
   );
