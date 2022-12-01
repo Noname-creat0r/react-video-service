@@ -1,18 +1,19 @@
 import React from 'react';
+
 import {NavLink} from 'react-router-dom';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 import './NavigationItem.css';
 
 const navigationItem = (props) => (
-    <li className="NavigationItem">
+    <ListGroup.Item className='NavigationItem'>
         <NavLink
             to={props.link}
             exact={props.exact}
             activeClassName="Active"> 
                 {props.children}
         </NavLink>
-
-    </li>
+    </ListGroup.Item>
 );
 
 export default navigationItem;
