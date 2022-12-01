@@ -4,7 +4,6 @@
 }
 
 header .navbar {
-    display: flex;
     background-color: var(--main-toollbar-color); 
     color: var(--main-toolbar-text-color);
     font-size: 1.4rem;
