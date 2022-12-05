@@ -1,0 +1,30 @@
+/*.NavigationItem {
+    margin: 10px 0;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    background: 
+        linear-gradient(90deg, #1095c1, 50%, #000, 0)
+        var(--_p, 100%) / 200% no-repeat;
+}
+*/
+.NavigationItem a {
+    margin: 10px 0;
+    color: #8F5C2C;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+    cursor: pointer;
+}
+
+.NavigationItem a:hover,
+.NavigationItem a:active,
+.NavigationItem a.active {
+    --_p: 0%;
+}
+
+@media (min-width: 500px) {
+    
+}
