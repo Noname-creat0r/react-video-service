@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../axios-settings';
 
 import * as actionTypes from './actionTypes';
 
@@ -11,8 +11,10 @@ export const authStart = () => {
 export const authSuccess = (token, userId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        token: token,
-        userId: userId
+        payload: {
+            token: token,
+            userId: userId
+        }
     };
 };
 
@@ -31,35 +33,7 @@ export const logout = () => {
     };
 };
 
-export const signup = (authData) => {
-    return dispatch => {
-        axios
-            .post("http://localhost:8080/auth/signup/", authData)
-            .then( response => {
-                dispatch(authSuccess(response.data.token, response.data.userId));
-            })
-            .catch(err => {
-                dispatch(authFail(err.response.data.error));
-            })
-    }
-};
-
-export const signin = (authData) => {
-    return dispatch => {
-        axios
-            .post("http://localhost:8080/auth/signin/", authData)
-            .then( response => {
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('userId', response.data.userId);
-                dispatch(authSuccess(response.data.token, response.data.userId));
-            })
-            .catch(err =>{
-                dispatch(authFail(err.response.data.error));
-            });
-    }
-};
-
-export const auth = (email, password, name, isSignUp) => {
+ export const auth = (email, password, name, isSignUp) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
@@ -69,10 +43,26 @@ export const auth = (email, password, name, isSignUp) => {
         };
 
         if (!isSignUp){
-           signin(authData);
+            axios
+                .post('/auth/signup/', authData)
+                .then( response => {
+                    dispatch(authSuccess(response.data.token, response.data.userId));
+                })
+                .catch(err => {
+                    dispatch(authFail(err.response.data.error));
+                })
         }
         else {
-           signup(authData);
+            axios
+                .post('/auth/signin/', authData)
+                .then( response => {
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('userId', response.data.userId);
+                    dispatch(authSuccess(response.data.token, response.data.userId));
+                })
+                .catch(err =>{
+                    dispatch(authFail(err.response.data.error));
+                });
         }
 
     }
