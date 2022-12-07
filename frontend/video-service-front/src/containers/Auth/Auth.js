@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
+import axios from 'axios';
 
 import Modal from '../../components/UI/Modal/Modal';
 import Button from 'react-bootstrap/Button';
-import SignInForm from '../../components/Forms/SignIn/SignIn';
-import SignUpForm from '../../components/Forms/SignUp/SignUp';
+import SignInForm from './Forms/SignIn/SignIn';
+import SignUpForm from './Forms/SignUp/SignUp';
 import Alert from 'react-bootstrap/Alert';
 
 class Auth extends Component {
@@ -11,7 +14,7 @@ class Auth extends Component {
     state = {
         isAuth: false,
         showAuthModal: true,
-        currentAuthForm: <SignUpForm />
+        currentAuthForm: "SignIn"
     };
 
 
@@ -27,32 +30,39 @@ class Auth extends Component {
         });
     };
 
-    changeAuthFormHandler = () => {
-        const authMode = this.state.currentAuthForm;
-        this.setState({
-            currentAuthForm: authMode === <SignUpForm /> ? <SignInForm /> : <SignUpForm />
+    authFormSwitcher = () => {
+        this.setState( (prevState) => {
+            return { currentAuthForm: prevState.currentAuthForm === "SignIn" ?
+                "SignUp" : "SignIn" }
         });
-    };
+    }
 
     render(){
-        
+//        <SignUpForm  authHandler={this.props.onAuth} />
+
+        // TODO: - Bring footer and body to modal back (FIX buttons)
+        //       - redirect after modal close 
+
         return (
             <div className='container'>
                 <Modal 
                     show={this.state.showAuthModal}
-                    hide={this.showAuthModalHandler}
-                    title="Sign Up">
+                    hide={this.closeAuthModalHandler}
+                    title={this.state.currentAuthForm === "SignIn" ? "Sign In" :"Sign Up"}>
                         <Alert key="primary" variant="success">
-                            Already have an account?
-                            <Button 
-                                className="btn-sm mx-2"
-                                variant="success"
-                                onClick={this.changeAuthFormHandler}>
-                                     Sign Up
+                            {this.state.currentAuthForm === "SignIn" ?
+                                "Want to create new account? " :
+                                "Already have an account ? "}
+                                <Button 
+                                    className='btn-sm mx-2 btn-success'
+                                    onClick={this.authFormSwitcher}>
+                                {this.state.currentAuthForm === "SignIn" ? "Sign Up" : "Sign In"}
                             </Button>
-                            now!
                         </Alert>
-                        {this.state.currentAuthForm}
+                        
+                        {this.state.currentAuthForm === "SignIn" ?
+                            <SignInForm  authHandler={this.props.onAuth}/> :
+                            <SignUpForm  authHandler={this.props.onAuth}/>}
                 </Modal>
                 
             </div>
@@ -60,4 +70,19 @@ class Auth extends Component {
     }
 };
 
-export default Auth;
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        error: state.auth.error,
+        isAuthenticated: state.auth.token !== null,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (email, password, name, isSignup) => dispatch(actions.auth( email, password, name, isSignup))
+    };
+};
+
+
+export default connect( mapStateToProps, mapDispatchToProps )( Auth );

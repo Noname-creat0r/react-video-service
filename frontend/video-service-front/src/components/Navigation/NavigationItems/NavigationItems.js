@@ -7,7 +7,7 @@ const navigationItems = (props) => (
     <ListGroup variant="flush">
         <NavigationItem link="/">Home</NavigationItem>
         <NavigationItem link="/profile">Profile</NavigationItem>
-        <NavigationItem link="/" >Settings</NavigationItem>
+        <NavigationItem link="/auth" >Sign Up/Sign In</NavigationItem>
     </ListGroup>
 );
 

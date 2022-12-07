@@ -13,7 +13,6 @@ import './Toolbar.css';
 
 const toolbar = (props) => (
     // TODO: Wrapper for User section
-
     <header>
         <NavBar sticky="top">
             <DrawerToggle clicked={props.drawerToggleClicked}/>
