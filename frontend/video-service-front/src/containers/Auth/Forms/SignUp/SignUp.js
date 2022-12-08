@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -32,6 +33,7 @@ class SignUp extends Component {
             name: this.state.name
         }
         this.props.authHandler(this.state.email, this.state.password, this.state.name);
+
     }
 
 
