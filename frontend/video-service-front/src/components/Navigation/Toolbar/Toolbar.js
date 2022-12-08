@@ -8,8 +8,8 @@ import Row from 'react-bootstrap/Row';
 
 import DrawerToggle from "../SideDrawer/DrawerToggle/DrawerToggle";
 import SearchInput from "../SearchInput/SearchInput";
-import UserIcon from "../../UI/User/UserIcon/UserIcon";
-import UserName from "../../UI/User/UserName/UserName";
+import UserBadge from '../../UI/User/UserBadge/UserBadge';
+import DefaultIcon from '../../../assets/images/default-user-icon.svg';
 
 import './Toolbar.css';
 
@@ -23,7 +23,12 @@ const toolbar = (props) => (
 
             <Container className='d-flex'>
                 <SearchInput />
-                {props.isAuthenticated ? "I am signed in" : <UserName />}
+                { props.isAuthenticated ? 
+                    <UserBadge 
+                        name={"Name"} /> :
+                    <UserBadge 
+                        name={"Sign In/ Sign Up"} 
+                        />}
             </Container>
 
         </NavBar>

@@ -6,7 +6,7 @@ import './UserIcon.css';
 
 const userIcon = (props) => (
     <div className="UserIcon">
-        <img src={DefaultUserIcon} alt="userIcon" />
+        <img src={props.icon ? props.icon : DefaultUserIcon} alt="userIcon" />
     </div>
 );
 
