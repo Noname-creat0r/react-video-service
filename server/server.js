@@ -7,6 +7,7 @@ const port = 8080;
 const baseUrl = "mongodb://127.0.0.1:27017/ReactVideoService";
 
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 app.use (bodyParser.json());
 
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/auth', authRoutes); 
+app.use('/user', userRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {
