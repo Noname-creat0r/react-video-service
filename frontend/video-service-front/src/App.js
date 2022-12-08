@@ -12,6 +12,10 @@ import './App.css';
 const Home = () => <h1> It's home, friend </h1>
 
 class App extends Component {
+  state = {
+    showAuthModal: false,
+  }
+
 
   render () {
 
@@ -37,7 +41,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    //isAuthenticated: state.auth.token !== null
+    isAuthenticated: state.auth.token !== null
   };
 };
 

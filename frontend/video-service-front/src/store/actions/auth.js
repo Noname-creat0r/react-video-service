@@ -33,16 +33,16 @@ export const logout = () => {
     };
 };
 
- export const auth = (email, password, name, isSignUp) => {
+ export const auth = (email, password, name) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
             email: email,
-            password: password,
-            name: name,
+            password: password
         };
 
-        if (!isSignUp){
+        if (name !== undefined){
+            authData["name"] = name;
             axios
                 .post('/auth/signup/', authData)
                 .then( response => {
