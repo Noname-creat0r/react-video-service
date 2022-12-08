@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import axios from '../../../axios-settings';
+import * as actions from '../../../store/actions/index';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -21,6 +24,13 @@ class Profile extends Component {
         4. footer
     */
 
+    componentDidMount() {
+        this.props.fetchUserData(
+            localStorage.getItem('userId'),
+            localStorage.getItem('token')
+        );
+    }
+
     render(){
         return (
             <Container className="my-2">
@@ -34,7 +44,7 @@ class Profile extends Component {
                             rounded/>
                     </Column>
                     <Column className="">
-                        <span className="ProfileName">Unknown</span>
+                        <span className="ProfileName">{ this.props.nickname}</span>
                     </Column>
                 </Row>
                 <Row>
@@ -62,4 +72,16 @@ class Profile extends Component {
     }
 };
 
-export default Profile;
+const mapStateToProps = state => {
+    return {
+        nickname: null || state.profile.data.name,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchUserData: (userId, token) => dispatch(actions.fetchData(userId, token)), 
+    };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps ) ( Profile );
