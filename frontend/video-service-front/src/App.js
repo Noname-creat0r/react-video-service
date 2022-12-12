@@ -13,7 +13,6 @@ const Home = () => <h1> It's home, friend </h1>
 
 class App extends Component {
   state = {
-    showAuthModal: false,
   }
 
 
@@ -21,12 +20,18 @@ class App extends Component {
 
     let routes = (
       <Routes>
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path="/" element={Home} />
       </Routes>
     );
 
+    if (this.props.isAuthenticated){
+      routes =( 
+        <Routes>
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/" element={Home} />
+        </Routes>
+      )
+    }
   return (
       <div className="App">
         <ErrorBoundary>
@@ -41,7 +46,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.auth.token !== null
+    isAuthenticated: state.auth.token !== null,
   };
 };
 

@@ -44,7 +44,7 @@ class Profile extends Component {
                             rounded/>
                     </Column>
                     <Column className="">
-                        <span className="ProfileName">{ this.props.nickname}</span>
+                        <span className="ProfileName">{ this.props.nickname }</span>
                     </Column>
                 </Row>
                 <Row>
@@ -65,7 +65,7 @@ class Profile extends Component {
                     </Tabs>
                 </Row>
                 <Row>
-
+                    
                 </Row>
             </Container>
         );
@@ -74,7 +74,7 @@ class Profile extends Component {
 
 const mapStateToProps = state => {
     return {
-        nickname: null || state.profile.data.name,
+        nickname: 'Unknown' || state.profile.data.name,
     };
 };
 

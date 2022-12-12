@@ -3,7 +3,7 @@ import * as actions from '../actions/actionTypes';
 
 export const profileFetchDataStart = () => {
     return {
-        type: actions.PROFILE_EDIT_START
+        type: actions.PROFILE_FETCH_DATA_START
     };
 };
 
@@ -28,20 +28,16 @@ export const fetchData = (userId, token) => {
     return dispatch => {
         dispatch(profileFetchDataStart());
         axios
-            .get('/user', { 
+            .get('/user/get', { 
                 params: { userId: userId },
-                headers: { 
-                    'Authorization' : token,
-                    'Content-Type': 'application/json'
-                } 
+                headers: {'Authorization': token}
             })
             .then(response => {
-                dispatch(profileFetchDataSuccess(response.data));
+                dispatch(profileFetchDataSuccess(...response.data));
             })
             .catch(error => {
-                dispatch(profileFetchDataFail(error.response.data));
+                dispatch(profileFetchDataFail(error.data));
             });
-        
     }
 
 };

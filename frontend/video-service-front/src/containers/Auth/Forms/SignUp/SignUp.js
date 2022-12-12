@@ -33,7 +33,8 @@ class SignUp extends Component {
             name: this.state.name
         }
         this.props.authHandler(this.state.email, this.state.password, this.state.name);
-
+        // if auth is okay
+        this.props.hideModal();
     }
 
 
@@ -86,8 +87,14 @@ class SignUp extends Component {
                 </Form.Text>
             </Form.Group>
             <Container className="text-center"> 
-                <Button className="mx-2 my-2 btn-md" variant="secondary">Close</Button>
-                <Button className="mx-2 my-2 btn-md" variant="success" type="submit">Sign Up</Button>
+                <Button 
+                    className="mx-2 my-2 btn-md"
+                    variant="secondary"
+                    onClick={this.props.hideModal}>Close</Button>
+                <Button 
+                    className="mx-2 my-2 btn-md"
+                    variant="success" 
+                    type="submit">Sign Up</Button>
             </Container>
         </Form>);
     }

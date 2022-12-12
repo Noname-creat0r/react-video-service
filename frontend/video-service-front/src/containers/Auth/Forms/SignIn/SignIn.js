@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel';
@@ -30,6 +31,8 @@ class SignIn extends Component {
             password: this.state.password,
         }
         this.props.authHandler(this.state.email, this.state.password);
+        // if auth is ok
+        this.props.hideModal();
     }
 
     render() {
@@ -55,8 +58,16 @@ class SignIn extends Component {
                             onChange={this.inputChangedHandler}/>
                     </Form.Group>
                 </Form.Group>
-                <Button className="mx-2 my-2 btn-md" variant="secondary">Close</Button>
-                <Button className="mx-2 my-2 btn-md" variant="success" type="submit">Sign In</Button>
+                <Container className="text-center"> 
+                    <Button 
+                        className="mx-2 my-2 btn-md" 
+                        variant="secondary"
+                        onClick={this.props.hideModal}>Close</Button>
+                    <Button 
+                        className="mx-2 my-2 btn-md" 
+                        variant="success" 
+                        type="submit">Sign In</Button>
+                </Container>
             </Form>
         );
     };

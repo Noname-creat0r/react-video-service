@@ -11,6 +11,7 @@ import './Layout.css';
 class Layout extends Component {
     state = {
         showSideDrawer: false,
+        showAuthModal: false
     };
 
     sideDrawerToggleHandler = () => {
@@ -23,7 +24,7 @@ class Layout extends Component {
         this.setState( { showSideDrawer: false });
     }
 
-    profileClickHandler = () => {
+    authModalToggleHandler = () => {
         this.setState( (prevState)  => {
             return { showAuthModal: !prevState.showAuthModal };
         });
@@ -33,13 +34,17 @@ class Layout extends Component {
         return(
             <div>
                 <Toolbar 
-                    drawerToggleClicked={this.sideDrawerToggleHandler}
-                    isAuthenticated={this.props.isAuthenticated}/>
+                    isAuthenticated={this.props.isAuthenticated}
+                    drawerToggleClicked={this.sideDrawerToggleHandler} 
+                    authModalRequested={this.authModalToggleHandler}/>
                 <SideDrawer 
+                    isAuthenticated={this.props.isAuthenticated}
                     isOpen={this.state.showSideDrawer}
-                    close={this.sideDrawerCloseHandler}
-                />
+                    close={this.sideDrawerCloseHandler}/>
                 <main>
+                    <Auth 
+                        show={this.state.showAuthModal}
+                        hide={this.authModalToggleHandler}/>
                     {this.props.children}
                 </main>
             </div>

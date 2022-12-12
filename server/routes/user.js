@@ -7,10 +7,13 @@ const userController = require('../controllers/user');
 
 const router = express.Router();
 
+const log = () => {console.log("Lol");}
+
+
 router.get(
-    '/user',
+    '/get',
     isAuth,
     userController.fetchData
-)
+);
 
 module.exports = router;

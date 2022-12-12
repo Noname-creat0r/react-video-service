@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import NavBar from "react-bootstrap/Navbar";
+import Button from 'react-bootstrap/Button';
 import Container from "react-bootstrap/Container";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -26,9 +27,10 @@ const toolbar = (props) => (
                 { props.isAuthenticated ? 
                     <UserBadge 
                         name={"Name"} /> :
-                    <UserBadge 
-                        name={"Sign In/ Sign Up"} 
-                        />}
+                    <Button 
+                        variant='success'
+                        onClick={props.authModalRequested}>Sign In/ Sign Up</Button>
+                } 
             </Container>
 
         </NavBar>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import * as actions from '../../store/actions/index';
@@ -14,22 +14,9 @@ import Alert from 'react-bootstrap/Alert';
 class Auth extends Component {
     
     state = {
-        showAuthModal: true,
         currentAuthForm: "SignIn"
     };
 
-
-    showAuthModalHandler = () => {
-        this.setState( (prevState) => {
-            return { showAuthModal: !prevState.showAuthModal};
-        });
-    };
-
-    closeAuthModalHandler = () => {
-        this.setState({
-            showAuthModal: false
-        });
-    };
 
     authFormSwitcher = () => {
         this.setState( (prevState) => {
@@ -38,20 +25,14 @@ class Auth extends Component {
         });
     }
 
-    redirectToHome = () => {
-    }
-
     render(){
-//        <SignUpForm  authHandler={this.props.onAuth} />
-
         // TODO: - Bring footer and body to modal back (FIX buttons)
         //       - redirect after modal close 
 
         return (
             <Modal 
-                show={this.state.showAuthModal}
-                hide={this.closeAuthModalHandler}
-                onHide={this.redirectToHome}
+                show={this.props.show}
+                hide={this.props.hide}
                 title={this.state.currentAuthForm === "SignIn" ? "Sign In" :"Sign Up"}>
                     <Alert key="primary" variant="success">
                         {this.state.currentAuthForm === "SignIn" ?
@@ -65,10 +46,13 @@ class Auth extends Component {
                     </Alert>
                     
                     {this.state.currentAuthForm === "SignIn" ?
-                        <SignInForm  authHandler={this.props.onAuth}/> :
-                        <SignUpForm  authHandler={this.props.onAuth}/>}
+                        <SignInForm  
+                            authHandler={this.props.onAuth} 
+                            hideModal={this.props.hide}/> :
+                        <SignUpForm  
+                            authHandler={this.props.onAuth} 
+                            hideModal={this.props.hide}/>}
             </Modal>
-                
         );
     }
 };

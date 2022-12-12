@@ -1,8 +1,9 @@
 const User = require('../models/User');
 
 exports.fetchData = (req, res, next) => {
-    const userId = req.params.userId;
-    User.findById(userId)
+    const userId = req.query.userId.toString();
+    console.log(userId);
+    User.findOne({_id: userId})
         .then(user => {
             if (!user){
                 const error = new Error('Could not find user.');
@@ -13,7 +14,8 @@ exports.fetchData = (req, res, next) => {
             const data = {
                 name: user.name,
             }
-            res.statuts(200).json({ message: 'User data fetched. ', data: data});
+            console.log({ message: 'User data fetched. ', data: data});
+            res.status(200).json({ message: 'User data fetched. ', data: data});
         })
         .catch(err => {
             if (!err.statusCode){
