@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { formValidator } from '../../../../validators/Forms/validator';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -9,34 +11,65 @@ import './SignUp.css';
 
 class SignUp extends Component {
     state = {
-        email: '',
-        password: '',
-        name: '',
-        avatar: null,
+        formInputs: {
+            email: {
+                value: '',
+                error: undefined,
+            },
+            password: {
+                value: '',
+                error: false,
+            },
+            name: {
+                value: '',
+                error: false
+            },
+            avatar: {
+                value: '',
+                error: false
+            }
+        },
         isFormValid: false
     }
 
     inputChangedHandler = (event) => {
         const inputName = event.target.name;
         const value = event.target.value;
+        const isValid = formValidator(event);
 
-        this.setState({
-            [inputName]: value
-        });
+        this.setState({ 
+            formInputs:  { [inputName]: {value: value, error: isValid} },
+            isFormValid: isValid
+         });
+
+         alert(this.state.formInputs[inputName].error); 
+    }
+
+    isFormFilled = () => {
+        const inputs = [...this.state.values];
+        //return [...inputs].every((isFilled) => isFilled ? true : false);
     }
 
     authenticate = (event) => {
         event.preventDefault();
-        const authData = {
-            email: this.state.email,
-            password: this.state.password,
-            name: this.state.name
+        if (this.isFormFilled()) { 
+            const authData = {
+                email: this.state.email,
+                password: this.state.password,
+                name: this.state.name
+            }
+
+            this.props.authHandler(this.state.email, this.state.password, this.state.name);
+            this.props.hideModal();
+        } else {
+            // notification
+            alert("Fill in all the form filds!");
         }
-        this.props.authHandler(this.state.email, this.state.password, this.state.name);
-        // if auth is okay
-        this.props.hideModal();
     }
 
+    componentDidMount(){
+
+    }
 
     render () {
         return (
@@ -51,12 +84,13 @@ class SignUp extends Component {
                     onChange={this.inputChangedHandler}/>
                 <Form.Text className="text-muted">
                     Your nickname should consist of english characters and 
-                    numbers only with length about 8 - 20 symbols.
+                    numbers only with length more than 5 symbols.
                 </Form.Text>
             </Form.Group>
             <Form.Group className="my-3" controlId="formEmail">
                 <Form.Label>Email:</Form.Label>
                 <Form.Control 
+                    className={this.state.formInputs.email.error ? 'is-invalid' : 'is-valid'}
                     type="email" 
                     name="email"
                     placeholder="Enter your email adress" 
@@ -80,6 +114,7 @@ class SignUp extends Component {
                 <Form.Control 
                     type="file"
                     name="avatar"
+                    accept="imgage/*"
                     value={this.state.avatar}  
                     onChange={this.inputChangedHandler}/>
                 <Form.Text className="text-muted">
@@ -93,7 +128,8 @@ class SignUp extends Component {
                     onClick={this.props.hideModal}>Close</Button>
                 <Button 
                     className="mx-2 my-2 btn-md"
-                    variant="success" 
+                    variant="success"
+                    disabled={!this.state.isFormValid}
                     type="submit">Sign Up</Button>
             </Container>
         </Form>);
