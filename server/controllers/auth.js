@@ -64,10 +64,11 @@ exports.signin = (req, res, next) => {
                     userId: loadedUser._id.toString()
                 },
                 '172b-3c4g-5w6O-7x8h',
-                { expiresIn: '1h' }
             );
 
-            res.status(200).json({token: token, userId: loadedUser._id.toString()});
+            res.status(200).json({
+                token: token,
+                userId: loadedUser._id.toString()});
         })
         .catch((err) => {
             if (!err.statusCode) {

@@ -6,6 +6,7 @@ import Layout from './containers/Layout/Layout';
 import ErrorBoundary from './hoc/ErrorBoundary/ErrorBoundary';
 import Auth from './containers/Auth/Auth';
 import Profile from './containers/User/Profile/Profile';
+import Logout from './containers/Auth/Logout/Logout';
 
 import './App.css';
 
@@ -28,6 +29,7 @@ class App extends Component {
       routes =( 
         <Routes>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/" element={Home} />
         </Routes>
       )

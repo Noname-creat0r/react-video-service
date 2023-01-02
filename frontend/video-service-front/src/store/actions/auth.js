@@ -38,11 +38,11 @@ export const checkAuthTimeout = (expirationTime) => {
     return dispatch => {
         setTimeout(() => {
             dispatch(logout());
-        }, expirationTime * 1000);
+        }, expirationTime);
     };
 };
 
-export const authCheckState = (path) => {
+export const authCheckState = () => {
    return dispatch => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -54,8 +54,7 @@ export const authCheckState = (path) => {
             } else {
                 const userId = localStorage.getItem('userId');
                 dispatch(authSuccess(token, userId));
-                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date.getTime()) / 1000));
-                
+                dispatch(checkAuthTimeout(expirationDate.getTime() - new Date().getTime()) );
             }
         }
    }; 
@@ -77,19 +76,23 @@ export const authCheckState = (path) => {
                     dispatch(authSuccess(response.data.token, response.data.userId));
                 })
                 .catch(err => {
-                    dispatch(authFail(err.response.data.error));
+                    dispatch(authFail(err));
                 })
         }
         else {
             axios
                 .post('/auth/signin/', authData)
                 .then( response => {
+                    const expirationDate = new Date(new Date().getTime() + 30000 * 60);
+                    //console.log(expirationDate.getMinutes());
                     localStorage.setItem('token', response.data.token);
                     localStorage.setItem('userId', response.data.userId);
+                    localStorage.setItem('expirationDate', expirationDate);
                     dispatch(authSuccess(response.data.token, response.data.userId));
+                    dispatch(checkAuthTimeout(expirationDate))
                 })
                 .catch(err =>{
-                    dispatch(authFail(err.response.data.error));
+                    dispatch(authFail(err));
                 });
         }
     }

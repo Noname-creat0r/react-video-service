@@ -30,11 +30,16 @@ class Layout extends Component {
         });
     }
 
+    componentDidMount() {
+        if (this.props.isAuthenticated){ }
+    }
+
     render() {
         return(
             <div>
                 <Toolbar 
                     isAuthenticated={this.props.isAuthenticated}
+                    userName={this.props.userName}
                     drawerToggleClicked={this.sideDrawerToggleHandler} 
                     authModalRequested={this.authModalToggleHandler}/>
                 <SideDrawer 
@@ -55,12 +60,12 @@ class Layout extends Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.token !== null,
+        userName: null || state.profile.data.name ,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-
     };
 };
 

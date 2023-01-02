@@ -74,7 +74,7 @@ class Profile extends Component {
 
 const mapStateToProps = state => {
     return {
-        nickname: 'Unknown' || state.profile.data.name,
+        nickname: state.profile.data.name,
     };
 };
 

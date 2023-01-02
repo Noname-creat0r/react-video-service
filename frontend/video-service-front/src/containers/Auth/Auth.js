@@ -92,7 +92,6 @@ class Auth extends Component {
         },
     };
 
-
     authFormSwitcher = () => {
         this.setState( (prevState) => {
             return { currentAuthForm: prevState.currentAuthForm === "SignIn" ?
@@ -102,39 +101,66 @@ class Auth extends Component {
 
     inputChangedHandler = (event) => {
         const controlName = event.target.name;
-        const value = event.target.value;
+        const isValid = formValidator(event);
 
-        console.log(formValidator(event));
         const updatedControls = updateObject( this.state.controls, {
             [controlName]: updateObject( this.state.controls[controlName], {
               value: event.target.value,
               validation: updateObject( this.state.controls[controlName].validation, {
-                valid: formValidator(event)
+                valid: isValid
               }),
               touched: true
             })
         });
 
-       this.setState({ controls: updatedControls})
+       this.setState({ controls: updatedControls });
+       this.setState({ isFormValid: this.checkFormValidity() });
+    }
+
+    checkFormValidity = () => {
+        const controls = [];
+        for (let key of Object.keys(this.state.controls)){
+            if (Array.isArray(this.state.controls[key].groupConfig.form) ||
+                this.state.controls[key].groupConfig.form === this.state.currentAuthForm)
+                controls.push({
+                    id: key,
+                    config: this.state.controls[key]
+                });
+        }
+
+        return controls
+            .filter( control => control.config.validation.required)
+            .every( control => control.config.validation.valid);
+    }
+
+    authenticate = (event) => {
+        event.preventDefault();
+        this.props.onAuth(
+            this.state.controls['email'].value,
+            this.state.controls['password'].value,
+            this.state.currentAuthForm === 'SignUp' ?
+                this.state.controls['name'].value : undefined); 
+    }
+
+    componentDidMount() {
+        this.props.onCheckAuthState();
     }
 
     render(){
-
                 /* TODO: 
-        - Bring footer and body to modal back (FIX buttons)
-        - redirect after modal close 
-        - dynamic <Input> 
-        - Groups > Inputs  */
+        - redirect after modal close  */
 
         const currentFormType = this.state.currentAuthForm === "SignIn" ? 
-        "Sign Up" : "Sign In"; 
+        "Sign In" : "Sign Up"; 
         
         const formElementsArray = [];
         for (let key in this.state.controls){
-            formElementsArray.push({
-                id: key,
-                config: this.state.controls[key]
-            });
+            if (Array.isArray(this.state.controls[key].groupConfig.form) ||
+                this.state.controls[key].groupConfig.form === this.state.currentAuthForm)
+                formElementsArray.push({
+                    id: key,
+                    config: this.state.controls[key]
+                });
         }
 
         const formInputs = formElementsArray.map( element => (
@@ -161,9 +187,6 @@ class Auth extends Component {
                 </Form.Group>
             );
         }
-       
-
-
 
         return (
             <Modal 
@@ -181,7 +204,7 @@ class Auth extends Component {
                         <Button 
                             className="mx-2 my-2 btn-md"
                             variant="secondary"
-                            onClick={this.props.hideModal}>
+                            onClick={this.props.hide}>
                                 Close
                         </Button>
                         <Button 
@@ -189,7 +212,8 @@ class Auth extends Component {
                             variant="success"
                             disabled={!this.state.isFormValid}
                             type="submit"
-                            form="authForm">
+                            form="authForm"
+                            onClick={this.authenticate}>
                                {currentFormType}
                         </Button>
                         <Button 
@@ -215,7 +239,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password, name) => dispatch(actions.auth( email, password, name))
+        onAuth: (email, password, name) => dispatch(actions.auth( email, password, name)),
+        onCheckAuthState: () => dispatch(actions.authCheckState()),
     };
 };
 

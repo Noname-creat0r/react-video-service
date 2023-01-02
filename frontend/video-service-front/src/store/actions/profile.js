@@ -33,11 +33,11 @@ export const fetchData = (userId, token) => {
                 headers: {'Authorization': token}
             })
             .then(response => {
-                dispatch(profileFetchDataSuccess(...response.data));
+                const data = response.data.data;
+                dispatch(profileFetchDataSuccess(data));
             })
             .catch(error => {
                 dispatch(profileFetchDataFail(error.data));
             });
     }
-
 };

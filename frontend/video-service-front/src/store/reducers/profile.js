@@ -2,7 +2,6 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../shared/utility';
 
 const initialState = {
-    nickname: undefined,
     unsignedUpVideos: 10,
     settings: {},
     data: {},
@@ -29,7 +28,7 @@ const profileFetchDataStart = (state, action) => {
 const profileFetchDataSuccess = (state, action) => {
     return updateObject(state, { 
         fetching: false,
-        data: action.payload.data
+        data: action.payload.data,
     });
 };
 

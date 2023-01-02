@@ -31,8 +31,6 @@ const input = (props) => {
         
     }
 
-
-
     return (
         <div className='my-3'>
             <Form.Label>{props.label}</Form.Label>

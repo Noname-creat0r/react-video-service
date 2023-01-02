@@ -26,7 +26,7 @@ const toolbar = (props) => (
                 <SearchInput />
                 { props.isAuthenticated ? 
                     <UserBadge 
-                        name={"Name"} /> :
+                        name={props.userName} /> :
                     <Button 
                         variant='success'
                         onClick={props.authModalRequested}>Sign In/ Sign Up</Button>
