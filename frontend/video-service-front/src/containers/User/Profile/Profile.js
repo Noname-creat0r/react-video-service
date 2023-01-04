@@ -7,9 +7,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Column from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
+
 import UserIcon from '../../../assets/images/default-user-icon.svg'; // need to download it from db
+import ProfileTabs from '../../../components/UI/Profile/ProfileTabs/ProfileTabs';
 
 import './Profile.css';
 
@@ -50,21 +50,7 @@ class Profile extends Component {
                     </Column>
                 </Row>
                 <Row>
-                    <Tabs
-                        defaultActiveKey="Playlists">
-                        <Tab eventKey="Playlists" title="Playlists">
-                            Playlists
-                        </Tab>
-                        <Tab eventKey="Videos" title="Videos">
-                            
-                        </Tab>
-                        <Tab eventKey="Settings" title="Settings">
-                            Settings
-                        </Tab>
-                        <Tab eventKey="About" title="About">
-                            About
-                        </Tab> 
-                    </Tabs>
+                    <ProfileTabs />
                 </Row>
                 <Row>
                     

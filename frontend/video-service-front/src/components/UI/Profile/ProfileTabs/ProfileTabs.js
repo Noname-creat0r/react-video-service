@@ -1,0 +1,34 @@
+import React from 'react';
+
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
+import Column from 'react-bootstrap/Col';
+
+import ProfileVideosTab from './ProfileVideosTab/ProfileVideosTab';
+import UploadVideoCard from '../../Card/UploadVideoCard/UploadVideoCard';
+
+import './ProfileTabs.css';
+
+const ProfileTabs = () => {
+    return (
+        <Tabs defaultActiveKey="Videos">
+            <Tab eventKey="Videos" title="Videos">
+                <Column className='my-3'>
+                    <UploadVideoCard />
+                </Column>
+            </Tab>
+            <Tab eventKey="Playlists" title="Playlists">
+                Playlists
+            </Tab>
+            
+            <Tab eventKey="Settings" title="Settings">
+                Settings
+            </Tab>
+            <Tab eventKey="About" title="About">
+                About
+            </Tab> 
+        </Tabs>
+    );
+};
+
+export default ProfileTabs;
