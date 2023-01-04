@@ -8,6 +8,8 @@ const baseUrl = "mongodb://127.0.0.1:27017/ReactVideoService";
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const homeRoutes = require('./routes/home');
+const videoRoutes = require('./routes/video');
 
 app.use (bodyParser.json());
 
@@ -21,6 +23,8 @@ app.use((req, res, next) => {
 
 app.use('/auth', authRoutes); 
 app.use('/user', userRoutes);
+app.use('/home', homeRoutes);
+app.use('/video', videoRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {
@@ -38,3 +42,5 @@ mongoose
 
     })
     .catch(err => console.log(err));
+
+module.exports = baseUrl;

@@ -22,6 +22,8 @@ class Profile extends Component {
         2. Profile tabs (Videos, Playlists, About)
         3. Content of the tabs
         4. footer
+
+        - ProfileTabs component
     */
 
     componentDidMount() {
@@ -54,7 +56,7 @@ class Profile extends Component {
                             Playlists
                         </Tab>
                         <Tab eventKey="Videos" title="Videos">
-                            Videos
+                            
                         </Tab>
                         <Tab eventKey="Settings" title="Settings">
                             Settings
