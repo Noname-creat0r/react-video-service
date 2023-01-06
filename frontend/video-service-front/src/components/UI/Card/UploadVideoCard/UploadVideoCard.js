@@ -8,7 +8,9 @@ import './UploadVideoCard.css';
 
 const UploadVideoCard = (props) => {
     return (
-        <Card className='UploadVideoCard'>
+        <Card 
+            className='UploadVideoCard'
+            onClick={props.clicked}>
             <Card.Img 
                 className='my-2'
                 src={UploadIcon} 

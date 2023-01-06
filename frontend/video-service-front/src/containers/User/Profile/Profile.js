@@ -10,12 +10,20 @@ import Image from 'react-bootstrap/Image';
 
 import UserIcon from '../../../assets/images/default-user-icon.svg'; // need to download it from db
 import ProfileTabs from '../../../components/UI/Profile/ProfileTabs/ProfileTabs';
+import UploadVideoForm from '../../Video/UploadVideoForm/UploadVideoForm';
 
 import './Profile.css';
 
 class Profile extends Component {
     state = {
+        showUploadVideoFormModal: false,
     };
+
+    uploadVideoFormToggleHandler = () => {
+        this.setState( (prevState)  => {
+            return { showUploadVideoFormModal: !prevState.showUploadVideoFormModal };
+        });
+    }
 
     /*
         1. Avatar + Username on a random background
@@ -50,7 +58,11 @@ class Profile extends Component {
                     </Column>
                 </Row>
                 <Row>
-                    <ProfileTabs />
+                    <UploadVideoForm 
+                        show={this.state.showUploadVideoFormModal}
+                        hide={this.uploadVideoFormToggleHandler}/>
+                    <ProfileTabs 
+                        uploadVideoCardClicked={this.uploadVideoFormToggleHandler}/>
                 </Row>
                 <Row>
                     

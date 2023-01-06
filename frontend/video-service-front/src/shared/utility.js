@@ -16,19 +16,3 @@ export const getGroupsBy = (arrOfObj, category) => {
     }
     return groups;
 };
-
-export const getFormControlGroups = (formInputs) => {
-  let formContent = [];
-  const groups = getGroupsBy(formInputs, 'group');
-
-  for (const groupKey of Object.keys(groups)){
-      let group = groups[groupKey];
-      formContent.push(
-          <Form.Group key={group}>
-              {group}
-          </Form.Group>
-      );
-  }
-  
-  return formContent;
-};

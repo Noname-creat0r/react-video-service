@@ -7,11 +7,12 @@ import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 import Auth from '../Auth/Auth';
 
 import './Layout.css';
+import UploadVideoForm from '../Video/UploadVideoForm/UploadVideoForm';
 
 class Layout extends Component {
     state = {
         showSideDrawer: false,
-        showAuthModal: false
+        showAuthModal: false,
     };
 
     sideDrawerToggleHandler = () => {
@@ -50,6 +51,7 @@ class Layout extends Component {
                     <Auth 
                         show={this.state.showAuthModal}
                         hide={this.authModalToggleHandler}/>
+                    
                     {this.props.children}
                 </main>
             </div>

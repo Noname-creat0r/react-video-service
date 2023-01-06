@@ -8,12 +8,13 @@ import UploadVideoCard from '../../Card/UploadVideoCard/UploadVideoCard';
 
 import './ProfileTabs.css';
 
-const ProfileTabs = () => {
+const ProfileTabs = (props) => {
     return (
         <Tabs defaultActiveKey="Videos">
             <Tab eventKey="Videos" title="Videos">
                 <Column className='my-3'>
-                    <UploadVideoCard />
+                    <UploadVideoCard
+                        clicked={props.uploadVideoCardClicked}/>
                 </Column>
             </Tab>
             <Tab eventKey="Playlists" title="Playlists">
