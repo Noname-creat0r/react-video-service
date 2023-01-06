@@ -12,8 +12,11 @@ const modal = (props) => (
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body> 
-                {props.children} 
+                {props.body} 
             </Modal.Body>
+            <Modal.Footer>
+                {props.footer}
+            </Modal.Footer>
     </Modal>
 );
 

@@ -163,6 +163,7 @@ class Auth extends Component {
                 });
         }
 
+        // this one
         const formInputs = formElementsArray.map( element => (
             <Input
                 key={element.id}
@@ -177,6 +178,7 @@ class Auth extends Component {
                 />
         ));
 
+        // and that one
         let formContent = [];
         const groups = getGroupsBy(formInputs, 'group');
         for (const groupKey of Object.keys(groups)){

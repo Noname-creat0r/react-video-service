@@ -4,7 +4,6 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Column from 'react-bootstrap/Col';
 
-import ProfileVideosTab from './ProfileVideosTab/ProfileVideosTab';
 import UploadVideoCard from '../../Card/UploadVideoCard/UploadVideoCard';
 
 import './ProfileTabs.css';
