@@ -7,13 +7,16 @@ import Group from 'react-bootstrap/FormGroup';
 export const getUpdatedControls = (event, state) => {
     const controlName = event.target.name;
     const isValid = formValidator(event);
-  
+    const value = event.target.value;
+    const file = controlName === "video" ? event.target.files[0] : null;
+
     const updatedControls = updateObject( state.controls, {
         [controlName]: updateObject( state.controls[controlName], {
-          value: event.target.value,
+          value: value,
           validation: updateObject( state.controls[controlName].validation, {
             valid: isValid
           }),
+          file: file,
           touched: true
         })
     });

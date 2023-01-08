@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { default: mongoose } = require('mongoose');
+const multer= require('multer');
+const upload = multer();
 
 const app = express();
 const port = 8080;
@@ -11,7 +13,11 @@ const userRoutes = require('./routes/user');
 const homeRoutes = require('./routes/home');
 const videoRoutes = require('./routes/video');
 
-app.use (bodyParser.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(upload.fields([{ name: 'video', maxCount: 1 }, { name : 'thumbnail', maxCount: 1}]));
+app.use(express.static('public'));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -42,5 +48,3 @@ mongoose
 
     })
     .catch(err => console.log(err));
-
-module.exports = baseUrl;

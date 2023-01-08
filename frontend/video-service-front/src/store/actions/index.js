@@ -6,3 +6,6 @@ export {
 export {
     fetchData
 } from './profile'
+export {
+    uploadVideo
+} from './video'

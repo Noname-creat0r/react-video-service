@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getUpdatedControls, getFormControlGroups,
-     getFormInputsArray } from '../../../shared/formUtil';
- 
+     getFormInputsArray, checkFormValidity } from '../../../shared/formUtil';
+import * as actions from '../../../store/actions/index';
+
 import Modal from '../../../components/UI/Modal/Modal';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -10,13 +11,16 @@ import Button from 'react-bootstrap/Button';
 
 const mapStateToProps = state => {
     return {
+        uploading: state.video.uploading,
+        error: state.video.error,
 
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        onVideoUpload: (videoData, token) =>
+            dispatch(actions.uploadVideo(videoData, token)),  
     };
 }
 
@@ -73,6 +77,7 @@ class UploadVideoForm extends Component {
                     required: false
                 },
                 value: '',
+                file: null,
                 touched: false
             },
             video: {
@@ -90,6 +95,7 @@ class UploadVideoForm extends Component {
                     required: false
                 },
                 value: '',
+                file: null,
                 touched: false
             }
         },
@@ -97,9 +103,24 @@ class UploadVideoForm extends Component {
     
     inputChangedHandler = (event) => {
         this.setState({ controls: getUpdatedControls(event, this.state) });
-        this.setState({ isFormValid: this.checkFormValidity(this.state) });
+        this.setState({ isFormValid: checkFormValidity(this.state) });
     }
 
+    upload = (event) => {
+        event.preventDefault();
+        /*const formData = new FormData();
+        formData.append('video', this.state.controls.video.file);
+        formData.append('title', this.state.controls.title.value);
+        formData.append('description', this.state.controls.description.value);
+        formData.append('thumbnail', this.state.controls.thumbnail.value);
+        this.props.onVideoUpload(formData, localStorage.getItem('token'));*/
+        this.props.onVideoUpload({
+            title: this.state.controls.title.value,
+            description: this.state.controls.description.value,
+            thumbnail: this.state.controls.thumbnail.value,
+            video: this.state.controls.video.file,
+        }, localStorage.getItem('token'))
+    }
 
     render() {
 
@@ -137,6 +158,7 @@ class UploadVideoForm extends Component {
                     variant="success"
                     disabled={!this.state.isFormValid}
                     type="submit"
+                    onClick={this.upload}
                     form="videoUploadForm">
                     Upload
                 </Button>
@@ -155,5 +177,5 @@ class UploadVideoForm extends Component {
 }
 
 export default connect(
-    mapStateToProps,
+    mapStateToProps, mapDispatchToProps
 ) ( UploadVideoForm );
