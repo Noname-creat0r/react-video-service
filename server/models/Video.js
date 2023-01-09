@@ -6,20 +6,29 @@ const videoSchema = new Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     author: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     length: {
         type: Number,
         min: 1,
-        max: 36000,
+        max: Number.MAX_SAFE_INTEGER,
         required: true
     },
     comments: [{
         type: Schema.Types.ObjectId,
         ref: 'Commentary'
-    }]
+    }],
+    file: {
+        type: Schema.Types.ObjectId,
+        required: true
+    }
 
 });
 

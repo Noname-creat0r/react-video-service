@@ -21,14 +21,15 @@ export const videoUploadSuccess = () => {
     };
 };
 
-export const uploadVideo = (videoData, token,) => {
+export const uploadVideo = (videoData, userData) => {
     return dispatch => {
         dispatch(videoUploadStart());
         axios
             .post('/video', 
-            { ...videoData },  
+            {   ...videoData,
+                userId: userData.userId },  
             { headers: { 
-                'Authorization':  token,
+                'Authorization':  userData.token,
                 'Content-Type': 'multipart/form-data',
             }})
             .then(response => {

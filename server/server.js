@@ -1,8 +1,17 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const { default: mongoose } = require('mongoose');
 const multer= require('multer');
-const upload = multer();
+
+const fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './public/tmp/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
 
 const app = express();
 const port = 8080;
@@ -16,8 +25,13 @@ const videoRoutes = require('./routes/video');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(upload.fields([{ name: 'video', maxCount: 1 }, { name : 'thumbnail', maxCount: 1}]));
-app.use(express.static('public'));
+app.use(multer({ storage: fileStorage })
+    .fields([
+        { name: 'video', maxCount: 1 },
+        { name : 'thumbnail', maxCount: 1}
+    ])
+);
+app.use('./public/tmp', express.static(path.join(__dirname, '/public/tmp')));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

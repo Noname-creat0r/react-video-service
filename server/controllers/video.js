@@ -1,42 +1,57 @@
 const mongoose = require('mongoose');
 const GridFS = require('mongoose-gridfs');
 const fs = require('fs');
-const path = require('path');
 
 const Video = require('../models/Video');
-const dbConfig= require('../db/config');
-const { assert } = require('console');
+const chunkSize = 10240;
+const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName: 'videos',
+    chunkSizeBytes: chunkSize,
+});
 
 exports.getVideo = (req, res, next) => {
 
 };
 
 exports.postVideo = (req, res, next) => {
-        const video = {...req.files['video'][0]};
-        const videoFilePath = video.originalname;
-        const _id = new mongoose.Types.ObjectId();
+    // delete file from (/public/tmp) afterwards
+    const video = { ...req.files['video'][0] };
+    const videoFileName = video.filename;
+    const videoFilePath = video.path;
+    const fileId = new mongoose.Types.ObjectId();
+    
+    fs
+        .createReadStream(videoFilePath)
+        .pipe(bucket.openUploadStreamWithId(fileId, videoFileName, { 
+            chunkSizeBytes: chunkSize
+        }))
+        .on('error', (error) => {
+            console.log(error);
+        })
+        .on('finish', (result) => {
+            console.log(result);
+            console.log('done');
 
-        const gridfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
-            bucketName: 'videos',
-        });
-
-        fs
-            .createReadStream(videoFilePath)
-            .pipe(gridfs.openUploadStreamWithId(_id, videoFilePath))
-            .on('error', (error) => {
-                console.log(error);
-            })
-            .on('finish', (result) => {
-                console.log(result);
-                console.log('done');
-                //process.exit(0);
+            const mongoVideo = new Video({
+                title: video.title,
+                description: video.description,
+                author: mongoose.Types.ObjectId(req.body.userId),
+                file: fileId,
+                length: video.size
             });
-       /* const bucket = GridFS.createBucket();
-        console.log(video.buffer);
-        const filename = video.originalname;
-        const writeStream = fs.createWriteStream(filename);
-        const readStream = bucket.createReadStream({_id, filename});
-        readStream.pipe(writeStream);*/
-        //const Video = GridFS.createModel();
+            mongoVideo
+                .save()
+                .then((result) => {
+                    res.status(201).json({ message: 'Video has been uploaded' });
+                })
+                .catch(err => {
+                    if (!err.statusCode){
+                        err.statusCode = 500;
+                    }
+                    next(err);
+                });
 
+            //const cursor = bucket.find({});
+            //cursor.forEach(file => console.log(file));
+        })
 };

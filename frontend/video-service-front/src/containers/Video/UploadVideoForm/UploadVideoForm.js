@@ -13,7 +13,6 @@ const mapStateToProps = state => {
     return {
         uploading: state.video.uploading,
         error: state.video.error,
-
     };
 }
 
@@ -108,22 +107,19 @@ class UploadVideoForm extends Component {
 
     upload = (event) => {
         event.preventDefault();
-        /*const formData = new FormData();
-        formData.append('video', this.state.controls.video.file);
-        formData.append('title', this.state.controls.title.value);
-        formData.append('description', this.state.controls.description.value);
-        formData.append('thumbnail', this.state.controls.thumbnail.value);
-        this.props.onVideoUpload(formData, localStorage.getItem('token'));*/
         this.props.onVideoUpload({
             title: this.state.controls.title.value,
             description: this.state.controls.description.value,
             thumbnail: this.state.controls.thumbnail.value,
             video: this.state.controls.video.file,
-        }, localStorage.getItem('token'))
+        }, {
+            token: localStorage.getItem('token'),
+            userId: localStorage.getItem('userId')
+        });
     }
 
     render() {
-
+        
         const modalTitle = "Video upload";
 
         const formElementsArray = [];
