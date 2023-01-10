@@ -3,11 +3,6 @@ const GridFS = require('mongoose-gridfs');
 const fs = require('fs');
 
 const Video = require('../models/Video');
-const chunkSize = 10240;
-const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
-    bucketName: 'videos',
-    chunkSizeBytes: chunkSize,
-});
 
 exports.getVideo = (req, res, next) => {
 
@@ -15,11 +10,17 @@ exports.getVideo = (req, res, next) => {
 
 exports.postVideo = (req, res, next) => {
     // delete file from (/public/tmp) afterwards
+    // upload thumbnail
     const video = { ...req.files['video'][0] };
     const videoFileName = video.filename;
     const videoFilePath = video.path;
     const fileId = new mongoose.Types.ObjectId();
-    
+    const chunkSize = 10240;
+    const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+        bucketName: 'videos',
+        chunkSizeBytes: chunkSize,
+    });
+
     fs
         .createReadStream(videoFilePath)
         .pipe(bucket.openUploadStreamWithId(fileId, videoFileName, { 
@@ -33,12 +34,13 @@ exports.postVideo = (req, res, next) => {
             console.log('done');
 
             const mongoVideo = new Video({
-                title: video.title,
-                description: video.description,
+                title: req.body.title,
+                description: req.body.description,
                 author: mongoose.Types.ObjectId(req.body.userId),
                 file: fileId,
                 length: video.size
             });
+
             mongoVideo
                 .save()
                 .then((result) => {
