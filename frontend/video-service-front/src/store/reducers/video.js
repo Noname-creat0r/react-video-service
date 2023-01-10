@@ -4,6 +4,8 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
     uploading: false,
     streaming: false,
+    fetchingInfo: false,
+    videoInfo: {},
     error: null,
     loading: false,
     videoId: null,
@@ -29,11 +31,33 @@ const videoUploadSuccess = (state, action) => {
     });
 };
 
+const videoFetchInfoStart = (state, action) => {
+    return updateObject(state, {
+        fetchingInfo: true,
+    });
+}
+
+const videoFetchInfoFailed = (state, action) => {
+    return updateObject(state, {
+        fetchingInfo: false,
+        error: action.error
+    })
+}
+
+const videoFetchInfoSuccess = (state, action) => {
+    return updateObject(state, {
+        fetchingInfo: false,
+    })
+}
+
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
         case actionTypes.VIDEO_UPLOAD_START: return videoUploadStart(state, action);
         case actionTypes.VIDEO_UPLOAD_FAILED: return videoUploadFailed(state, action);
         case actionTypes.VIDEO_UPLOAD_SUCCESS: return videoUploadSuccess(state, action);
+        case actionTypes.VIDEO_FETCH_INFO_START: return videoFetchInfoStart(state, action);
+        case actionTypes.VIDEO_FETCH_INFO_FAILED: return videoFetchInfoFailed(state, action);
+        case actionTypes.VIDEO_FETCH_INFO_SUCCESS: return videoFetchInfoSuccess(state, action);
         default: return state;
     }
 };

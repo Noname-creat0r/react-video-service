@@ -110,9 +110,10 @@ class UploadVideoForm extends Component {
         this.props.onVideoUpload({
             title: this.state.controls.title.value,
             description: this.state.controls.description.value,
-            thumbnail: this.state.controls.thumbnail.value,
+            thumbnail: this.state.controls.thumbnail.file,
             video: this.state.controls.video.file,
-        }, {
+        }, 
+        {
             token: localStorage.getItem('token'),
             userId: localStorage.getItem('userId')
         });

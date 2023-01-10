@@ -41,3 +41,9 @@ export const uploadVideo = (videoData, userData) => {
             })
     };
 };
+
+export const fetchVideoInfo = (userId, videoId) => {
+    return dispatch => {
+
+    };
+};

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from '../../../axios-settings';
-import * as actions from '../../../store/actions/index';
+import axios from '../../axios-settings';
+import * as actions from '../../store/actions/index';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Column from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 
-import UserIcon from '../../../assets/images/default-user-icon.svg'; // need to download it from db
-import ProfileTabs from '../../../components/UI/Profile/ProfileTabs/ProfileTabs';
-import UploadVideoForm from '../../Video/UploadVideoForm/UploadVideoForm';
+import UserIcon from '../../assets/images/default-user-icon.svg'; // need to download it from db
+import ProfileTabs from '../../components/UI/Profile/ProfileTabs/ProfileTabs';
+import UploadVideoForm from '../Video/UploadVideoForm/UploadVideoForm';
 
 import './Profile.css';
 
@@ -62,6 +62,7 @@ class Profile extends Component {
                         show={this.state.showUploadVideoFormModal}
                         hide={this.uploadVideoFormToggleHandler}/>
                     <ProfileTabs 
+                        videos={this.fetchUserVideos}
                         uploadVideoCardClicked={this.uploadVideoFormToggleHandler}/>
                 </Row>
                 <Row>
@@ -80,7 +81,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchUserData: (userId, token) => dispatch(actions.fetchData(userId, token)), 
+        fetchUserData: (userId, token) => dispatch(actions.fetchData(userId, token)),
+        fetchUserVideos: (userId, videoId) => dispatch(actions.fetchVideoInfo(userId, videoId)),
     };
 };
 

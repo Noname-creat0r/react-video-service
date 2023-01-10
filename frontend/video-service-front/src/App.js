@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 
 import Layout from './containers/Layout/Layout';
 import ErrorBoundary from './hoc/ErrorBoundary/ErrorBoundary';
-import Auth from './containers/Auth/Auth';
-import Profile from './containers/User/Profile/Profile';
+import Profile from './containers/Profile/Profile';
 import Logout from './containers/Auth/Logout/Logout';
 
 import './App.css';

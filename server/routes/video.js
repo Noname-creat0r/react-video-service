@@ -14,8 +14,9 @@ router.post(
 )
 
 router.get(
-    '/:id',
-    videoController.getVideo
+    '/info:id',
+    videoController.getVideoInfo
 )
+
 
 module.exports = router;

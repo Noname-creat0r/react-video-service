@@ -4,8 +4,9 @@ export {
     logout,
 } from './auth';
 export {
-    fetchData
+    fetchData,
 } from './profile'
 export {
-    uploadVideo
+    uploadVideo,
+    fetchVideoInfo
 } from './video'

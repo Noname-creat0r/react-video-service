@@ -8,7 +8,7 @@ export const getUpdatedControls = (event, state) => {
     const controlName = event.target.name;
     const isValid = formValidator(event);
     const value = event.target.value;
-    const file = controlName === "video" ? event.target.files[0] : null;
+    const file = event.target.type === "file" ? event.target.files[0] : '';
 
     const updatedControls = updateObject( state.controls, {
         [controlName]: updateObject( state.controls[controlName], {

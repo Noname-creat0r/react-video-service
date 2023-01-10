@@ -25,6 +25,9 @@ const videoSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Commentary'
     }],
+    thumbnail: {
+        type: Schema.Types.ObjectId, 
+    },
     file: {
         type: Schema.Types.ObjectId,
         required: true
