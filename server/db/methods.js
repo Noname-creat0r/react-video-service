@@ -18,4 +18,18 @@ exports.uploadFile = (file, bucketName, chunkSize, fileId) => {
         .on('error', (error) => {
             console.log("UPLOAD_ERR: " + error);
         });
-}
+};
+
+exports.downloadFile = (fileId, bucketName, chunkSize, downloadPath) => {
+    const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+        bucketName: bucketName,
+        chunkSizeBytes: chunkSize,
+    });
+
+    return bucket
+        .openDownloadStream(fileId)
+        .pipe(fs
+            .createWriteStream(downloadPath).
+             on('end', (result) => console.log(result) )
+        );
+};

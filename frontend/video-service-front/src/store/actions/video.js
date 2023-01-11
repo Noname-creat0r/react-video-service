@@ -21,6 +21,28 @@ export const videoUploadSuccess = () => {
     };
 };
 
+export const videoFetchInfoStart = () => {
+    return {
+        type: actionTypes.VIDEO_FETCH_INFO_START,
+    };
+};
+
+export const videoFetchInfoFailed = (error) => {
+    return {
+        type: actionTypes.VIDEO_FETCH_INFO_FAILED,
+        error: error.data,
+    };
+};
+
+export const videoFetchInfoSuccess = (data) => {
+    return {
+        type: actionTypes.VIDEO_FETCH_INFO_SUCCESS,
+        payload: {
+            data: {...data}
+        },
+    };
+}
+
 export const uploadVideo = (videoData, userData) => {
     return dispatch => {
         dispatch(videoUploadStart());
@@ -44,6 +66,20 @@ export const uploadVideo = (videoData, userData) => {
 
 export const fetchVideoInfo = (userId, videoId) => {
     return dispatch => {
-
+        dispatch(videoFetchInfoStart());
+        axios
+            .get('/video/info', 
+            {
+                params: {
+                    userId: userId
+                }
+            })
+            .then(response => {
+                const data = response.data.videos;
+                dispatch(videoFetchInfoSuccess(data));
+            })
+            .catch(error => {
+                dispatch(videoFetchInfoFailed(error));
+            });
     };
 };

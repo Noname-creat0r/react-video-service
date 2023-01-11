@@ -39,6 +39,11 @@ class Profile extends Component {
             localStorage.getItem('userId'),
             localStorage.getItem('token')
         );
+
+        this.props.fetchUserVideosInfo(
+            localStorage.getItem('userId'),
+            null
+        );
     }
 
     render(){
@@ -82,7 +87,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchUserData: (userId, token) => dispatch(actions.fetchData(userId, token)),
-        fetchUserVideos: (userId, videoId) => dispatch(actions.fetchVideoInfo(userId, videoId)),
+        fetchUserVideosInfo: (userId, videoId) => dispatch(actions.fetchVideoInfo(userId, videoId)),
     };
 };
 

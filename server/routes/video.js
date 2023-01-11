@@ -11,12 +11,18 @@ router.post(
     '/',
     isAuth,
     videoController.postVideo
-)
+);
 
 router.get(
-    '/info:id',
-    videoController.getVideoInfo
-)
+    '/info:userId?videoId?',
+    videoController.getUserVideoInfo
+);
+
+router.get(
+    '/info:userId?',
+    videoController.getUserVideoInfo
+);
+
 
 
 module.exports = router;

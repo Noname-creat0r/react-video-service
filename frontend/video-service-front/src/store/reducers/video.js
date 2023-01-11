@@ -5,7 +5,7 @@ const initialState = {
     uploading: false,
     streaming: false,
     fetchingInfo: false,
-    videoInfo: {},
+    videosInfo: {},
     error: null,
     loading: false,
     videoId: null,
@@ -41,13 +41,14 @@ const videoFetchInfoFailed = (state, action) => {
     return updateObject(state, {
         fetchingInfo: false,
         error: action.error
-    })
+    });
 }
 
 const videoFetchInfoSuccess = (state, action) => {
     return updateObject(state, {
         fetchingInfo: false,
-    })
+        videosInfo: action.payload.data,
+    });
 }
 
 const reducer = (state = initialState, action) => {

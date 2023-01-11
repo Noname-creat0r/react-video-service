@@ -5,26 +5,25 @@ const Video = require('../models/Video');
 const methods = require('../db/methods');
 const chunkSize = 102400;
 
-exports.getVideoInfo = (req, res, next) => {
+exports.getUserVideoInfo = async (req, res, next) => {
+    let userVideos = await Video.find({
+        author: mongoose.Types.ObjectId(req.query.userId),
+    });
 
+    if (req.query.videoId)
+        userVideos = await userVideos
+            .where('_id')
+            .equals(mongoose.Types.ObjectId(req.query.videoId));
+
+    if (!userVideos){
+        res.status(201).json({ message: 'There are no user videos.', videos: {}});
+    }
+
+    res.status(200).json({ videos: userVideos });
 };
 
 exports.postVideo = (req, res, next) => {
-    // delete file from (/public/tmp) afterwards
-    // upload thumbnail
-    /*const video = { ...req.files['video'][0] };
-    const videoFileName = video.filename;
-    const videoFilePath = video.path;
-    const fileId = new mongoose.Types.ObjectId();
-    const chunkSize = 10240;
-
-    const thumbnail = { ...req.files['thumbnail'][0] };
-    const thumbnailFileName = thumbnail
-
-    const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
-        bucketName: 'videos',
-        chunkSizeBytes: chunkSize,
-    });*/
+   
     const video = { ...req.files['video'][0] };
     const videoFileId = new mongoose.Types.ObjectId();
     const thumbnail = { ...req.files['thumbnail'][0] };
@@ -65,5 +64,4 @@ exports.postVideo = (req, res, next) => {
                     next(err);
                 })
             });
-    
 };
