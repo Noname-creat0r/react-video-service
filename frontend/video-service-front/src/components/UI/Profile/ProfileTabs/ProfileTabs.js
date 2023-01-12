@@ -17,9 +17,12 @@ const ProfileTabs = (props) => {
            thumbnail={video.thumbnail}
            title={video.title} />
     );*/
-
+    
     return (
-        <Tabs defaultActiveKey="Videos">
+        <Tabs 
+            defaultActiveKey="Videos"
+            activeKey={props.tabActiveKey}
+            onSelect={props.tabSelectHandler}>
             <Tab eventKey="Videos" title="Videos">
                 <Row className='my-3'>
                     <UploadVideoCard
@@ -27,6 +30,7 @@ const ProfileTabs = (props) => {
                 </Row>
                 <Row>
                     <hr />
+                    {props.videos}
                 </Row>
 
             </Tab>

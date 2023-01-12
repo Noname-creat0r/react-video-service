@@ -13,7 +13,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-class Home extends Component {
+class Video extends Component {
     render() {
         return (
             <div>
@@ -25,4 +25,4 @@ class Home extends Component {
 
 export default connect(
     mapStateToProps, mapDispatchToProps
-)(Home);
+)(Video);
