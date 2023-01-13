@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
+import * as actions from './store/actions/index';
 
 import Layout from './containers/Layout/Layout';
 import ErrorBoundary from './hoc/ErrorBoundary/ErrorBoundary';
@@ -11,7 +12,12 @@ import Logout from './containers/Auth/Logout/Logout';
 import './App.css';
 
 class App extends Component {
+  
   state = {
+  }
+
+  componentDidMount() {
+    this.props.onTryAutoSignup();
   }
 
   render () {
@@ -51,7 +57,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    //onTryAutoSignup: () => dispatch( actions.authCheckState() )
+    onTryAutoSignup: () => dispatch( actions.authCheckState() )
   };
 };
 

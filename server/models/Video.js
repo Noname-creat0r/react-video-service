@@ -15,6 +15,16 @@ const videoSchema = new Schema({
         ref: 'User',
         required: true
     },
+    likes: {
+        type: Number,
+        min: 0,
+        max: Number.MAX_SAFE_INTEGER,
+    },
+    dislikes: {
+        type: Number,
+        min: 0,
+        max: Number.MAX_SAFE_INTEGER,
+    },
     length: {
         type: Number,
         min: 1,

@@ -1,25 +1,50 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
+const FormData = require('form-data');
 
 const Video = require('../models/Video');
 const methods = require('../db/methods');
 const chunkSize = 102400;
+
+exports.getVideoThumbnail = (req, res, next) => {
+
+};
 
 exports.getUserVideoInfo = async (req, res, next) => {
     let userVideos = await Video.find({
         author: mongoose.Types.ObjectId(req.query.userId),
     });
 
+
     if (req.query.videoId)
         userVideos = await userVideos
             .where('_id')
             .equals(mongoose.Types.ObjectId(req.query.videoId));
+    
+    const formData = new FormData();
+    const thumbnails = [];
+    /*for (const video of userVideos){
+        methods
+            .downloadFile(
+                mongoose.Types.ObjectId(video.thumbnail),
+                'thumbnails',
+                chunkSize, )
+            .on('end', result => console.log(result));
+    }*/
+    //console.log(thumbnails);
+
+    res.setHeader('Content-Type', 'image/*');
+    res.setHeader('Content-Disposition', 'attachment');
+    methods
+        .downloadFile(mongoose.Types.ObjectId(userVideos[0].thumbnail), 'thumbnails', chunkSize,)
+        .pipe(res);
+
 
     if (!userVideos){
         res.status(201).json({ message: 'There are no user videos.', videos: {}});
     }
 
-    res.status(200).json({ videos: userVideos });
+    //res.status(200).json({ videos: userVideos });
 };
 
 exports.postVideo = (req, res, next) => {

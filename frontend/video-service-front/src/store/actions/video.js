@@ -72,10 +72,10 @@ export const fetchVideoInfo = (userId, videoId) => {
             {
                 params: {
                     userId: userId
-                }
+                },
             })
             .then(response => {
-                const data = response.data.videos;
+                const data = response.data;
                 dispatch(videoFetchInfoSuccess(data));
             })
             .catch(error => {

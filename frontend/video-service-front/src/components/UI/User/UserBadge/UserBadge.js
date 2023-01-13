@@ -6,10 +6,11 @@ import UserIcon from '../UserIcon/UserIcon';
 import UserName from '../UserName/UserName';
 
 const userBadge = (props) => (
-    <Container className='d-flex justify-content-lg-end'> 
+    //justify-content-lg-end
+    <Container className='d-flex'> 
         <UserIcon 
             icon={props.icon}/>
-        <UserName 
+        <UserName
             name={props.name}/>
     </Container>
 );

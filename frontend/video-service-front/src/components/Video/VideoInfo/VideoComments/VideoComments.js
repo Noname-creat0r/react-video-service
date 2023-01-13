@@ -1,8 +1,8 @@
 import React from 'react';
 
-import './VideoFooter.css';
+import './VideoComments.css'
 
-const VideoFooter = (props) => {
+const VideoComments = (props) => {
     return (
         <div>
             
@@ -10,4 +10,4 @@ const VideoFooter = (props) => {
     );
 };
 
-export default VideoFooter;
+export default VideoComments;

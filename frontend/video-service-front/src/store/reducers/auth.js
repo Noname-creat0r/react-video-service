@@ -6,7 +6,6 @@ const initialState = {
     userId: null,
     error: null,
     loading: false,
-    authRedirectPath: '/'
 };
 
 const authStart = (state, action) => {

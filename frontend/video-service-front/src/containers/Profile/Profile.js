@@ -13,6 +13,7 @@ import UserIcon from '../../assets/images/default-user-icon.svg'; // need to dow
 import ProfileTabs from '../../components/UI/Profile/ProfileTabs/ProfileTabs';
 import UploadVideoForm from '../Video/UploadVideoForm/UploadVideoForm';
 import ProfileVideoCard from '../../components/UI/Card/ProfileVideoCard/ProfileVideoCard';
+import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 
 import './Profile.css';
 
@@ -52,15 +53,16 @@ class Profile extends Component {
     };
 
     mapVideoInfoToCards = (videoInfo) => {
-        if (videoInfo.length > 0)
-            return videoInfo.map(video => {
-                <ProfileVideoCard
-                    key={video._id}
-                    title={video.title}
-                    clicked={this.profileVideoCardClickHandler}/>
-            });
-        else 
-            return <span>User hasn't uploaded any video yet...</span>;
+        const videoArr = [];
+        for (const key of Object.keys(videoInfo))
+            videoArr.push(videoInfo[key]);
+
+        return videoArr.map(video => 
+            <ProfileVideoCard
+                key={video._id}
+                title={video.title}
+                clicked={this.profileVideoCardClickHandler}/>
+        );
     };
   
 
@@ -76,52 +78,50 @@ class Profile extends Component {
         );
     };
 
+    componentDidUpdate() {
+    }
+
     render(){
-        let videos = this.mapVideoInfoToCards(this.props.videosInfo);
-        let content = (
-            <Container className="my-2">
-                <Row> 
-                    <Column className="col-3">
-                        <Image 
-                            src={UserIcon}
-                            width={128}
-                            height={128}
-                            alt="UserIcon"
-                            rounded/>
-                    </Column>
-                    <Column className="">
-                        <span className="ProfileName">{ this.props.nickname }</span>
-                    </Column>
-                </Row>
-                <Row>
-                    <UploadVideoForm 
-                        show={this.state.showUploadVideoFormModal}
-                        hide={this.uploadVideoFormToggleHandler}/>
-                    <ProfileTabs 
-                        videos={videos}
-                        uploadVideoCardClicked={this.uploadVideoFormToggleHandler}
-                        tabSelectHandler={this.tabSelectHandler}
-                        tabActiveKey={this.state.activeTab}/>
-                
-                </Row>
-                <Row>
-                    
-                </Row>
-            </Container>
-        );
-
+        
         if (this.props.fetchingData){
-            const spinner = (
-                <Container className="my-2">
-                    Loading... <Spinner animation='border' size='lg' style={{textAlign: 'center'}}/>
-                </Container>);
-            content = spinner
-            videos = spinner;
-        };
+            return (
+                <LoadingSpinner />
+            );
+        }
 
-        return (
-            {...content}
-        );
+        else {
+            //const videos = this.mapVideoInfoToCards(this.props.videosInfo);
+            return (
+                <Container className="my-2">
+                    <Row> 
+                        <Column className="col-3">
+                            <Image 
+                                src={UserIcon}
+                                width={128}
+                                height={128}
+                                alt="UserIcon"
+                                rounded/>
+                        </Column>
+                        <Column className="">
+                            <span className="ProfileName">{ this.props.nickname }</span>
+                        </Column>
+                    </Row>
+                    <Row>
+                        <UploadVideoForm 
+                            show={this.state.showUploadVideoFormModal}
+                            hide={this.uploadVideoFormToggleHandler}/>
+                        <ProfileTabs 
+                            //videos={videos}
+                            uploadVideoCardClicked={this.uploadVideoFormToggleHandler}
+                            tabSelectHandler={this.tabSelectHandler}
+                            tabActiveKey={this.state.activeTab}/>
+                    </Row>
+                    <Row>
+                        
+                    </Row>
+                </Container>
+            );
+        }
     };
 };
 

@@ -28,8 +28,8 @@ exports.downloadFile = (fileId, bucketName, chunkSize, downloadPath) => {
 
     return bucket
         .openDownloadStream(fileId)
-        .pipe(fs
-            .createWriteStream(downloadPath).
-             on('end', (result) => console.log(result) )
-        );
+        /*.pipe(fs
+            .createWriteStream(downloadPath)
+        )*/
+        ;
 };

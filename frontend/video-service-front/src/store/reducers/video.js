@@ -10,6 +10,7 @@ const initialState = {
     loading: false,
     videoId: null,
     interupted: false,
+    img: null,
 };
 
 const videoUploadStart = (state, action) => {
@@ -45,6 +46,7 @@ const videoFetchInfoFailed = (state, action) => {
 }
 
 const videoFetchInfoSuccess = (state, action) => {
+    
     return updateObject(state, {
         fetchingInfo: false,
         videosInfo: action.payload.data,

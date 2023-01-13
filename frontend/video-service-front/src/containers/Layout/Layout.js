@@ -5,6 +5,7 @@ import * as actions from '../../store/actions/index';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 import Auth from '../Auth/Auth';
+import Video from '../Video/Video';
 
 import './Layout.css';
 import UploadVideoForm from '../Video/UploadVideoForm/UploadVideoForm';
@@ -13,6 +14,7 @@ class Layout extends Component {
     state = {
         showSideDrawer: false,
         showAuthModal: false,
+        showVideoPage: false,
     };
 
     sideDrawerToggleHandler = () => {
@@ -31,8 +33,13 @@ class Layout extends Component {
         });
     }
 
+    videoPageShowHandler = () => {
+        this.setState( (prevState)  => {
+            return { showVideoPage: !prevState.showVideoPage };
+        });
+    }
+
     componentDidMount() {
-        if (this.props.isAuthenticated){ }
     }
 
     render() {
@@ -52,6 +59,7 @@ class Layout extends Component {
                         show={this.state.showAuthModal}
                         hide={this.authModalToggleHandler}/>
                     
+                    
                     {this.props.children}
                 </main>
             </div>
@@ -62,7 +70,7 @@ class Layout extends Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.token !== null,
-        userName: null || state.profile.data.name ,
+        userName: state.profile.data.name,
     };
 };
 

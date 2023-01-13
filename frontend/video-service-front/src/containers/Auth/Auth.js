@@ -142,10 +142,7 @@ class Auth extends Component {
                 this.state.controls['name'].value : undefined); 
     }
 
-    componentDidMount() {
-        this.props.onCheckAuthState();
-    }
-
+    
     render(){
                 /* TODO: 
         - redirect after modal close  */
