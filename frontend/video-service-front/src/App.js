@@ -16,8 +16,11 @@ class App extends Component {
   state = {
   }
 
-  componentDidMount() {
+  componentWillUnmount() {
     this.props.onTryAutoSignup();
+  }
+
+  componentDidMount() {
   }
 
   render () {
@@ -37,6 +40,7 @@ class App extends Component {
         </Routes>
       )
     }
+    
   return (
       <div className="App">
         <ErrorBoundary>
@@ -57,7 +61,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAutoSignup: () => dispatch( actions.authCheckState() )
+    onTryAutoSignup: () => dispatch( actions.authCheckState() ),
   };
 };
 

@@ -4,8 +4,8 @@ import { getGroupsBy, updateObject } from '../../shared/utility';
 import { formValidator } from '../../validators/Forms/validator';
  
 import * as actions from '../../store/actions/index';
-import Input from '../../components/UI/Input/Input';
 
+import Input from '../../components/UI/Input/Input';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
@@ -239,9 +239,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onAuth: (email, password, name) => dispatch(actions.auth( email, password, name)),
-        onCheckAuthState: () => dispatch(actions.authCheckState()),
     };
 };
-
 
 export default connect( mapStateToProps, mapDispatchToProps )( Auth );

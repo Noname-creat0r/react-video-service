@@ -40,7 +40,9 @@ class Profile extends Component {
 
     tabSelectHandler = (eventKey) => {
         if (eventKey === 'Videos') {
-
+            this.props.fetchUserVideosThumbnails(
+                this.props.videosInfo
+            );
         };
 
         this.setState( (prevState) => {
@@ -65,22 +67,27 @@ class Profile extends Component {
         );
     };
   
+    componentWillUnmount() {
+    } 
 
     componentDidMount() {
         this.props.fetchUserData(
             localStorage.getItem('userId'),
-            localStorage.getItem('token')
-        );
-
-        this.props.fetchUserVideosInfo(
-            localStorage.getItem('userId'),
-            null
-        );
+            localStorage.getItem('token'))
+        .then( res => {
+            this.props.fetchUserVideosInfo(
+                localStorage.getItem('userId'),
+                null);
+        })
+        /*.then( res => {
+            this.props.fetchUserVideosThumbnails(
+                this.props.videosInfo
+            );
+        })*/
+       
     };
 
-    componentDidUpdate() {
-    }
-
+    
     render(){
         
         if (this.props.fetchingData){
@@ -95,12 +102,20 @@ class Profile extends Component {
                 <Container className="my-2">
                     <Row> 
                         <Column className="col-3">
-                            <Image 
-                                src={UserIcon}
-                                width={128}
-                                height={128}
-                                alt="UserIcon"
-                                rounded/>
+                            { this.props.thumbnail ? 
+                                (<Image 
+                                    src={this.props.thumbnail}
+                                    width={128}
+                                    height={128}
+                                    alt="UserIcon"
+                                    rounded/> ):
+                                (<Image 
+                                    src={UserIcon}
+                                    width={128}
+                                    height={128}
+                                    alt="UserIcon"
+                                    rounded/>) }
+
                         </Column>
                         <Column className="">
                             <span className="ProfileName">{ this.props.nickname }</span>
@@ -130,13 +145,15 @@ const mapStateToProps = state => {
         nickname: state.profile.data.name,
         fetchingData : state.profile.fetching || state.video.fetchingInfo,
         videosInfo: state.video.videosInfo,
+        thumbnail: state.video.thumbnail
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         fetchUserData: (userId, token) => dispatch(actions.fetchData(userId, token)),
-        fetchUserVideosInfo: (userId, videoId) => dispatch(actions.fetchVideoInfo(userId, videoId)),
+        fetchUserVideosInfo: (userId, videoId) => dispatch(actions.fetchVideoInfos(userId, videoId)),
+        fetchUserVideosThumbnails: (videoInfoArr) => dispatch(actions.fetchVideoThumbnails(videoInfoArr)),
     };
 };
 

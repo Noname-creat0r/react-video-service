@@ -5,15 +5,15 @@ const initialState = {
     uploading: false,
     streaming: false,
     fetchingInfo: false,
-    videosInfo: {},
-    error: null,
-    loading: false,
-    videoId: null,
+    fetchingThumbnail: false,
     interupted: false,
-    img: null,
+    videosInfo: [],
+    thumbnail: null,
+    videoId: null,
+    error: null,
 };
 
-const videoUploadStart = (state, action) => {
+const videoUploadStart = (state) => {
     return updateObject(state, {
         uploading: true,
     });
@@ -26,41 +26,64 @@ const videoUploadFailed = (state, action) => {
     });
 };
 
-const videoUploadSuccess = (state, action) => {
+const videoUploadSuccess = (state) => {
     return updateObject(state, {
         uploading: false,
     });
 };
 
-const videoFetchInfoStart = (state, action) => {
+const videoFetchInfoStart = (state) => {
     return updateObject(state, {
         fetchingInfo: true,
     });
-}
+};
 
 const videoFetchInfoFailed = (state, action) => {
     return updateObject(state, {
         fetchingInfo: false,
         error: action.error
     });
-}
+};
 
 const videoFetchInfoSuccess = (state, action) => {
-    
     return updateObject(state, {
         fetchingInfo: false,
         videosInfo: action.payload.data,
     });
-}
+};
+
+const videoFetchThumbnailStart = (state) => {
+    return updateObject(state, {
+        fetchingThumbnail: true,
+    });
+};
+
+const videoFetchThumbnailFailed = (state, action) => {
+    return updateObject(state, {
+        fetchingThumbnail: false,
+        error: action.error,
+        thumbnail: null, 
+    });
+};
+
+const videoFetchThumbnailSuccess = (state, action) => {
+    return updateObject(state, {
+        fetchingThumbnail: false,
+        thumbnail: action.payload.data,
+    });
+};
 
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
-        case actionTypes.VIDEO_UPLOAD_START: return videoUploadStart(state, action);
+        case actionTypes.VIDEO_UPLOAD_START: return videoUploadStart(state);
         case actionTypes.VIDEO_UPLOAD_FAILED: return videoUploadFailed(state, action);
-        case actionTypes.VIDEO_UPLOAD_SUCCESS: return videoUploadSuccess(state, action);
-        case actionTypes.VIDEO_FETCH_INFO_START: return videoFetchInfoStart(state, action);
+        case actionTypes.VIDEO_UPLOAD_SUCCESS: return videoUploadSuccess(state);
+        case actionTypes.VIDEO_FETCH_INFO_START: return videoFetchInfoStart(state);
         case actionTypes.VIDEO_FETCH_INFO_FAILED: return videoFetchInfoFailed(state, action);
         case actionTypes.VIDEO_FETCH_INFO_SUCCESS: return videoFetchInfoSuccess(state, action);
+        case actionTypes.VIDEO_FETCH_THUMBNAIL_START: return videoFetchThumbnailStart(state);
+        case actionTypes.VIDEO_FETCH_THUMBNAIL_FAILED: return videoFetchThumbnailFailed(state, action);
+        case actionTypes.VIDEO_FETCH_THUMBNAIL_SUCCESS: return videoFetchThumbnailSuccess(state, action);
         default: return state;
     }
 };

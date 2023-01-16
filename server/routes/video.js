@@ -5,8 +5,6 @@ const videoController = require('../controllers/video');
 const isAuth = require('../middleware/is-auth');
 const router = express.Router();
 
-//const videoUploadFiles = upload.fields([{ name: 'thumbnail'}, { name: 'video'}]);
-
 router.post(
     '/',
     isAuth,
@@ -14,15 +12,14 @@ router.post(
 );
 
 router.get(
-    '/info:userId?videoId?',
-    videoController.getUserVideoInfo
-);
-
-router.get(
     '/info:userId?',
     videoController.getUserVideoInfo
 );
 
+router.get(
+    '/thumbnail:videoId?',
+    videoController.getVideoThumbnail
+)
 
 
 module.exports = router;

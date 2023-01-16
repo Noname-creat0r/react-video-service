@@ -8,5 +8,6 @@ export {
 } from './profile'
 export {
     uploadVideo,
-    fetchVideoInfo
+    fetchVideoInfos,
+    fetchVideoThumbnails,
 } from './video'

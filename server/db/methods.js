@@ -20,7 +20,7 @@ exports.uploadFile = (file, bucketName, chunkSize, fileId) => {
         });
 };
 
-exports.downloadFile = (fileId, bucketName, chunkSize, downloadPath) => {
+exports.downloadFile = (fileId, bucketName, chunkSize) => {
     const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
         bucketName: bucketName,
         chunkSizeBytes: chunkSize,
@@ -28,8 +28,5 @@ exports.downloadFile = (fileId, bucketName, chunkSize, downloadPath) => {
 
     return bucket
         .openDownloadStream(fileId)
-        /*.pipe(fs
-            .createWriteStream(downloadPath)
-        )*/
         ;
 };

@@ -42,7 +42,6 @@ export const checkAuthTimeout = (expirationTime) => {
     };
 };
 
-// вызывается дважды
 export const authCheckState = () => {
    return dispatch => {
         const token = localStorage.getItem('token');
@@ -61,7 +60,7 @@ export const authCheckState = () => {
    }; 
 };
 
- export const auth = (email, password, name) => {
+export const auth = (email, password, name) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
@@ -84,7 +83,7 @@ export const authCheckState = () => {
             axios
                 .post('/auth/signin/', authData)
                 .then( response => {
-                    const expirationDate = new Date(new Date().getTime() + 24 * 36000);
+                    const expirationDate = new Date(new Date().getTime() + 24 * 360000);
                     //console.log(expirationDate.getMinutes());
                     localStorage.setItem('token', response.data.token);
                     localStorage.setItem('userId', response.data.userId);

@@ -25,7 +25,7 @@ export const profileFetchDataFail = (error) => {
 
 // Improve this method in future by adding param object or array
 export const fetchData = (userId, token) => {
-    return dispatch => {
+    return async dispatch => {
         dispatch(profileFetchDataStart());
         axios
             .get('/user/get', { 
