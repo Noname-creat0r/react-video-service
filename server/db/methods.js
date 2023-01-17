@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
 
+exports.getGridBucket = (bucketName) => {
+    return new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+        bucketName: bucketName,
+    });
+} 
+
 exports.uploadFile = (file, bucketName, chunkSize, fileId) => {
     const fileName = file.filename;
     const filePath = file.path;

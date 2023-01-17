@@ -19,11 +19,15 @@ const videoSchema = new Schema({
         type: Number,
         min: 0,
         max: Number.MAX_SAFE_INTEGER,
+        required: true,
+        default: 0,
     },
     dislikes: {
         type: Number,
         min: 0,
         max: Number.MAX_SAFE_INTEGER,
+        required: true,
+        default: 0,
     },
     length: {
         type: Number,
