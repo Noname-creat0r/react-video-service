@@ -1,4 +1,5 @@
 import axios from '../../axios-settings';
+import { Buffer } from 'buffer';
 
 import * as actionTypes from './actionTypes';
 
@@ -92,21 +93,28 @@ export const fetchVideoThumbnails = (videoInfoArr) => {
         for (const videoInfo of videoInfoArr){
             dispatch(videoFetchThumbnailStart());
             axios.get('/video/thumbnail', {
-                responseType: 'stream',
-                responseEncoding: 'base64',
+                responseType: 'blob',
                 params: {
                     videoId: videoInfo.thumbnail,
                 }
             })
             .then(response => {
+                
+                const reader = new FileReader();
+                reader.readAsDataURL(response.data);
+                reader.onload = event => {
+                    dispatch(videoFetchThumbnailSuccess(event.target.result));
+                    console.log(event.target.result);
+                };
+                //console.log(response.data);
                 // push img buffer to the img state action (with promise maybe)
                 // if state.img ? then convert to base64 image source
                 // return promise resolve and repeat
-                console.log(response);
-                const data = 'data:image/jpg;base64,'+response.data;
+                /*const base64 = String.fromCharCode(...Buffer.from(response.data));
+                console.log(base64);
+                const data = 'data:'+ response.headers.get('content-type') +';base64,'+ base64;*/
                 //const buffer = Buffer.from(response.data, 'binary');
                 //const imageUrl = buffer.toString('base64');
-                dispatch(videoFetchThumbnailSuccess(data));
             })
             .catch(err => {
                 console.log(err);

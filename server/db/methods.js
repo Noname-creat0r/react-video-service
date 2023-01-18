@@ -7,7 +7,7 @@ exports.getGridBucket = (bucketName) => {
     });
 } 
 
-exports.uploadFile = (file, bucketName, chunkSize, fileId) => {
+/*exports.uploadFile = (file, bucketName, chunkSize, fileId) => {
     const fileName = file.filename;
     const filePath = file.path;
 
@@ -24,7 +24,7 @@ exports.uploadFile = (file, bucketName, chunkSize, fileId) => {
         .on('error', (error) => {
             console.log("UPLOAD_ERR: " + error);
         });
-};
+};*/
 
 exports.downloadFile = (fileId, bucketName, chunkSize) => {
     const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
@@ -33,6 +33,5 @@ exports.downloadFile = (fileId, bucketName, chunkSize) => {
     });
 
     return bucket
-        .openDownloadStream(fileId)
-        ;
+        .openDownloadStream(fileId);
 };

@@ -12,9 +12,9 @@ const storage = new GridFsStorage({
             const fileExt = path.extname(file.originalname);
             const filename = Date.now() + '-' + file.originalname;
             let bucketName;
-            // maybe create new models
-
-            console.log(req.body.userId);
+            // maybe create new mode
+        
+            console.log(file);
             switch (fileExt) {
                 case ext.MP4:
                     bucketName = 'videos';

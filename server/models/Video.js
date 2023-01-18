@@ -41,6 +41,7 @@ const videoSchema = new Schema({
     }],
     thumbnail: {
         type: Schema.Types.ObjectId, 
+        ref: 'Thumbnail'
     },
     file: {
         type: Schema.Types.ObjectId,

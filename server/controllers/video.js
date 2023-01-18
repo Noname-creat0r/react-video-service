@@ -2,17 +2,38 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 
 const Video = require('../models/Video');
+const Thumbnail = require('../models/Thumbnail');
 const methods = require('../db/methods');
-const chunkSize = 102400;
 
-exports.getVideoThumbnail = (req, res, next) => {
+exports.getVideoThumbnail = async (req, res, next) => {
     console.log("Thumb");
-    res.setHeader('Content-Type', 'image/*');
-    res.setHeader('Content-Disposition', 'attachment');
-    const thumbnails = methods.getGridBucket('thumbnails');
+    const thumbnails = methods.getGridBucket('thumbnails'); 
     thumbnails
-        .openDownloadStream(mongoose.Types.ObjectId(req.query.videoId))
-        .pipe(res);
+        .find({ _id: mongoose.Types.ObjectId(req.query.videoId) })
+        .forEach(thumbnail => {
+            res.setHeader('Content-Type', thumbnail.contentType);
+            res.setHeader('Content-Disposition', 'attachment');
+            //res.setHeader('Content-Transfer-Encoding', 'base64');
+            const downloadStream = thumbnails.openDownloadStreamByName(thumbnail.filename);
+            
+            downloadStream.on('data', data => {
+                return res.status(200).write(data);
+            });
+           
+            downloadStream.on('error', err => {
+                return res.status(404).json({ message: 'Cannot get the image.' });
+            })
+
+            downloadStream.on('end', () => {
+                return res.end();
+            });
+        })
+        .catch(err => {
+            if (!err.statusCode){
+                err.statusCode = 500;
+            }
+            next(err);
+        });
 };
 
 exports.getUserVideoInfo = async (req, res, next) => {
@@ -54,12 +75,24 @@ exports.postVideo = (req, res, next) => {
         length: video.size
     });
 
+    /*console.log(thumbnail.toString('base64'));
+    const thumbnailData = fs.readFileSync(thumbnail.path);
+    const mongoThumbnail = new Thumbnail({
+        data: thumbnailData.toString('base64'),
+        contentType: thumbnail.mimetype,
+    });*/
+
     mongoVideo
         .save()
-        .then((result) => {
+        .then(result => {
             message.push('Video has been uploaded successfully.');
             res.status(201).json({ message: message.join("\r\n") });
+            //return mongoThumbnail.save();
         })
+        /*.then(result => {
+            message.push('Thumbnail has been uploaded successfully.');
+            res.status(201).json({ message: message.join("\r\n") });
+        })*/
         .catch(err => {
             if (!err.statusCode){
                 err.statusCode = 500;
