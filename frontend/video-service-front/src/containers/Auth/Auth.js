@@ -142,7 +142,6 @@ class Auth extends Component {
                 this.state.controls['name'].value : undefined); 
     }
 
-    
     render(){
                 /* TODO: 
         - redirect after modal close  */

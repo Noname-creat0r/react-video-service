@@ -40,6 +40,16 @@ class Layout extends Component {
     }
 
     componentDidMount() {
+      
+    }
+
+    componentDidUpdate() {
+        if (this.props.isAuthenticated && this.props.userName == null){
+            this.props.fetchUserData( 
+                localStorage.getItem('userId'),
+                localStorage.getItem('token'));
+        
+        }
     }
 
     render() {
@@ -58,9 +68,9 @@ class Layout extends Component {
                     <Auth 
                         show={this.state.showAuthModal}
                         hide={this.authModalToggleHandler}/>
-                    
-                    
+
                     {this.props.children}
+
                 </main>
             </div>
         );
@@ -76,7 +86,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-    };
+        fetchUserData: async (userId, token) => dispatch(actions.fetchData(userId, token)),
+     };
 };
 
 export default connect( mapStateToProps, mapDispatchToProps ) ( Layout );

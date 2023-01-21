@@ -1,5 +1,11 @@
 .ProfileVideoCard {
     display: flex;
     color: white;
-    width: 9rem; 
+    width: 15rem;
+    height: 11rem;
+    color: black;
  }
+
+ .ProfileVideoCard > .Image {
+    
+}

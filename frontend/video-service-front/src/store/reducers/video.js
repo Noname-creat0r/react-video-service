@@ -4,11 +4,9 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
     uploading: false,
     streaming: false,
-    fetchingInfo: false,
-    fetchingThumbnail: false,
+    fetching: false,
     interupted: false,
     videosInfo: [],
-    thumbnail: null,
     videoId: null,
     error: null,
 };
@@ -67,10 +65,18 @@ const videoFetchThumbnailFailed = (state, action) => {
 };
 
 const videoFetchThumbnailSuccess = (state, action) => {
-    return updateObject(state, {
+    
+    //const id = copyState.videosInfo.findIndex(info => info._id === action.payload.data.videoId);
+    const updatedState =  updateObject(state, {
         fetchingThumbnail: false,
-        thumbnail: action.payload.data,
+        videosInfo: updateObject(state.videosInfo, {
+            [action.payload.data.videoInfoId]: updateObject(state.videosInfo[action.payload.data.videoInfoId], {
+                loading: false,
+                thumbnail: action.payload.data.thumbnail,
+            }),
+        }),
     });
+    return updatedState;
 };
 
 const reducer = (state = initialState, action) => {

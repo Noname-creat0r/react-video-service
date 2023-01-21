@@ -1,7 +1,7 @@
 import axios from '../../axios-settings';
-import { Buffer } from 'buffer';
 
 import * as actionTypes from './actionTypes';
+import { updateObject } from '../../shared/utility';
 
 export const videoUploadStart = () => {
     return {
@@ -44,10 +44,10 @@ export const videoFetchInfoSuccess = (data) => {
     };
 };
 
-
 export const videoFetchThumbnailStart = () => {
     return {
         type: actionTypes.VIDEO_FETCH_THUMBNAIL_START,
+       
     };
 };
 
@@ -88,59 +88,40 @@ export const uploadVideo = (videoData, userData) => {
     };
 };
 
-export const fetchVideoThumbnails = (videoInfoArr) => {
+export const fetchVideosData = (userId, videoId) => {
     return async dispatch => {
-        for (const videoInfo of videoInfoArr){
-            dispatch(videoFetchThumbnailStart());
-            axios.get('/video/thumbnail', {
-                responseType: 'blob',
-                params: {
-                    videoId: videoInfo.thumbnail,
-                }
-            })
-            .then(response => {
-                
-                const reader = new FileReader();
-                reader.readAsDataURL(response.data);
-                reader.onload = event => {
-                    dispatch(videoFetchThumbnailSuccess(event.target.result));
-                    console.log(event.target.result);
-                };
-                //console.log(response.data);
-                // push img buffer to the img state action (with promise maybe)
-                // if state.img ? then convert to base64 image source
-                // return promise resolve and repeat
-                /*const base64 = String.fromCharCode(...Buffer.from(response.data));
-                console.log(base64);
-                const data = 'data:'+ response.headers.get('content-type') +';base64,'+ base64;*/
-                //const buffer = Buffer.from(response.data, 'binary');
-                //const imageUrl = buffer.toString('base64');
-            })
-            .catch(err => {
-                console.log(err);
-                dispatch(videoFetchThumbnailFailed(err));
-            })
-       }
-    }
-   
-};
+        try {
+            dispatch(videoFetchInfoStart());
+            const response = await axios.get('/video/info', {
+                params: { userId: userId },
+            });
+            const infos = response.data.videos.map(video => 
+                updateObject(video, { key: video._id, loading: true })
+            );
 
-export const fetchVideoInfos = (userId, videoId) => {
-    return async dispatch => {
-        dispatch(videoFetchInfoStart());
-        axios.get('/video/info', {
-            params: {
-                userId: userId
-            },
-        })
-        .then(response => {
-            const info = response.data.videos;
-            dispatch(videoFetchInfoSuccess(info));
-            fetchVideoThumbnails(info);
-        })
-        .catch(error => {
-            dispatch(videoFetchInfoFailed(error));
-        });
+            const reader = new FileReader();
+            let i = -1;
+
+            for (const videoInfo of infos){
+                //  console.log(videoInfo);
+
+                axios.get('/video/thumbnail', {
+                    params: { videoId: videoInfo._id ,}, responseType: 'blob'
+                }).then( res => {
+                    reader.onload = event => {
+                        dispatch(videoFetchThumbnailSuccess({
+                            thumbnail: event.target.result,
+                            videoId: videoInfo._id,
+                            videoInfoId: ++i })) 
+                    };
+                    reader.readAsDataURL(res.data);
+                })
+                .catch(err  => console.log(err.config));
+                //reader.readAsDataURL(thumbnailData.data);
+            }
+            dispatch(videoFetchInfoSuccess(infos));
+        } catch (err) {
+            throw new Error(err);
+        }
     };
 };
-

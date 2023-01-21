@@ -12,15 +12,10 @@ import Logout from './containers/Auth/Logout/Logout';
 import './App.css';
 
 class App extends Component {
-  
-  state = {
-  }
-
-  componentWillUnmount() {
-    this.props.onTryAutoSignup();
-  }
 
   componentDidMount() {
+    this.props.onTryAutoSignup();
+    
   }
 
   render () {
@@ -62,6 +57,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onTryAutoSignup: () => dispatch( actions.authCheckState() ),
+    fetchUserData: (userId, token) => dispatch(actions.fetchData( userId, token)),
+    
   };
 };
 

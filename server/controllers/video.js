@@ -6,16 +6,15 @@ const Thumbnail = require('../models/Thumbnail');
 const methods = require('../db/methods');
 
 exports.getVideoThumbnail = async (req, res, next) => {
-    console.log("Thumb");
+    console.log(req.query.videoId);
     const thumbnails = methods.getGridBucket('thumbnails'); 
     thumbnails
         .find({ _id: mongoose.Types.ObjectId(req.query.videoId) })
         .forEach(thumbnail => {
             res.setHeader('Content-Type', thumbnail.contentType);
             res.setHeader('Content-Disposition', 'attachment');
-            //res.setHeader('Content-Transfer-Encoding', 'base64');
+
             const downloadStream = thumbnails.openDownloadStreamByName(thumbnail.filename);
-            
             downloadStream.on('data', data => {
                 return res.status(200).write(data);
             });
@@ -44,7 +43,8 @@ exports.getUserVideoInfo = async (req, res, next) => {
     if (req.query.videoId)
         userVideos = await userVideos
             .where('_id')
-            .equals(mongoose.Types.ObjectId(req.query.videoId));
+            .equals(mongoose.Types.ObjectId(req.query.videoId))
+            .limit(5);
     
     /*methods
         .downloadFile(mongoose.Types.ObjectId(userVideos[0].thumbnail), 'thumbnails', chunkSize,)
