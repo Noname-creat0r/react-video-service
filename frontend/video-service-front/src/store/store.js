@@ -15,7 +15,9 @@ export default configureStore({
         video: videoReducer,
     },
     middleware: (getDefaultMiddleware) => {
-        return getDefaultMiddleware({ thunk: false }).prepend(sagaMiddleware);
+        return getDefaultMiddleware({ 
+            thunk: false, 
+            serializableCheck: false }).prepend(sagaMiddleware);
     },
     devTools: true,
 });    

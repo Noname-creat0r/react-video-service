@@ -8,7 +8,8 @@ import VideoFooter from '../../components/Video/VideoFooter/VideoFooter';
 
 function mapStateToProps(state) {
     return {
-
+        videoId: state.video.videoId,
+        videosInfo: state.video.videosInfo,
     };
 }
 
@@ -20,12 +21,21 @@ function mapDispatchToProps(dispatch) {
 
 class Video extends Component {
     // 1. loading case -> spinner
-    
+
     render() {
+        /*const videosInfo = this.props.videosInfo;
+        const id = this.props.videoId;*/
+        const videoInfo = this.props.videosInfo.get(this.props.videoId);
+
         return (
             <Container >
-                <VideoPlayer />
-                <VideoInfo />
+                <VideoPlayer 
+                    videoId={videoInfo._id}/>
+                <VideoInfo 
+                    title={videoInfo.title}
+                    description={videoInfo.description}
+                    likes={videoInfo.likes}
+                    dislikes={videoInfo.dislikes}/>
                 <VideoFooter />
             </Container>
         );

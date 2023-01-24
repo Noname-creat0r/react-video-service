@@ -42,23 +42,23 @@ class Profile extends Component {
         });
     };
 
-    profileVideoCardClickHandler = (event, key) => {
-        this.props.videoStreamStart(key);
+    profileVideoCardClickHandler = (event, id) => {
+        this.props.videoStreamStart(id);
     };
 
     mapVideoInfoToCards = (videoInfo) => {
         const videoArr = [];
-        for (const key of Object.keys(videoInfo))
-            videoArr.push(videoInfo[key]);
+        videoInfo.forEach((video, id) => {
+            videoArr.push(
+                <ProfileVideoCard
+                    key={id}
+                    title={video.title}
+                    thumbnail={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
+                    clicked={event => this.profileVideoCardClickHandler(event, id)}
+                />);
+        });
 
-        return videoArr.map(video => 
-            <ProfileVideoCard
-                key={video._id}
-                title={video.title}
-                thumbnail={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
-                clicked={event => this.profileVideoCardClickHandler(event, video._id)}
-                />
-        );
+        return videoArr;
     };
 
     componentDidMount() {

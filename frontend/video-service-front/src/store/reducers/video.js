@@ -6,7 +6,7 @@ const initialState = {
     streaming: false,
     fetchingInfo: false,
     interupted: false,
-    videosInfo: [],
+    videosInfo: new Map(),
     videoId: null,
     error: null,
 };
