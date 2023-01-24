@@ -16,3 +16,12 @@ export const getGroupsBy = (arrOfObj, category) => {
     }
     return groups;
 };
+
+export function* readBlobToBase64(blob, callback) {
+  const reader = yield new FileReader();
+  reader.onload = function* () {
+    yield callback(reader.result);
+  };
+  yield reader.readAsDataUrl(blob);
+
+}

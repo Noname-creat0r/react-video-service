@@ -6,6 +6,7 @@ import * as actions from './store/actions/index';
 import Layout from './containers/Layout/Layout';
 import ErrorBoundary from './hoc/ErrorBoundary/ErrorBoundary';
 import Home from './containers/Home/Home';
+import Video from './containers/Video/Video';
 import Profile from './containers/Profile/Profile';
 import Logout from './containers/Auth/Logout/Logout';
 
@@ -15,7 +16,6 @@ class App extends Component {
 
   componentDidMount() {
     this.props.onTryAutoSignup();
-    
   }
 
   render () {
@@ -23,12 +23,14 @@ class App extends Component {
     let routes = (
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/video" element={<Video />} />
       </Routes>
     );
 
     if (this.props.isAuthenticated){
       routes =( 
         <Routes>
+          <Route path="/video" element={<Video />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/" element={<Home />} />
@@ -57,7 +59,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onTryAutoSignup: () => dispatch( actions.authCheckState() ),
-    fetchUserData: (userId, token) => dispatch(actions.fetchData( userId, token)),
     
   };
 };

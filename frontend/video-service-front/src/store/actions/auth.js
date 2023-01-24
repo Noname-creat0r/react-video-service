@@ -26,24 +26,34 @@ export const authFail = (error) => {
 };
 
 export const logout = () => {
-    localStorage.removeItem('token');
+    /*localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
-    localStorage.removeItem('userId');
+    localStorage.removeItem('userId');*/
     return {
-        type: actionTypes.AUTH_LOGOUT
+        type: actionTypes.AUTH_INITIATE_LOGOUT
+    };
+};
+
+export const logoutSucceed = () => {
+    return {
+        type: actionTypes.AUTH_LOGOUT,
     };
 };
 
 export const checkAuthTimeout = (expirationTime) => {
-    return dispatch => {
+    /*return dispatch => {
         setTimeout(() => {
             dispatch(logout());
         }, expirationTime - new Date().getTime() );
-    };
+    };*/
+    return {
+        type: actionTypes.AUTH_CHECK_TIMEOUT,
+        expirationTime: expirationTime,
+    }
 };
 
 export const authCheckState = () => {
-   return dispatch => {
+   /*return dispatch => {
         const token = localStorage.getItem('token');
         if (!token) {
             dispatch(logout());
@@ -57,11 +67,14 @@ export const authCheckState = () => {
                 dispatch(checkAuthTimeout(expirationDate.getTime() - new Date().getTime()) );
             }
         }
-   }; 
+   }; */
+   return {
+    type: actionTypes.AUTH_CHECK_STATE,
+   }
 };
 
 export const auth = (email, password, name) => {
-    return dispatch => {
+    /*return dispatch => {
         dispatch(authStart());
         const authData = {
             email: email,
@@ -95,5 +108,11 @@ export const auth = (email, password, name) => {
                     dispatch(authFail(err));
                 });
         }
+    }*/
+    return {
+        type: actionTypes.AUTH_USER,
+        email: email,
+        password: password,
+        name: name,
     }
 };

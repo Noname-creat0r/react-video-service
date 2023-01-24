@@ -1,4 +1,3 @@
-import axios from '../../axios-settings';
 import * as actions from '../actions/actionTypes';
 
 export const profileFetchDataStart = () => {
@@ -24,8 +23,8 @@ export const profileFetchDataFail = (error) => {
 };
 
 // Improve this method in future by adding param object or array
-export const fetchData = (userId, token) => {
-    return async dispatch => {
+export const profileFetchData = (userId, token) => {
+    /*return async dispatch => {
         dispatch(profileFetchDataStart());
         axios
             .get('/user/get', { 
@@ -39,5 +38,10 @@ export const fetchData = (userId, token) => {
             .catch(error => {
                 dispatch(profileFetchDataFail(error.data));
             });
-    }
+    }*/
+    return {
+        type: actions.PROFILE_FETCH_DATA,
+        userId: userId,
+        token: token,
+    };
 };

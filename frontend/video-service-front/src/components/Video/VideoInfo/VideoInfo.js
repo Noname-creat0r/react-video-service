@@ -18,7 +18,7 @@ const VideoInfo = (props) => {
         <Container className='my-4'>
             <Row className='videoMainInfo'>
                 <Col>
-                    <h3>Video title</h3>
+                    <h3>{props.title}</h3>
                     <UserBadge 
                         name="CoolDude"/> 
                 </Col>
@@ -29,14 +29,14 @@ const VideoInfo = (props) => {
                         <Image
                             className='mx-1 videoSatisfactionRate_stat'
                             src={LikeIcon}/>
-                            1k
+                            {props.likes}
                     </Alert>
                     <Alert
                         variant='danger'>
                         <Image 
                            className='mx-1 videoSatisfactionRate_stat'
                            src={DislikeIcon}/>
-                           23
+                           {props.dislikes}
                     </Alert>
                 </Col>
             </Row>
@@ -48,7 +48,7 @@ const VideoInfo = (props) => {
                     <Accordion.Item eventKey='Description'>
                         <Accordion.Header>Description</Accordion.Header>
                         <Accordion.Body>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis laboriosam quod facilis nobis explicabo illo illum rem magni nemo eligendi nisi totam fuga porro, nulla obcaecati ut, excepturi officia a!
+                            {props.description}
                         </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey='Comments'>

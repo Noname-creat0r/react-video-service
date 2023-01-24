@@ -4,7 +4,6 @@ const storage = require('../db/storage');
 
 const videoController = require('../controllers/video');
 const isAuth = require('../middleware/is-auth');
-const giveFileId = require('../middleware/give-file-id');
 
 const router = express.Router();
 
@@ -22,8 +21,13 @@ router.get(
 );
 
 router.get(
-    '/thumbnail:videoId?',
+    '/thumbnail:id?',
     videoController.getVideoThumbnail
+)
+
+router.get(
+    ':id?',
+    videoController.getVideo
 )
 
 module.exports = router;

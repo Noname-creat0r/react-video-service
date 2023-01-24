@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from '../../axios-settings';
 import * as actions from '../../store/actions/index';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Column from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
-import Spinner from 'react-bootstrap/Spinner';
 
 import UserIcon from '../../assets/images/default-user-icon.svg'; // need to download it from db
 import ProfileTabs from '../../components/UI/Profile/ProfileTabs/ProfileTabs';
@@ -16,7 +14,6 @@ import ProfileVideoCard from '../../components/UI/Card/ProfileVideoCard/ProfileV
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 
 import './Profile.css';
-import { updateObject } from '../../shared/utility';
 
 class Profile extends Component {
       /*
@@ -40,19 +37,13 @@ class Profile extends Component {
     };
 
     tabSelectHandler = (eventKey) => {
-        /*if (eventKey === 'Videos') {
-            this.props.fetchUserVideosThumbnails(
-                this.props.videosInfo
-            );
-        };*/
-
         this.setState( (prevState) => {
             return { activeTab: eventKey };
         });
     };
 
-    profileVideoCardClickHandler = (event) => {
-        console.log(event.target);
+    profileVideoCardClickHandler = (event, key) => {
+        this.props.videoStreamStart(key);
     };
 
     mapVideoInfoToCards = (videoInfo) => {
@@ -64,25 +55,18 @@ class Profile extends Component {
             <ProfileVideoCard
                 key={video._id}
                 title={video.title}
-                thumbnail={video.loading ? null : video.thumbnail}
-                clicked={this.profileVideoCardClickHandler}
+                thumbnail={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
+                clicked={event => this.profileVideoCardClickHandler(event, video._id)}
                 />
         );
     };
-  
-    componentDidUpdate() {
-        /*if (this.props.videoInfo.length > 0){
-        }*/
-        console.log('Profile update');
-    } 
 
     componentDidMount() {
-        this.props.fetchVideosData(
+        setTimeout( () => this.props.fetchVideosInfo(
             localStorage.getItem('userId'),
-            null)
+            null));
     };
 
-    
     render(){
         
         if (this.props.fetchingData){
@@ -130,15 +114,15 @@ class Profile extends Component {
 const mapStateToProps = state => {
     return {
         nickname: state.profile.data.name,
-        fetchingData: state.profile.fetching,
+        fetchingData: state.profile.fetchingInfo,
         videosInfo: state.video.videosInfo,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchUserData: async (userId, token) => dispatch(actions.fetchData(userId, token)),
-        fetchVideosData: async (userId, videoId) => dispatch(actions.fetchVideosData(userId, videoId)),
+        fetchVideosInfo: (userId, token) => dispatch(actions.fetchVideoInfo(userId, token)),
+        videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
     };
 };
 

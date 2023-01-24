@@ -5,10 +5,8 @@ import * as actions from '../../store/actions/index';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 import Auth from '../Auth/Auth';
-import Video from '../Video/Video';
 
 import './Layout.css';
-import UploadVideoForm from '../Video/UploadVideoForm/UploadVideoForm';
 
 class Layout extends Component {
     state = {
@@ -48,7 +46,6 @@ class Layout extends Component {
             this.props.fetchUserData( 
                 localStorage.getItem('userId'),
                 localStorage.getItem('token'));
-        
         }
     }
 
@@ -86,7 +83,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchUserData: async (userId, token) => dispatch(actions.fetchData(userId, token)),
+        fetchUserData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
      };
 };
 

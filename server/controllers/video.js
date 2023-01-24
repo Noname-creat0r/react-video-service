@@ -6,10 +6,10 @@ const Thumbnail = require('../models/Thumbnail');
 const methods = require('../db/methods');
 
 exports.getVideoThumbnail = async (req, res, next) => {
-    console.log(req.query.videoId);
+    console.log(req.query.id + " thumbnail id");
     const thumbnails = methods.getGridBucket('thumbnails'); 
     thumbnails
-        .find({ _id: mongoose.Types.ObjectId(req.query.videoId) })
+        .find({ _id: mongoose.Types.ObjectId(req.query.id) })
         .forEach(thumbnail => {
             res.setHeader('Content-Type', thumbnail.contentType);
             res.setHeader('Content-Disposition', 'attachment');
@@ -99,4 +99,70 @@ exports.postVideo = (req, res, next) => {
             }
             next(err);
         })
+};
+
+exports.getVideo = (req, res, next) => {
+    try {
+        const range = req.headers.range;
+        if (!range){
+            const error = new Error('Requires Range header.');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        const video =  Video
+            .find({ _id: mongoose.Types.ObjectId(req.query.id)})
+            .then( video => {
+                if (!video){
+                    const error = new Error('No such video.');
+                    error.statusCode = 404;
+                    throw error;
+                }
+                //console.log(video[0].file.toString());
+                return video[0].file;
+            })
+            .then( videoFileId => {
+                return methods
+                    .getGridBucket('videos')
+                    .find({ _id: videoFileId})
+                    .next() 
+            })
+            .then( file => {
+                if (!file){
+                    const error = new Error('No such video file.');
+                    error.statusCode = 500;
+                    throw error;
+                }
+                //file.forEach(file => {console.log (file)});
+                //console.log(file.length);
+
+                const videoSize = file.length;
+                const start = Number(range.replace(/\D/g, ""));
+                const end = Math.min(start + 10**6, videoSize - 1);
+                const contentLength = end - start + 1; 
+                console.log("start: " + start + " end: " + end);
+                //console.log(videoSize);
+                const headers = {
+                    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": contentLength,
+                    "Content-Type": file.contentType,
+                } 
+                
+                res.writeHead(206, headers);
+               
+                methods
+                    .getGridBucket('videos')
+                    .openDownloadStreamByName(
+                        file.filename,
+                        {start: start, end: end})
+                    .pipe(res);
+            })
+
+    } catch (err) {
+        if (!err.statusCode){
+            err.statusCode = 500;
+        }
+        next(err);
+    }
 };

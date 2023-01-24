@@ -1,7 +1,4 @@
-import axios from '../../axios-settings';
-
 import * as actionTypes from './actionTypes';
-import { updateObject } from '../../shared/utility';
 
 export const videoUploadStart = () => {
     return {
@@ -44,84 +41,36 @@ export const videoFetchInfoSuccess = (data) => {
     };
 };
 
-export const videoFetchThumbnailStart = () => {
+export const uploadVideo = (videoData, userData) => {
     return {
-        type: actionTypes.VIDEO_FETCH_THUMBNAIL_START,
-       
-    };
+        type: actionTypes.VIDEO_UPLOAD,
+        videoData: videoData,
+        userData: userData,
+    }
 };
 
-export const videoFetchThumbnailFailed = (error) => {
+export const fetchVideoInfo = (userId, videoId) => {
     return {
-        type: actionTypes.VIDEO_FETCH_THUMBNAIL_FAILED,
-        error: error.data
-    };
+        type: actionTypes.VIDEO_FETCH_INFO,
+        userId: userId,
+        videoId: videoId,
+    }
 };
 
-export const videoFetchThumbnailSuccess = (imageUrl) => {
+export const videoStreamStart = (videoId) => {
     return {
-        type: actionTypes.VIDEO_FETCH_THUMBNAIL_SUCCESS,
+        type: actionTypes.VIDEO_STREAM_START,
         payload: {
-            data: imageUrl
+            videoId: videoId,
         }
     };
 };
 
-export const uploadVideo = (videoData, userData) => {
-    return dispatch => {
-        dispatch(videoUploadStart());
-        axios
-            .post('/video', 
-            {   ...videoData,
-                userId: userData.userId },  
-            { headers: { 
-                'Authorization':  userData.token,
-                'Content-Type': 'multipart/form-data',
-            }})
-            .then(response => {
-                if (response.data)
-                    dispatch(videoUploadSuccess());
-            })
-            .catch(error => {
-                dispatch(videoUploadFailed(error.data));
-            })
-    };
-};
-
-export const fetchVideosData = (userId, videoId) => {
-    return async dispatch => {
-        try {
-            dispatch(videoFetchInfoStart());
-            const response = await axios.get('/video/info', {
-                params: { userId: userId },
-            });
-            const infos = response.data.videos.map(video => 
-                updateObject(video, { key: video._id, loading: true })
-            );
-
-            const reader = new FileReader();
-            let i = -1;
-
-            for (const videoInfo of infos){
-                //  console.log(videoInfo);
-
-                axios.get('/video/thumbnail', {
-                    params: { videoId: videoInfo._id ,}, responseType: 'blob'
-                }).then( res => {
-                    reader.onload = event => {
-                        dispatch(videoFetchThumbnailSuccess({
-                            thumbnail: event.target.result,
-                            videoId: videoInfo._id,
-                            videoInfoId: ++i })) 
-                    };
-                    reader.readAsDataURL(res.data);
-                })
-                .catch(err  => console.log(err.config));
-                //reader.readAsDataURL(thumbnailData.data);
-            }
-            dispatch(videoFetchInfoSuccess(infos));
-        } catch (err) {
-            throw new Error(err);
+export const videoStreamInterupt = (videoId) => {
+    return {
+        type: actionTypes.VIDEO_STREAM_INTERRUPT,
+        payload: {
+            videoId: videoId,
         }
     };
 };

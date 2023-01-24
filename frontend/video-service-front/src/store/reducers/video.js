@@ -4,7 +4,7 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
     uploading: false,
     streaming: false,
-    fetching: false,
+    fetchingInfo: false,
     interupted: false,
     videosInfo: [],
     videoId: null,
@@ -50,33 +50,18 @@ const videoFetchInfoSuccess = (state, action) => {
     });
 };
 
-const videoFetchThumbnailStart = (state) => {
+const videoStreamStart = (state, action) => {
     return updateObject(state, {
-        fetchingThumbnail: true,
+        streaming: true,
+        videoId: action.payload.videoId
     });
 };
 
-const videoFetchThumbnailFailed = (state, action) => {
+const videoStreamInterupt = (state, action) => {
     return updateObject(state, {
-        fetchingThumbnail: false,
-        error: action.error,
-        thumbnail: null, 
+        streaming: true,
+        videoId: action.payload.videoId,
     });
-};
-
-const videoFetchThumbnailSuccess = (state, action) => {
-    
-    //const id = copyState.videosInfo.findIndex(info => info._id === action.payload.data.videoId);
-    const updatedState =  updateObject(state, {
-        fetchingThumbnail: false,
-        videosInfo: updateObject(state.videosInfo, {
-            [action.payload.data.videoInfoId]: updateObject(state.videosInfo[action.payload.data.videoInfoId], {
-                loading: false,
-                thumbnail: action.payload.data.thumbnail,
-            }),
-        }),
-    });
-    return updatedState;
 };
 
 const reducer = (state = initialState, action) => {
@@ -87,9 +72,8 @@ const reducer = (state = initialState, action) => {
         case actionTypes.VIDEO_FETCH_INFO_START: return videoFetchInfoStart(state);
         case actionTypes.VIDEO_FETCH_INFO_FAILED: return videoFetchInfoFailed(state, action);
         case actionTypes.VIDEO_FETCH_INFO_SUCCESS: return videoFetchInfoSuccess(state, action);
-        case actionTypes.VIDEO_FETCH_THUMBNAIL_START: return videoFetchThumbnailStart(state);
-        case actionTypes.VIDEO_FETCH_THUMBNAIL_FAILED: return videoFetchThumbnailFailed(state, action);
-        case actionTypes.VIDEO_FETCH_THUMBNAIL_SUCCESS: return videoFetchThumbnailSuccess(state, action);
+        case actionTypes.VIDEO_STREAM_START: return videoStreamStart(state, action);
+        case actionTypes.VIDEO_STREAM_INTERRUPT: return videoStreamInterupt(state, action);
         default: return state;
     }
 };
