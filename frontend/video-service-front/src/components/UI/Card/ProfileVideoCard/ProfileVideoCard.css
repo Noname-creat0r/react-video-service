@@ -2,10 +2,16 @@
     display: flex;
     color: white;
     width: 15rem;
-    height: 11rem;
+    height: fit-content;
     color: black;
  }
 
- .ProfileVideoCard > .Image {
-    
+ .ProfileVideoCard:hover {
+    z-index: 100;
+    transform: scale(1.1) translateX(0.2em);
+ }
+
+ .link {
+    text-decoration: none;
+    color: black;
 }

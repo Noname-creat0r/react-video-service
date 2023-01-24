@@ -20,7 +20,7 @@ const VideoInfo = (props) => {
                 <Col>
                     <h3>{props.title}</h3>
                     <UserBadge 
-                        name="CoolDude"/> 
+                        name={props.author}/> 
                 </Col>
                 <Col className='videoSatisfactionRate'>
                     <Alert

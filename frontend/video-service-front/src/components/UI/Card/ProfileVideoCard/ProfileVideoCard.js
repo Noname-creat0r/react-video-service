@@ -1,8 +1,9 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
-import { NavLink } from 'react-router-dom';
+
 import './ProfileVideoCard.css';
 
 const ProfileVideoCard = (props) => {
@@ -10,10 +11,11 @@ const ProfileVideoCard = (props) => {
         <Card 
             className='ProfileVideoCard mx-2'
             onClick={props.clicked}>
-                <NavLink to={'../video'}>
+                <NavLink to={'../video'} className='link'>
                 {
                     props.thumbnail ? 
                         <Card.Img 
+                            className='my-2'
                             variant='top'
                             src={props.thumbnail}
                             alt='VideoThumbnail'
@@ -22,7 +24,7 @@ const ProfileVideoCard = (props) => {
                         <Spinner className='Image mx-3 my-2' style={{ width: '5rem', height: '5rem'}}/>
                 }
                 <Card.Body>
-                    <Card.Title> {props.title} </Card.Title>
+                    <Card.Title className='title'> {props.title} </Card.Title>
                 </Card.Body>
             </NavLink>
         </Card>

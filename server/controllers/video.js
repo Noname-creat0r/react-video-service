@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const fs = require('fs');
 
 const Video = require('../models/Video');
-const Thumbnail = require('../models/Thumbnail');
+const User = require('../models/User');
 const methods = require('../db/methods');
+const { updateObject } = require('../shared/utility');
 
 exports.getVideoThumbnail = async (req, res, next) => {
     console.log(req.query.id + " thumbnail id");
@@ -35,26 +35,37 @@ exports.getVideoThumbnail = async (req, res, next) => {
         });
 };
 
-exports.getUserVideoInfo = async (req, res, next) => {
-    let userVideos = await Video.find({
-        author: mongoose.Types.ObjectId(req.query.userId),
-    });
-
-    if (req.query.videoId)
-        userVideos = await userVideos
-            .where('_id')
-            .equals(mongoose.Types.ObjectId(req.query.videoId))
-            .limit(5);
-    
-    /*methods
-        .downloadFile(mongoose.Types.ObjectId(userVideos[0].thumbnail), 'thumbnails', chunkSize,)
-        .pipe(res);*/
-
-    if (!userVideos){
-        res.status(201).json({ message: 'There are no user videos.', videos: {}});
+exports.getVideosInfoByUserId = async (req, res, next) => {
+    const info = [];
+    if (req.query.userId){
+        const author = await User.findOne({
+            _id: mongoose.Types.ObjectId(req.query.userId)
+        });
+        const videos = await Video
+            .find({ author: mongoose.Types.ObjectId(req.query.userId) })
+            .lean();
+        for (const video of videos){
+            info.push({ ...video, authorName: author.name} );
+        }
     }
+    res.status(200).json({ videos: info });
+};
 
-    res.status(200).json({ videos: userVideos });
+exports.getVideoInfoById = async (req, res, next) => {
+    const response = {};
+    if (req.query.videoId){
+        response['video'] = await Video.findOne({
+            _id: mongoose.Types.ObjectId(req.query.videoId)
+        });
+        response['author'] = await User.findOne({
+            _id: mongoose.Types.ObjectId(req.query.userId)
+        }).name;
+    }
+    res.status(200).json({ response });
+}
+
+exports.getHomeVideoInfo = (req, res, next) => {
+
 };
 
 exports.postVideo = (req, res, next) => {

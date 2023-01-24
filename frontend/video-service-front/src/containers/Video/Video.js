@@ -33,6 +33,7 @@ class Video extends Component {
                     videoId={videoInfo._id}/>
                 <VideoInfo 
                     title={videoInfo.title}
+                    author={videoInfo.authorName}
                     description={videoInfo.description}
                     likes={videoInfo.likes}
                     dislikes={videoInfo.dislikes}/>

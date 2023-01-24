@@ -17,8 +17,18 @@ router.post(
 
 router.get(
     '/info:userId?',
-    videoController.getUserVideoInfo
+    videoController.getVideosInfoByUserId
 );
+
+router.get(
+    '/info:videoId?',
+    videoController.getVideoInfoById
+);
+
+router.get(
+    '/info/home',
+    videoController.getHomeVideoInfo
+)
 
 router.get(
     '/thumbnail:id?',

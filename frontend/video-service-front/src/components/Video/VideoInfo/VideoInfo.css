@@ -15,7 +15,6 @@
 
 .videoSatisfactionRate_stat:hover{
     animation: 1s linear rotate;
-    
 }
 
 @keyframes rotate{
@@ -24,7 +23,6 @@
     50% { transform: scale(1.0);}
     75% { transform: scale(1.4);}
     100% { transform: scale(1);}
-
 }
 
 
