@@ -64,8 +64,21 @@ exports.getVideoInfoById = async (req, res, next) => {
     res.status(200).json({ response });
 }
 
-exports.getHomeVideoInfo = (req, res, next) => {
+exports.getFilterVideoInfo = async (req, res, nex) => {
+    const videoName = req.query.videoName;
+    const videos = await Video
+        .find({ })
+        .where('title')
+        .regex('/'+videoName+'/');
+    console.log(videos);
+    res.status(200).json({ videos: videos});
+}
 
+exports.getHomeVideoInfo = async (req, res, next) => {
+    const info = await Video
+        .find({ })
+        .lean();
+    res.status(200).json({ videos: info });
 };
 
 exports.postVideo = (req, res, next) => {

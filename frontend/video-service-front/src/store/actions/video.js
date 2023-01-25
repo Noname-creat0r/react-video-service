@@ -49,11 +49,11 @@ export const uploadVideo = (videoData, userData) => {
     }
 };
 
-export const fetchVideoInfo = (userId, videoId) => {
+export const fetchVideoInfo = (endpoint, options) => {
     return {
         type: actionTypes.VIDEO_FETCH_INFO,
-        userId: userId,
-        videoId: videoId,
+        endpoint: endpoint,
+        options: options
     }
 };
 

@@ -7,7 +7,9 @@ import './SearchToggle.css';
 const searchToggle = (props) => {
     return (
         <div className="SearchToggle">
-            <img src={SearchIcon} alt="SearchIcon" />
+            <img src={SearchIcon} 
+                alt="SearchIcon"
+ />
         </div>
     );
 };

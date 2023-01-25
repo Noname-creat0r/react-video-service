@@ -23,5 +23,21 @@ export function* readBlobToBase64(blob, callback) {
     yield callback(reader.result);
   };
   yield reader.readAsDataUrl(blob);
-
 }
+
+export const mapVideoInfoToCards = (videoInfo, clickHandler, VideoCard) => {
+  const videoArr = [];
+  videoInfo.forEach((video, id) => {
+      //console.log(id);
+      videoArr.push(
+          <VideoCard
+              key={id}
+              title={video.title}
+              thumbnail={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
+              clicked={event => clickHandler(event, id)}
+              //clicked={event => this.profileVideoCardClickHandler(event, id)}
+          />);
+  });
+  return videoArr;
+};
+

@@ -26,18 +26,23 @@ router.get(
 );
 
 router.get(
+    '/info/filter',
+    videoController.getFilterVideoInfo
+);
+
+router.get(
     '/info/home',
     videoController.getHomeVideoInfo
-)
+);
 
 router.get(
     '/thumbnail:id?',
     videoController.getVideoThumbnail
-)
+);
 
 router.get(
     ':id?',
     videoController.getVideo
-)
+);
 
 module.exports = router;

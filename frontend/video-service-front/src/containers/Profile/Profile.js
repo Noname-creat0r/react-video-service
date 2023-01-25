@@ -62,9 +62,9 @@ class Profile extends Component {
     };
 
     componentDidMount() {
-        setTimeout( () => this.props.fetchVideosInfo(
-            localStorage.getItem('userId'),
-            null));
+        setTimeout( () => 
+            this.props.fetchVideosInfo(
+                'info',{ userId: localStorage.getItem('userId')}));
     };
 
     render(){
@@ -121,7 +121,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchVideosInfo: (userId, token) => dispatch(actions.fetchVideoInfo(userId, token)),
+        fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
     };
 };

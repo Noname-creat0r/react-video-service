@@ -7,7 +7,10 @@ import './SearchInput.css';
 
 const searchInput = (props) => (
     <div className="SearchInput d-flex">
-        <Form.Control placeholder='Cat videos...' type="search" />
+        <Form.Control 
+            placeholder='Cat videos...' 
+            type="search"
+            onKeyUp={(event) => props.searchHandler(event)} />
         <SearchToggle />
     </div>
 );
