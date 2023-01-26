@@ -8,16 +8,16 @@ I will update this project during my futher learning process.
   - Use ***token-based authentication***.
   
 ## Service functionality:
-  - [ ] User authorization/registration module.
-  - [ ] Listing and watching the videos from DB in the app.
+  - [x] User authorization/registration module.
+  - [x] Listing and watching the videos from DB in the app.
   - [ ] Categorizing and sorting videos.
-  - [ ] Every video should have its own page with user comments and additional information.
+  - [x] Every video should have its own page with user comments and additional information.
   - [ ] Every video should have some specific counters like: "Views", "Likes"...
-  - [ ] Video searching functionality.
+  - [x] Video searching functionality.
   - [ ] Unauthorized users can't: view more than 10 videos, comment any video, like any video, create playlists, add videos to playlists.
   
 ## Functionality for authorized users:
-  - [ ] Unlimited number of videos to view.
+  - [x] Unlimited number of videos to view.
   - [ ] Commenting videos.
   - [ ] Liking videos (such videos will be saved in "Liked" category)
   - [ ] Creating/deleting/editig playlists. 
