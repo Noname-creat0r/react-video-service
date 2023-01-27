@@ -15,51 +15,43 @@ class Layout extends Component {
         showSideDrawer: false,
         showAuthModal: false,
         showFilterOptions: false,
-        filterOptions: [
-            {
-                category: 'Sort by',
-                options: [
-                    {
-                        title: 'Popularity',
-                        type: 'switch',
-                        checked: false,     
-                    },
-                    {
-                        title: 'Upload date',
-                        type: 'switch',
-                        checked: false,
-                    }, 
-                    {
-                        title: 'Most likes',
-                        type: 'switch',
-                        checked: false
-                    },
-                ],
+        filterOptions: {
+            'Sort' : {
+                'Popularity': {
+                    type: 'switch',
+                    checked: false,    
+                    disabled: true, 
+                },
+                'Upload date': {
+                    type: 'switch',
+                    checked: false,
+                    disabled: false,
+                }, 
+                'Most likes': {
+                    type: 'switch',
+                    checked: false,
+                    disabled: true,
+                },
             },
-            {
-                category: 'Type',
-                options: [
-                    {
-                        title: 'Video',
-                        type: 'checkbox',
-                        checked: false,
-                    }, 
-                    {
-                        title: 'User',
+            'Type': {
+               'Video': {
                         type: 'checkbox',
                         checked: false,
                         disabled: true,
-                    }, 
-                    {
-                        title: 'Playlist',
+               },
+                'User': {
                         type: 'checkbox',
                         checked: false,
                         disabled: true,
-                    },
-                ],
-            }
-        ],
-    };
+                },
+                'Playlist': {
+                        type: 'checkbox',
+                        checked: false,
+                        disabled: true,
+                },
+            },
+        },
+    }
 
     sideDrawerToggleHandler = () => {
         this.setState( ( prevState ) => {
@@ -84,36 +76,41 @@ class Layout extends Component {
     };
 
     filterOptionCheckHandler = (optionTitle, category) => {
-        //console.log(key);
-        const oldState = this.state;
-        const categoryId = oldState
-            .filterOptions
-            .findIndex(filter => filter.category === category);
-        const optionId = oldState
-            .filterOptions[categoryId]
-            .options
-            .findIndex(option => option.title === optionTitle);
-        const checkedId = oldState
-            .filterOptions[categoryId]
-            .options
-            .findIndex(option => option.checked);
-        if (checkedId > -1 ){
-            oldState.filterOptions[categoryId].options.forEach((option, id) => {
-                option.disabled = id !== checkedId;
-                option.checked = id !== checkedId;
-            });
-        }
-        oldState.filterOptions[categoryId].options[optionId].checked = true;
-        oldState.filterOptions[categoryId].options[optionId].disabled = false;
-        this.setState(oldState);
+        const isChecked = this.state.filterOptions[category][optionTitle].checked;
+        const updatedFilters = updateObject(this.state.filterOptions, {
+            [category]: updateObject(this.state.filterOptions[category], {
+                [optionTitle]: updateObject(this.state.filterOptions[category][optionTitle], {
+                    checked: !isChecked,
+                })
+            }),
+        });
+
+        if (!isChecked)
+            for (const optionKey of Object.keys(updatedFilters[category])){
+                const isOptionChecked = updatedFilters[category][optionKey].checked ;
+                if (isOptionChecked && optionTitle !== optionKey)
+                    updatedFilters[category][optionKey].checked = false;
+            };
+        
+        console.log(updatedFilters);
+        this.setState({ filterOptions: updatedFilters });
     };
 
     searchHandler = (event) => {
         if (event.key == 'Enter'){
-            this.props.fetchVideosInfo('info', {
-                videoName: event.target.value
+            const checkedOptions = [];
+            const filters = this.state.filterOptions;
+            for (const category of Object.keys(filters)){
+                for (const optionKey of Object.keys(filters[category])){
+                    if (filters[category][optionKey].checked)
+                        checkedOptions.push({category: category, option: optionKey});
+                }
+            }
+
+            this.props.fetchVideosInfo('info/filter', {
+                videoName: event.target.value,
+                filters: checkedOptions,
             });
-            // send GET(event.target.value)
         }
     };
 

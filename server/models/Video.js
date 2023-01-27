@@ -15,6 +15,13 @@ const videoSchema = new Schema({
         ref: 'User',
         required: true
     },
+    views: {
+        type: Number,
+        min: 0,
+        max: Number.MAX_SAFE_INTEGER,
+        required: true,
+        default: 0,
+    },
     likes: {
         type: Number,
         min: 0,
@@ -47,7 +54,6 @@ const videoSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true
     }
-
-});
+},  { timestamps: true } );
 
 module.exports = mongoose.model("Video", videoSchema);

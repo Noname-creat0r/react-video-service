@@ -33,6 +33,7 @@ export const mapVideoInfoToCards = (videoInfo, clickHandler, VideoCard) => {
           <VideoCard
               key={id}
               title={video.title}
+              authorName={video.authorName}
               thumbnail={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
               clicked={event => clickHandler(event, id)}
               //clicked={event => this.profileVideoCardClickHandler(event, id)}

@@ -7,8 +7,8 @@ export function* profileFetchDataSaga(action){
     try { 
         yield put(actions.profileFetchDataStart());
         const response = yield axios.get('/user/get', { 
-                    params: { userId: action.userId },
-                    headers: {'Authorization': action.token}
+                params: { userId: action.userId },
+                headers: {'Authorization': action.token}
             });
         const data = yield response.data.data;
         yield put(actions.profileFetchDataSuccess(data));

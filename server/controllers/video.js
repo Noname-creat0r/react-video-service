@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 
 const Video = require('../models/Video');
 const User = require('../models/User');
+const Commentary = require('../models/Commentary');
 const methods = require('../db/methods');
-const { updateObject } = require('../shared/utility');
+const { insertVideoAuthors, insertAuthorNames } = require('../shared/utility');
 
 exports.getVideoThumbnail = async (req, res, next) => {
     console.log(req.query.id + " thumbnail id");
@@ -64,20 +65,30 @@ exports.getVideoInfoById = async (req, res, next) => {
     res.status(200).json({ response });
 }
 
-exports.getFilterVideoInfo = async (req, res, nex) => {
+exports.getFilterVideoInfo = async (req, res, next) => {
     const videoName = req.query.videoName;
-    const videos = await Video
-        .find({ })
-        .where('title')
-        .regex('/'+videoName+'/');
-    console.log(videos);
+    //console.log(req.query);
+    let videos = await Video
+        .find({ title: { $regex: videoName, $options: 'i'}  })
+        .lean();
+    const filters = req.query.filters;
+    if (filters)
+        videos = videos.sort((videoA, videoB) => {
+            if ( videoA.createdAt > videoB.createdAt) return -1; 
+            if ( videoA.createdAt < videoB.createdAt) return 1;
+            return 0;
+        });
+    videos = await insertAuthorNames(videos);
+
     res.status(200).json({ videos: videos});
 }
 
 exports.getHomeVideoInfo = async (req, res, next) => {
-    const info = await Video
+    let info = await Video
         .find({ })
         .lean();
+
+    info = await insertAuthorNames(info);
     res.status(200).json({ videos: info });
 };
 
@@ -88,6 +99,7 @@ exports.postVideo = (req, res, next) => {
     const thumbnailFileId = thumbnail.id;
     const message = [];
 
+
     const mongoVideo = new Video({
         title: req.body.title,
         description: req.body.description,
@@ -95,6 +107,7 @@ exports.postVideo = (req, res, next) => {
         thumbnail: thumbnailFileId,
         likes: 0,
         dislikes: 0,
+        views: 0,
         file: videoFileId,
         length: video.size
     });
@@ -134,7 +147,7 @@ exports.getVideo = (req, res, next) => {
             throw error;
         }
 
-        const video =  Video
+        const video = Video
             .find({ _id: mongoose.Types.ObjectId(req.query.id)})
             .then( video => {
                 if (!video){
@@ -160,6 +173,7 @@ exports.getVideo = (req, res, next) => {
                 //file.forEach(file => {console.log (file)});
                 //console.log(file.length);
 
+                //const CHUNK_SIZE = 261120;
                 const videoSize = file.length;
                 const start = Number(range.replace(/\D/g, ""));
                 const end = Math.min(start + 10**6, videoSize - 1);
@@ -172,7 +186,11 @@ exports.getVideo = (req, res, next) => {
                     "Content-Length": contentLength,
                     "Content-Type": file.contentType,
                 } 
-                
+               
+                /*if (start === end) {
+                    res.end();
+                }*/
+
                 res.writeHead(206, headers);
                
                 methods
@@ -187,6 +205,38 @@ exports.getVideo = (req, res, next) => {
         if (!err.statusCode){
             err.statusCode = 500;
         }
+        next(err);
+    }
+};
+
+exports.postComment = async (req, res, next) => {
+    try {
+        const newComment = new Commentary({
+            author: mongoose.Types.ObjectId(req.body.userId),
+            video: mongoose.Types.ObjectId(req.body.videoId),
+            text: req.body.text,
+            likes: 0,
+            dislikes: 0,
+        });
+
+        await newComment.save();
+        res.status(201).json({ message: 'Posted a comment'});
+    } catch (err) {
+        console.log(err);
+        next(err);
+    } 
+};
+
+exports.getComments = async (req, res, next) => {
+    try {
+        const comments = await Commentary.find({
+            _id: mongoose.Types.ObjectId(req.query.videoId),
+        });
+
+        comments = await insertAuthorNames(comments);
+        res.status(201).json({ comments: comments });
+    } catch(err) {
+        console.log(err);
         next(err);
     }
 };

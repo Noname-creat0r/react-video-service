@@ -39,7 +39,8 @@ class Home extends Component {
         let content = mapVideoInfoToCards(
             this.props.videosInfo, 
             this.homeVideoCardClickHandler,
-            HomeVideoCard);
+            HomeVideoCard
+        );
 
         if (this.props.fetchingData){
             content = <LoadingSpinner />;

@@ -15,6 +15,17 @@ router.post(
     videoController.postVideo
 );
 
+router.post(
+    '/comment',
+    isAuth,
+    videoController.postComment,
+);
+
+router.get(
+    '/comment:videoId?',
+    videoController.getComments,
+);
+
 router.get(
     '/info:userId?',
     videoController.getVideosInfoByUserId

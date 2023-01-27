@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
+import UserBadge from '../../User/UserBadge/UserBadge';
 
 import './HomeVideoCard.css';
 
@@ -22,7 +23,7 @@ const HomeVideoCard = (props) => {
                     <Card.Title className='title'> {props.title} </Card.Title>
                 </Card.Body>
                 <Card.Footer>
-                    UserBadge
+                    <UserBadge name={props.authorName} />
                 </Card.Footer>
             </NavLink>
         </Card>

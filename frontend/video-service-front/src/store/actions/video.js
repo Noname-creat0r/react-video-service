@@ -46,14 +46,14 @@ export const uploadVideo = (videoData, userData) => {
         type: actionTypes.VIDEO_UPLOAD,
         videoData: videoData,
         userData: userData,
-    }
+    };
 };
 
 export const fetchVideoInfo = (endpoint, options) => {
     return {
         type: actionTypes.VIDEO_FETCH_INFO,
         endpoint: endpoint,
-        options: options
+        options: options,
     }
 };
 
@@ -72,5 +72,43 @@ export const videoStreamInterupt = (videoId) => {
         payload: {
             videoId: videoId,
         }
+    };
+};
+
+export const videoUploadComment = (videoId, userId, token, text) => {
+    return {
+        type: actionTypes.VIDEO_UPLOAD_COMMENTS,
+        videoId: videoId,
+        userId: userId,
+        token: token,
+        text: text, 
+    };
+};
+
+export const videoUploadCommentFailed = (error) => {
+    return {
+        type: actionTypes.VIDEO_UPLOAD_COMMENTS_FAILED,
+        error: error,
+    };
+};
+
+export const videoFetchComments = (videoId) => {
+    return {
+        type: actionTypes.VIDEO_FETCH_COMMENTS,
+        videoId: videoId,
+    };
+};
+
+export const videoFetchCommentsFailed = (error) => {
+    return {
+        type: actionTypes.VIDEO_FETCH_COMMENTS_FAILED,
+        error: error,
+    };
+};
+
+export const videoFetchCommentsSuccess = (comments) => {
+    return {
+        type: actionTypes.VIDEO_FETCH_COMMENTS_SUCCESS,
+        comments: comments,
     };
 };

@@ -10,6 +10,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import UserBadge from '../../UI/User/UserBadge/UserBadge';
 import LikeIcon from '../../../assets/images/like.svg';
 import DislikeIcon from '../../../assets/images/dislike.svg';
+import VideoComments from './VideoComments/VideoComments';
 
 import './VideoInfo.css';
 
@@ -54,7 +55,10 @@ const VideoInfo = (props) => {
                     <Accordion.Item eventKey='Comments'>
                         <Accordion.Header>Comments</Accordion.Header>
                         <Accordion.Body>
-                            Comments...
+                           <VideoComments 
+                            comments={props.comments}
+                            typeCommentHandler={props.typeCommentHandler}
+                            postCommentHandler={props.postCommentHandler}/>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>

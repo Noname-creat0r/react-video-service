@@ -9,22 +9,27 @@ import Container from 'react-bootstrap/Container';
 import './FilterOptions.css';
 
 const FilterOptions = (props) => {
-    const filterOptions = props.options;
-    const filters = filterOptions.map(filter => {
-        const options = filter.options.map(option => 
-            <FilterOption 
+    const filters = [];
+    for (const category of Object.keys(props.options)){
+        const options = [];
+        for (const optionKey of Object.keys(props.options[category])){
+            const option = props.options[category][optionKey];
+            options.push( <FilterOption 
                 type={option.type}
-                label={option.title}
+                label={optionKey}
                 checked={option.checked}
-                category={filter.category}
+                category={category}
+                disabled={option.disabled}
                 handler={props.checkHandler}
-                />);
-        return (
+            />);
+        }
+        filters.push(
             <Col>
-                <span>{filter.category}</span>
-                {options}
-            </Col>);
-    });
+                {category}
+                {options}  
+            </Col>
+        );
+    }
 
     return (
         <Offcanvas 

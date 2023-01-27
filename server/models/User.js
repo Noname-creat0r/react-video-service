@@ -19,7 +19,7 @@ const userSchema = new Schema({
         default: 'User',
         required: true
     },
-    videos: [ {
+    likes: [{
         type: Schema.Types.ObjectId,
         ref: 'Video'
     }],

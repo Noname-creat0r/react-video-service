@@ -5,7 +5,21 @@ import axios from '../../axios-settings';
 import * as actions from '../actions/index';
 
 export function* uploadVideoSaga(action) {
-
+    try {
+        yield put(actions.videoUploadStart());
+        yield console.log(action.videoData);
+        const response = yield axios.post('/video/',
+            {...action.videoData}, 
+            { headers: { 
+                'Authorization': action.userData.token,
+                'Content-Type': 'multipart/form-data'
+            },
+        });
+        yield console.log(response);
+        yield put(actions.videoUploadSuccess());
+    } catch (err) {
+        yield put(actions.videoUploadFailed(err));
+    }
 };
 
 export function* fetchVideoInfoSaga(action) {
@@ -24,6 +38,32 @@ export function* fetchVideoInfoSaga(action) {
         );*/
         yield put(actions.videoFetchInfoSuccess(infos));
     } catch (error) {
-        yield put(actions.videoFetchInfoFailed(error.response.data.error));
+        yield put(actions.videoFetchInfoFailed(error));
+    }
+};
+
+export function* uploadVideoCommentsSaga(action) {
+    try {
+        const response = yield axios.post('/video/comment', {
+            videoId: action.videoId,
+            userId: action.userId,
+            text: action.text,
+        }, { headers: { 'Authorization': action.token, }});
+
+    } catch(error){
+        yield console.log(error);
+    }
+};
+
+export function* fetchVideoCommentsSaga(action) {
+    try {
+        const response = yield axios.get('/video/comment', {
+            params: { videoId: action.videoId }, 
+        });
+        yield console.log(response.data);
+        yield put(actions.videoUploadSuccess(response.data));
+
+    } catch (error) {
+        yield console.log(error);
     }
 };

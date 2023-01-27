@@ -12,6 +12,7 @@ const FilterOption = (props) => {
             label={props.label}
             type={props.type}
             checked={props.checked}
+            disabled={props.disabled}
             //onChange={props.handler}
             onClick={() => props.handler(props.label, props.category)}
         />

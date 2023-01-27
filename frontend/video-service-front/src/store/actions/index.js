@@ -25,4 +25,9 @@ export {
     videoFetchInfoFailed,
     videoStreamStart,
     videoStreamInterupt,
+    videoFetchComments,
+    videoFetchCommentsSuccess,
+    videoFetchCommentsFailed,
+    videoUploadComment,
+    videoUploadCommentFailed,
 } from './video'

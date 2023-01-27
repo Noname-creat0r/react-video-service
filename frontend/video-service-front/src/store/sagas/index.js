@@ -13,6 +13,8 @@ import {
 import {
     uploadVideoSaga,
     fetchVideoInfoSaga,
+    uploadVideoCommentsSaga,
+    fetchVideoCommentsSaga,
 } from './video';
 
 export function* watchAuth() {
@@ -34,5 +36,7 @@ export function* watchVideo() {
     yield all([
         takeEvery(actionTypes.VIDEO_UPLOAD, uploadVideoSaga),
         takeEvery(actionTypes.VIDEO_FETCH_INFO, fetchVideoInfoSaga),
+        takeEvery(actionTypes.VIDEO_UPLOAD_COMMENTS, uploadVideoCommentsSaga),
+        takeEvery(actionTypes.VIDEO_FETCH_COMMENTS, fetchVideoCommentsSaga),
     ]);
 };

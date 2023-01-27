@@ -8,6 +8,7 @@ const initialState = {
     interupted: false,
     videosInfo: new Map(),
     videoId: null,
+    comments: [],
     error: null,
 };
 
@@ -64,6 +65,18 @@ const videoStreamInterupt = (state, action) => {
     });
 };
 
+const videoUploadCommentsFailed = (state, action) => {
+    return updateObject(state, {
+        error: action.error,
+    });
+};
+
+const videoFetchCommentsFailed = (state, action) => {
+    return updateObject(state, {
+        error: action.error,
+    });
+};
+
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
         case actionTypes.VIDEO_UPLOAD_START: return videoUploadStart(state);
@@ -74,6 +87,8 @@ const reducer = (state = initialState, action) => {
         case actionTypes.VIDEO_FETCH_INFO_SUCCESS: return videoFetchInfoSuccess(state, action);
         case actionTypes.VIDEO_STREAM_START: return videoStreamStart(state, action);
         case actionTypes.VIDEO_STREAM_INTERRUPT: return videoStreamInterupt(state, action);
+        case actionTypes.VIDEO_UPLOAD_COMMENTS_FAILED: return videoUploadCommentsFailed(state, action);
+        case actionTypes.VIDEO_FETCH_COMMENTS_FAILED: return videoFetchCommentsFailed(state, action);
         default: return state;
     }
 };
