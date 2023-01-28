@@ -28,6 +28,7 @@ class Home extends Component {
    
     homeVideoCardClickHandler = (event, id) => {
         this.props.videoStreamStart(id);
+        localStorage.setItem('videoId', id);
     }
 
     componentDidMount() {

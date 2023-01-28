@@ -44,6 +44,7 @@ class Profile extends Component {
 
     profileVideoCardClickHandler = (event, id) => {
         this.props.videoStreamStart(id);
+        localStorage.setItem('videoId', id);
     };
 
     mapVideoInfoToCards = (videoInfo) => {

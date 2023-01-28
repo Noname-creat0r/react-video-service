@@ -77,6 +77,12 @@ const videoFetchCommentsFailed = (state, action) => {
     });
 };
 
+const videoFetchCommentsSuccess = (state, action) => {
+    return updateObject(state, {
+        comments: action.comments,
+    });
+}
+
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
         case actionTypes.VIDEO_UPLOAD_START: return videoUploadStart(state);
@@ -89,6 +95,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.VIDEO_STREAM_INTERRUPT: return videoStreamInterupt(state, action);
         case actionTypes.VIDEO_UPLOAD_COMMENTS_FAILED: return videoUploadCommentsFailed(state, action);
         case actionTypes.VIDEO_FETCH_COMMENTS_FAILED: return videoFetchCommentsFailed(state, action);
+        case actionTypes.VIDEO_FETCH_COMMENTS_SUCCESS: return videoFetchCommentsSuccess(state, action);
         default: return state;
     }
 };

@@ -60,9 +60,8 @@ export function* fetchVideoCommentsSaga(action) {
         const response = yield axios.get('/video/comment', {
             params: { videoId: action.videoId }, 
         });
-        yield console.log(response.data);
-        yield put(actions.videoUploadSuccess(response.data));
-
+        yield console.log(response.data.comments);
+        yield put(actions.videoFetchCommentsSuccess(response.data.comments));
     } catch (error) {
         yield console.log(error);
     }

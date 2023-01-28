@@ -48,21 +48,23 @@ exports.getVideosInfoByUserId = async (req, res, next) => {
         for (const video of videos){
             info.push({ ...video, authorName: author.name} );
         }
-    }
+    } 
+    console.log('he');
     res.status(200).json({ videos: info });
 };
 
 exports.getVideoInfoById = async (req, res, next) => {
-    const response = {};
+    let video = [];
     if (req.query.videoId){
-        response['video'] = await Video.findOne({
-            _id: mongoose.Types.ObjectId(req.query.videoId)
-        });
-        response['author'] = await User.findOne({
-            _id: mongoose.Types.ObjectId(req.query.userId)
-        }).name;
+        video = await Video
+            .findOne({
+                _id: mongoose.Types.ObjectId(req.query.videoId)
+            })
+            .lean();
+        video = await insertAuthorNames([video]);
+        //console.log(video);
     }
-    res.status(200).json({ response });
+    res.status(200).json({ videos: video });
 }
 
 exports.getFilterVideoInfo = async (req, res, next) => {
@@ -229,11 +231,14 @@ exports.postComment = async (req, res, next) => {
 
 exports.getComments = async (req, res, next) => {
     try {
-        const comments = await Commentary.find({
-            _id: mongoose.Types.ObjectId(req.query.videoId),
-        });
+        let comments = await Commentary
+            .find({
+                video: mongoose.Types.ObjectId(req.query.videoId),
+            })
+            .lean();
 
         comments = await insertAuthorNames(comments);
+        console.log(comments);
         res.status(201).json({ comments: comments });
     } catch(err) {
         console.log(err);

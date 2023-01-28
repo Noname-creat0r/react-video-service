@@ -32,9 +32,10 @@ router.get(
 );
 
 router.get(
-    '/info:videoId?',
+    '/info/one:videoId?',
     videoController.getVideoInfoById
 );
+
 
 router.get(
     '/info/filter',
