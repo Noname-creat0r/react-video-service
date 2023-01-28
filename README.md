@@ -18,7 +18,7 @@ I will update this project during my futher learning process.
   
 ## Functionality for authorized users:
   - [x] Unlimited number of videos to view.
-  - [ ] Commenting videos.
+  - [x] Commenting videos.
   - [ ] Liking videos (such videos will be saved in "Liked" category)
   - [ ] Creating/deleting/editig playlists. 
   
