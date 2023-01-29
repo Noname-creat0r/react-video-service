@@ -24,11 +24,13 @@ router.post(
 router.post(
     '/like',
     isAuth,
+    videoController.likeVideo
 );
 
 router.post(
     '/dislike',
     isAuth,
+    videoController.dislikeVideo
 );
 
 router.get(

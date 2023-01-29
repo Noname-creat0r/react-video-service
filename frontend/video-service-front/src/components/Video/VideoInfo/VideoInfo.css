@@ -1,19 +1,30 @@
 .videoMainInfo{
 }
 
-.videoSatisfactionRate{
+.userInteractionSection{
     display: flex;
     justify-content: flex-end;
     height: min-content;
 }
 
-.videoSatisfactionRate_stat{
+.userInteractionSection_container:hover{
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+.userInteractionSection_container__clicked:hover{
+    cursor: pointer;
+    border: 1px solid black;
+    animation: 0.5s linear clicked;
+}
+
+.userInteractionSection_item{
     cursor: pointer;
     width: 1.3rem;
     height: 1.3rem;
 }
 
-.videoSatisfactionRate_stat:hover{
+.userInteractionSection_item:hover{
     animation: 1s linear rotate;
 }
 
@@ -25,6 +36,17 @@
     100% { transform: scale(1);}
 }
 
+@keyframes clicked{
+    0% { 
+        transform: scale(1);
+        background-color: initial;
+    } 
+    25% { transform: scale(0.9);}
+    50% { transform: scale(1);}
+    75% { transform: scale(1.1);}
+    100% { transform: scale(1);}
+   
+}
 
 
 

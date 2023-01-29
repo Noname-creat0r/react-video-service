@@ -121,3 +121,19 @@ export const videoFetchCommentsSuccess = (comments) => {
         comments: comments,
     };
 };
+
+export const videoRate = (videoId, userId, token, actionType) => {
+    return {
+        type: actionTypes.VIDEO_RATE,
+        videoId: videoId,
+        userId: userId,
+        token: token,
+        actionType: actionType
+    };
+};
+
+export const videoRateSuccess = (result) => {
+    return {
+        
+    }
+};

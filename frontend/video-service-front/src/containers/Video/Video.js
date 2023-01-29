@@ -24,6 +24,8 @@ function mapDispatchToProps(dispatch) {
         )),
         fetchVideoComments: (videoId) => dispatch(actions.videoFetchComments(videoId)),
         uploadVideoComment: (videoId, userId, token, text) => dispatch(actions.videoUploadComment(videoId, userId, token, text)),
+        rateVideo: (videoId, userId, token, actionType ) => dispatch(actions.videoRate(videoId, userId, token, actionType)),
+
     };
 }
 
@@ -34,6 +36,11 @@ class Video extends Component {
             text: '',
             touched: false,
         },
+        rated: {
+            action: null,
+            inc: false,
+        },
+        
    };
 
     componentDidMount() {
@@ -46,7 +53,7 @@ class Video extends Component {
     }
 
     componentDidUpdate() {
-        //console.log('Did update: '+ this.props.videosInfo.size);
+        console.log('Did update: '+ this.props.videosInfo.size);
         //if (this.props.fetchingInfo)
     }
 
@@ -76,6 +83,19 @@ class Video extends Component {
         // POST (endpoint, options = { userId, videoId, commentary});
     }
 
+    rateVideoHandler = (action) => {
+        this.props.rateVideo(
+            localStorage.getItem('videoId'),
+            localStorage.getItem('userId'),
+            localStorage.getItem('token'),
+            action
+        );
+        this.setState({ rated: {
+            action: action,
+            inc: true,
+        }})
+    };
+
     render() {
         if (this.props.videosInfo.size === 0 ) {
             return <LoadingSpinner />
@@ -95,6 +115,7 @@ class Video extends Component {
                         likes={videoInfo.likes}
                         dislikes={videoInfo.dislikes}
                         comments={this.props.comments}
+                        rateVideoHandler={this.rateVideoHandler}
                         typeCommentHandler={this.typeCommentHandler}
                         postCommentHandler={this.postCommentHandler}/>
                     <VideoFooter />

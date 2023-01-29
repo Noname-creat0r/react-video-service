@@ -15,6 +15,7 @@ import {
     fetchVideoInfoSaga,
     uploadVideoCommentsSaga,
     fetchVideoCommentsSaga,
+    rateVideoSaga,
 } from './video';
 
 export function* watchAuth() {
@@ -38,5 +39,6 @@ export function* watchVideo() {
         takeEvery(actionTypes.VIDEO_FETCH_INFO, fetchVideoInfoSaga),
         takeEvery(actionTypes.VIDEO_UPLOAD_COMMENTS, uploadVideoCommentsSaga),
         takeEvery(actionTypes.VIDEO_FETCH_COMMENTS, fetchVideoCommentsSaga),
+        takeEvery(actionTypes.VIDEO_RATE, rateVideoSaga),
     ]);
 };

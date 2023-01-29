@@ -8,6 +8,7 @@ import Image from 'react-bootstrap/Image';
 import Accordion from 'react-bootstrap/Accordion';
 
 import UserBadge from '../../UI/User/UserBadge/UserBadge';
+import PlaylistIcon from '../../../assets/images/playlist.svg';
 import LikeIcon from '../../../assets/images/like.svg';
 import DislikeIcon from '../../../assets/images/dislike.svg';
 import VideoComments from './VideoComments/VideoComments';
@@ -15,6 +16,8 @@ import VideoComments from './VideoComments/VideoComments';
 import './VideoInfo.css';
 
 const VideoInfo = (props) => {
+    const userInteractionStyles = { clicked: '', default: ''};
+
     return (
         <Container className='my-4'>
             <Row className='videoMainInfo'>
@@ -23,19 +26,30 @@ const VideoInfo = (props) => {
                     <UserBadge 
                         name={props.author}/> 
                 </Col>
-                <Col className='videoSatisfactionRate'>
+                <Col className='userInteractionSection'>
                     <Alert
-                        className='mx-2'
+                        className='userInteractionSection_container'
+                        variant='info'>
+                        <Image 
+                            className='mx-1 userInteractionSection_item'
+                            src={PlaylistIcon}/>
+                        Add
+                    </Alert>
+                    <Alert
+                        onClick={() => props.rateVideoHandler('like')}
+                        className='mx-2 userInteractionSection_container'
                         variant='success'>
                         <Image
-                            className='mx-1 videoSatisfactionRate_stat'
+                            className='mx-1 userInteractionSection_item'
                             src={LikeIcon}/>
                             {props.likes}
                     </Alert>
                     <Alert
+                        onClick={() => props.rateVideoHandler('dislike')}
+                        className='userInteractionSection_container__clicked'
                         variant='danger'>
                         <Image 
-                           className='mx-1 videoSatisfactionRate_stat'
+                           className='mx-1 userInteractionSection_item'
                            src={DislikeIcon}/>
                            {props.dislikes}
                     </Alert>

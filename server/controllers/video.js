@@ -6,7 +6,7 @@ const Like = require('../models/Like');
 const Dislike = require('../models/Dislike');
 const Commentary = require('../models/Commentary');
 const methods = require('../db/methods');
-const { insertVideoAuthors, insertAuthorNames, handleLikeDislike } = require('../shared/utility');
+const { insertVideoAuthors, insertAuthorNames, handleLikeDislike, updateVideoLikes, updateVideoDislikes } = require('../shared/utility');
 
 exports.getVideoThumbnail = async (req, res, next) => {
     console.log(req.query.id + " thumbnail id");
@@ -182,7 +182,7 @@ exports.getVideo = (req, res, next) => {
                 const start = Number(range.replace(/\D/g, ""));
                 const end = Math.min(start + 10**6, videoSize - 1);
                 const contentLength = end - start + 1; 
-                console.log("start: " + start + " end: " + end);
+                //console.log("start: " + start + " end: " + end);
                 //console.log(videoSize);
                 const headers = {
                     "Content-Range": `bytes ${start}-${end}/${videoSize}`,
@@ -240,7 +240,7 @@ exports.getComments = async (req, res, next) => {
             .lean();
 
         comments = await insertAuthorNames(comments);
-        console.log(comments);
+        //console.log(comments);
         res.status(201).json({ comments: comments });
     } catch(err) {
         console.log(err);
@@ -249,9 +249,9 @@ exports.getComments = async (req, res, next) => {
 };
 
 exports.likeVideo = async (req, res, next) => {
-    // videoId, userId
     try {
-        const result = handleLikeDislike(Like, req);
+        const result = await handleLikeDislike(Like, req);
+        await updateVideoLikes(req.body.videoId, result.action);
         res.status(200).json({ result });
     } catch(err) {
         console.log(err);
@@ -260,9 +260,9 @@ exports.likeVideo = async (req, res, next) => {
 };
 
 exports.dislikeVideo = async (req, res, next) => {
-    // videoId, userId
     try {
-        const result = handleLikeDislike(Dislike, req);
+        const result = await handleLikeDislike(Dislike, req);
+        await updateVideoDislikes(req.body.videoId, result.action);
         res.status(200).json({ result });
     } catch(err) {
         console.log(err);

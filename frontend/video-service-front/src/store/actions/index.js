@@ -31,4 +31,6 @@ export {
     videoUploadComment,
     videoUploadCommentFailed,
     videoUploadCommentSuccess,
+    videoRate,
+    videoRateSuccess,
 } from './video'

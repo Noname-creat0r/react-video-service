@@ -66,3 +66,14 @@ export function* fetchVideoCommentsSaga(action) {
         yield console.log(error);
     }
 };
+
+export function* rateVideoSaga(action) {
+    try {
+        const response = yield axios.post(`/video/${action.actionType}`,  {
+            videoId: action.videoId,
+            userId: action.userId,
+        }, { headers: { 'Authorization': action.token, }});
+    } catch (error) {
+        yield console.log(error);
+    }
+};

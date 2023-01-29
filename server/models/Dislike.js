@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const likeSchema = new Schema({
+const DislikeSchema = new Schema({
     video: {
         type: Schema.Types.ObjectId,
         ref: 'Video',
@@ -14,4 +14,4 @@ const likeSchema = new Schema({
     
 });
 
-module.exports = mongoose.model("Like", likeSchema);
+module.exports = mongoose.model("Dislike", DislikeSchema);
