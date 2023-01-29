@@ -5,7 +5,7 @@ const User = require('../models/User');
 exports.signup = (req, res, next) => {
     // validation
 
-    const email = req.bvody.email;
+    const email = req.body.email;
     const password = req.body.password;
     const name = req.body.name;
 

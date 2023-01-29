@@ -49,7 +49,7 @@ export function* uploadVideoCommentsSaga(action) {
             userId: action.userId,
             text: action.text,
         }, { headers: { 'Authorization': action.token, }});
-
+        //yield put(actions.videoUploadCommentSuccess(action.videoId, action.userId, action.text));
     } catch(error){
         yield console.log(error);
     }

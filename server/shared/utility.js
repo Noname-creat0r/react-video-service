@@ -14,7 +14,6 @@ exports.insertAuthorNames = async (videoInfoArr) => {
         const author = await User.findOne({
             _id: mongoose.Types.ObjectId(videoInfo.author)
         });
-        //videoInfo['authorName'] = author.name;
         infoArrWithAuthors.push( this.updateObject(videoInfo, {
             authorName: author.name
         }));

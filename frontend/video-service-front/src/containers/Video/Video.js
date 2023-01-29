@@ -70,7 +70,8 @@ class Video extends Component {
             localStorage.getItem('userId'),
             localStorage.getItem('token'),
             this.state.commentary.text
-        )
+        );
+        this.props.fetchVideoComments(localStorage.getItem('videoId'));
         //console.log(this.state.commentary.text);
         // POST (endpoint, options = { userId, videoId, commentary});
     }

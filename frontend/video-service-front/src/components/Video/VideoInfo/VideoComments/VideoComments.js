@@ -35,7 +35,7 @@ const VideoComments = (props) => {
                 </Button>
             </Form>
             <hr />
-            {comments}
+            {comments.length !== 0 ? comments : <em>No comments yet...</em>}
         </Container>
     );
 };

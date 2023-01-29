@@ -30,4 +30,5 @@ export {
     videoFetchCommentsFailed,
     videoUploadComment,
     videoUploadCommentFailed,
+    videoUploadCommentSuccess,
 } from './video'

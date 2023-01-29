@@ -71,6 +71,10 @@ const videoUploadCommentsFailed = (state, action) => {
     });
 };
 
+const videoUploadCommentsSuccess = (state, action) => {
+   
+};
+
 const videoFetchCommentsFailed = (state, action) => {
     return updateObject(state, {
         error: action.error,

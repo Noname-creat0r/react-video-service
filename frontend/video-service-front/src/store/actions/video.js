@@ -92,6 +92,15 @@ export const videoUploadCommentFailed = (error) => {
     };
 };
 
+export const videoUploadCommentSuccess = (videoId, userId, text) => {
+    return {
+        type: actionTypes.VIDEO_UPLOAD_COMMENTS_SUCCESS,
+        videoId: videoId,
+        userId: userId,
+        text: text,
+    }
+}
+
 export const videoFetchComments = (videoId) => {
     return {
         type: actionTypes.VIDEO_FETCH_COMMENTS,

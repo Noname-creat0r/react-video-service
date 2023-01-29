@@ -21,6 +21,16 @@ router.post(
     videoController.postComment,
 );
 
+router.post(
+    '/like',
+    isAuth,
+);
+
+router.post(
+    '/dislike',
+    isAuth,
+);
+
 router.get(
     '/comment:videoId?',
     videoController.getComments,
