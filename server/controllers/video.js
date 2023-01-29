@@ -2,9 +2,11 @@ const mongoose = require('mongoose');
 
 const Video = require('../models/Video');
 const User = require('../models/User');
+const Like = require('../models/Like');
+const Dislike = require('../models/Dislike');
 const Commentary = require('../models/Commentary');
 const methods = require('../db/methods');
-const { insertVideoAuthors, insertAuthorNames } = require('../shared/utility');
+const { insertVideoAuthors, insertAuthorNames, handleLikeDislike } = require('../shared/utility');
 
 exports.getVideoThumbnail = async (req, res, next) => {
     console.log(req.query.id + " thumbnail id");
@@ -240,6 +242,28 @@ exports.getComments = async (req, res, next) => {
         comments = await insertAuthorNames(comments);
         console.log(comments);
         res.status(201).json({ comments: comments });
+    } catch(err) {
+        console.log(err);
+        next(err);
+    }
+};
+
+exports.likeVideo = async (req, res, next) => {
+    // videoId, userId
+    try {
+        const result = handleLikeDislike(Like, req);
+        res.status(200).json({ result });
+    } catch(err) {
+        console.log(err);
+        next(err);
+    }
+};
+
+exports.dislikeVideo = async (req, res, next) => {
+    // videoId, userId
+    try {
+        const result = handleLikeDislike(Dislike, req);
+        res.status(200).json({ result });
     } catch(err) {
         console.log(err);
         next(err);

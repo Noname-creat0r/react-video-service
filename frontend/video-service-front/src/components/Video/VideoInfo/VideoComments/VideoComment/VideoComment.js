@@ -6,7 +6,6 @@ import './VideoComment.css';
 const VideoComment = (props) => {
     let date = new Date(props.createdAt);
     
-
     return (
         <div 
             className='my-3 py-2 text-black' 

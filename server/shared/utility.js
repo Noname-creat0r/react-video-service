@@ -20,3 +20,36 @@ exports.insertAuthorNames = async (videoInfoArr) => {
     };
     return infoArrWithAuthors;
 };
+
+exports.handleLikeDislike = async (model, req) => {
+    const author = mongoose.Types.ObjectId(req.body.userId);
+    const video = mongoose.Types.ObjectId(req.body.videoId);
+    let action = '';
+
+    const isLiked = await model
+        .findOne({
+            author: author,
+            video:  video,
+        })
+        .exec();
+    if (!isLiked){
+        const newInstance = new model({
+            author: author,
+            video:  video
+        });
+        await newInstance.save();
+        action = 'added';
+    } 
+    else {
+        await model.deleteOne({
+            author: author,
+            video:  video
+        });
+        action = 'removed';
+    }
+
+    return {
+        model: model.modelName,
+        action: action,
+    };
+};
