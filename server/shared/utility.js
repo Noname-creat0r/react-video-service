@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const Video = require('../models/Video');
+const Like = require('../models/Like');
+const Dislike = require('../models/Dislike');
 const mongoose = require('mongoose');
 const { listenerCount } = require('../models/Dislike');
 
@@ -28,13 +30,13 @@ exports.handleLikeDislike = async (model, req) => {
     const video = mongoose.Types.ObjectId(req.body.videoId);
     let action = '';
 
-    const isLiked = await model
+    const isRated = await model
         .findOne({
             author: author,
             video:  video,
-        })
-        .exec();
-    if (!isLiked){
+        });
+
+    if (!isRated){
         action = 'added';
         const newInstance = new model({
             author: author,
@@ -44,10 +46,7 @@ exports.handleLikeDislike = async (model, req) => {
     } 
     else {
         action = 'removed';
-        await model.deleteOne({
-            author: author,
-            video:  video
-        });
+        await isRated.remove();
     }
 
     return {
@@ -57,31 +56,46 @@ exports.handleLikeDislike = async (model, req) => {
 };
 
 
-exports.updateVideoLikes = async (id, action) => {
-    const videoId = mongoose.Types.ObjectId(id);
-    console.log(id);
-    const likeNumber = await Video
-        .findOne({
-            _id: videoId,
-        })
-        .select('likes');
-    await Video
-        .updateOne(
-            { _id: videoId },
-            { likes: action === 'added' ? (likeNumber.likes + 1) : (likeNumber.likes - 1)}
-        );
+exports.updateVideoLikes = async (video, author, action) => {
+    const videoId = mongoose.Types.ObjectId(video);
+    const authorId = mongoose.Types.ObjectId(author);
+
+    const isDisliked = await Dislike.findOne({
+        author: authorId,
+        video: videoId
+    });
+
+    const videoDoc = await Video.findOne({
+        _id: videoId
+   });
+
+    if (isDisliked){
+        await isDisliked.remove();
+        videoDoc.$inc('dislikes', -1);
+    }
+
+    videoDoc.$inc('likes', action === 'added' ? 1 : -1);
+    await videoDoc.save();
 };
 
-exports.updateVideoDislikes = async (id, action) => {
-    const videoId = mongoose.Types.ObjectId(id);
-    const dislikeNumber = await Video
-        .findOne({
-            _id: videoId,
-        })
-        .select('dislikes');
-    await Video
-        .updateOne(
-            { _id: videoId },
-            { dislikes: action === 'added' ? (dislikeNumber.dislikes + 1) : (dislikeNumber.dislikes - 1) }
-        );
+exports.updateVideoDislikes = async (video, author, action) => {
+    const videoId = mongoose.Types.ObjectId(video);
+    const authorId = mongoose.Types.ObjectId(author);
+
+    const videoDoc = await Video.findOne({
+        _id: videoId,
+    })
+
+    const isLiked = await Like.findOne({
+        author: authorId,
+        video: videoId
+    });
+
+    if (isLiked){
+        await isLiked.remove();
+        videoDoc.$inc('likes', -1);
+    }
+   
+    videoDoc.$inc('dislikes', action === 'added' ? 1 : -1);
+    await videoDoc.save();
 }

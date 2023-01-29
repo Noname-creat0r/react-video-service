@@ -251,7 +251,7 @@ exports.getComments = async (req, res, next) => {
 exports.likeVideo = async (req, res, next) => {
     try {
         const result = await handleLikeDislike(Like, req);
-        await updateVideoLikes(req.body.videoId, result.action);
+        await updateVideoLikes(req.body.videoId, req.body.userId, result.action);
         res.status(200).json({ result });
     } catch(err) {
         console.log(err);
@@ -262,7 +262,7 @@ exports.likeVideo = async (req, res, next) => {
 exports.dislikeVideo = async (req, res, next) => {
     try {
         const result = await handleLikeDislike(Dislike, req);
-        await updateVideoDislikes(req.body.videoId, result.action);
+        await updateVideoDislikes(req.body.videoId, req.body.userId, result.action);
         res.status(200).json({ result });
     } catch(err) {
         console.log(err);

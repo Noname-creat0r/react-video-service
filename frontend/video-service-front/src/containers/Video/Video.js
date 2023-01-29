@@ -36,11 +36,7 @@ class Video extends Component {
             text: '',
             touched: false,
         },
-        rated: {
-            action: null,
-            inc: false,
-        },
-        
+        rated: false,
    };
 
     componentDidMount() {
@@ -54,7 +50,10 @@ class Video extends Component {
 
     componentDidUpdate() {
         console.log('Did update: '+ this.props.videosInfo.size);
-        //if (this.props.fetchingInfo)
+        //if (this.state.rated){
+            //this.props.fetchVideoInfo(localStorage.getItem('videoId'));
+          // this.setState({ rated: false });
+        //}
     }
 
     componentWillUnmount() {
@@ -90,10 +89,7 @@ class Video extends Component {
             localStorage.getItem('token'),
             action
         );
-        this.setState({ rated: {
-            action: action,
-            inc: true,
-        }})
+       // this.setState({ rated: true });
     };
 
     render() {
