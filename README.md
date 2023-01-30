@@ -33,10 +33,12 @@ I will update this project during my futher learning process.
 
 #### Video page
 ![VideoPageScreen](/screensots/VideoPageV1.png)
+
 ![VideoInfoScreen](/screensots/VideoInfoV1.png)
 
 #### Filter/Search
 ![FilterScreen](/screensots/FilterV1.png)
+
 ![SearchScreen](/screensots/SearchV1.png)
 
 #### Profile page
@@ -44,6 +46,8 @@ I will update this project during my futher learning process.
 
 #### Forms
 ![VideoUploadFormScreen](/screensots/VideoUploadFormV1.png)
+
 ![SignInForm](/screensots/SignInFormV1.png)
+
 ![SignUpForm](/screensots/SignUpFormV1.png)
 
