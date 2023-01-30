@@ -19,10 +19,35 @@ I will update this project during my futher learning process.
 ## Functionality for authorized users:
   - [x] Unlimited number of videos to view.
   - [x] Commenting videos.
-  - [ ] Liking videos (such videos will be saved in "Liked" category)
+  - [x] Liking videos (such videos will be saved in "Liked" category)
   - [ ] Creating/deleting/editig playlists. 
   
 ## Administration:
   - [ ] Adding/deliting/editing videos.
   - [ ] Adding/deliting/editing video categoires.
   - [ ] User managing (adding/deliting/editing users functionality should be emplented with role managing system with 3 roles: **admin**, **user**, **guest**)
+
+## Current project state in screenshots
+#### Home
+![HomeScreen](/screenshots/HomeV1.png)
+
+#### Video page
+![VideoPageScreen](/screenshots/VideoPageV1.png)
+
+![VideoInfoScreen](/screenshots/VideoInfoV1.png)
+
+#### Filter/Search
+![FilterScreen](/screenshots/FilterV1.png)
+
+![SearchScreen](/screenshots/SearchV1.png)
+
+#### Profile page
+![ProfilePageScreen](/screenshots/ProfilePageV1.png)
+
+#### Forms
+![VideoUploadFormScreen](/screenshots/VideoUploadFormV1.png)
+
+![SignInForm](/screenshots/SignInFormV1.png)
+
+![SignUpForm](/screenshots/SignUpFormV1.png)
+
