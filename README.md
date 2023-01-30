@@ -28,4 +28,22 @@ I will update this project during my futher learning process.
   - [ ] User managing (adding/deliting/editing users functionality should be emplented with role managing system with 3 roles: **admin**, **user**, **guest**)
 
 ## Current project state in screenshots
-![Home](/screenshots/HomeV1.png)
+#### Home
+![HomeScreen](/screenshots/HomeV1.png)
+
+#### Video page
+![VideoPageScreen](/screensots/VideoPageV1.png)
+![VideoInfoScreen](/screensots/VideoInfoV1.png)
+
+#### Filter/Search
+![FilterScreen](/screensots/FilterV1.png)
+![SearchScreen](/screensots/SearchV1.png)
+
+#### Profile page
+![ProfilePageScreen](/screensots/ProfilePageV1.png)
+
+#### Forms
+![VideoUploadFormScreen](/screensots/VideoUploadFormV1.png)
+![SignInForm](/screensots/SignInFormV1.png)
+![SignUpForm](/screensots/SignUpFormV1.png)
+
