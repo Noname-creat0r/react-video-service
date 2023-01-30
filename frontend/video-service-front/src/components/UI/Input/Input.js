@@ -10,10 +10,6 @@ const input = (props) => {
     if (props.touched || props.isValid ) {
         properties['isValid'] = true;
     } 
-    // For avatars - change for other files !
-    if (props.type === 'file') {
-        properties['accept'] = 'image/*';
-    }
 
     switch (props.elementType) {
         case ('input'):

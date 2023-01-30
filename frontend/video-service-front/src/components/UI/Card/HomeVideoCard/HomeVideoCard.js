@@ -13,7 +13,6 @@ const HomeVideoCard = (props) => {
             onClick={props.clicked}>
                 <NavLink to={'../video'} className='link'>
                     <Card.Img 
-                        className='my-2'
                         variant='top'
                         src={props.thumbnail}
                         alt='VideoThumbnail'

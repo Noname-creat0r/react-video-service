@@ -25,43 +25,33 @@ function mapDispatchToProps(dispatch) {
         fetchVideoComments: (videoId) => dispatch(actions.videoFetchComments(videoId)),
         uploadVideoComment: (videoId, userId, token, text) => dispatch(actions.videoUploadComment(videoId, userId, token, text)),
         rateVideo: (videoId, userId, token, actionType ) => dispatch(actions.videoRate(videoId, userId, token, actionType)),
-
     };
 }
 
 class Video extends Component {
-    // 1. loading case -> spinner
    state = {
         commentary: {
             text: '',
             touched: false,
         },
+        interactionItems: {
+            'playlist': {
+                clicked: false,
+            },
+            'like': {
+                clicked: false,
+            },
+            'dislike': {
+                clicked: false,
+            }
+        }
    };
 
     componentDidMount() {
-        //console.log('Did mount');
         if (this.props.videosInfo.size === 0) {
             this.props.fetchVideoInfo(localStorage.getItem('videoId'));
-            //console.log('loading...');
         }
         this.props.fetchVideoComments(localStorage.getItem('videoId'));
-    }
-
-    componentDidUpdate() {
-        console.log('Did update: '+ this.props.videosInfo.size);
-        const isRated = this.state.rated;
-        if (isRated){
-            this.props.fetchVideoInfo(localStorage.getItem('videoId'));
-            this.setState({ rated: !isRated });
-            console.log(this.props.videosInfo);
-        }
-        /*if (this.state.rated){
-            this.setState({ rated: false });
-        }*/
-    }
-
-    componentWillUnmount() {
-        //console.log('Will unmount');
     }
 
    typeCommentHandler = (event) => {
@@ -82,19 +72,28 @@ class Video extends Component {
             this.state.commentary.text
         );
         this.props.fetchVideoComments(localStorage.getItem('videoId'));
-        //console.log(this.state.commentary.text);
-        // POST (endpoint, options = { userId, videoId, commentary});
+       
+    }
+
+    interactionItemClickHandler = (itemName) => {
+        const isClicked = this.state.interactionItems[itemName].clicked;
+        const updatedState = updateObject( this.state.interactionItems, {
+            [itemName]: { 
+                clicked: !isClicked,
+            }
+        })
+       
+        this.setState({interactionItems: updatedState});
     }
 
     rateVideoHandler = (action) => {
+        this.interactionItemClickHandler(action);
         this.props.rateVideo(
             localStorage.getItem('videoId'),
             localStorage.getItem('userId'),
             localStorage.getItem('token'),
             action
         );
-        //this.props.fetchVideoInfo(localStorage.getItem('videoId'));
-        //this.setState({ rated: true });
     };
 
     render() {
@@ -103,7 +102,6 @@ class Video extends Component {
         }
         
         else {
-            //console.log(this.props.videosInfo);
             const videoInfo = this.props.videosInfo.get(localStorage.getItem('videoId'));
             return (
                 <Container >
@@ -113,6 +111,7 @@ class Video extends Component {
                         title={videoInfo.title}
                         author={videoInfo.authorName}
                         description={videoInfo.description}
+                        interactionItems={this.state.interactionItems}
                         likes={videoInfo.likes}
                         dislikes={videoInfo.dislikes}
                         comments={this.props.comments}

@@ -17,8 +17,11 @@ import VideoComments from './VideoComments/VideoComments';
 import './VideoInfo.css';
 
 const VideoInfo = (props) => {
-    const userInteractionStyles = { clicked: '', default: ''};
-    //const isRating = props.isRating;
+    const userInteractionStyles = { 
+        clicked: 'mx-2 userInteractionSection_container__clicked',
+        default: 'mx-2 userInteractionSection_container'
+    };
+    const items = props.interactionItems;
 
     return (
         <Container className='my-4'>
@@ -30,7 +33,8 @@ const VideoInfo = (props) => {
                 </Col>
                 <Col className='userInteractionSection'>
                     <Alert
-                        className='userInteractionSection_container'
+                        onClick={() => {}}
+                        className='mx-1 userInteractionSection_container'
                         variant='info'>
                         <Image 
                             className='mx-1 userInteractionSection_item'
@@ -48,7 +52,7 @@ const VideoInfo = (props) => {
                     </Alert>
                     <Alert
                         onClick={() => props.rateVideoHandler('dislike')}
-                        className='userInteractionSection_container__clicked'
+                        className='userInteractionSection_container'
                         variant='danger'>
                         <Image 
                            className='mx-1 userInteractionSection_item'

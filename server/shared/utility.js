@@ -3,7 +3,6 @@ const Video = require('../models/Video');
 const Like = require('../models/Like');
 const Dislike = require('../models/Dislike');
 const mongoose = require('mongoose');
-const { listenerCount } = require('../models/Dislike');
 
 exports.updateObject = (oldObject, updatedProperties) => {
     return {

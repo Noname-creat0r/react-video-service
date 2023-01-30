@@ -12,12 +12,6 @@
     border: 1px solid black;
 }
 
-.userInteractionSection_container__clicked:hover{
-    cursor: pointer;
-    border: 1px solid black;
-    animation: 0.5s linear clicked;
-}
-
 .userInteractionSection_item{
     cursor: pointer;
     width: 1.3rem;
