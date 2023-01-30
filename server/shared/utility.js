@@ -100,4 +100,12 @@ exports.updateVideoDislikes = async (video, author, action) => {
     videoDoc.$inc('dislikes', action === 'added' ? 1 : -1);
     await videoDoc.save();
     return videoDoc.toObject();
+};
+
+exports.sortByUploadDate = (docsArr, asc) => {
+    return docsArr.sort((docA, docB) => {
+        if ( docA.createdAt > docB.createdAt) return asc ? 1 : -1; 
+        if ( docA.createdAt < docB.createdAt) return asc ? -1: 1;
+        return 0;
+    });
 }

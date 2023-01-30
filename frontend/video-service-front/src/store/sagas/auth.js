@@ -9,33 +9,31 @@ export function* logoutSaga(action) {
     yield localStorage.removeItem('userId');
     yield put(actions.logoutSucceed());
 };
-
 export function* checkAuthTimeoutSaga(action) {
     yield console.log('CHECK_AUTH_TIMEOUT (expDate): ' + action.expirationTime);
     yield console.log('DELAY: ' + new Date(action.expirationTime).getTime());
-    yield delay(new Date(action.expirationTime).getTime());
+    yield delay(new Date(action.expirationTime).getTime() - new Date().getTime());
     yield put(actions.logout());
 };
 
 export function* authCheckStateSaga(action) {
     const token = yield localStorage.getItem('token');
-    yield console.log('AUTH_CHECK_STATE(token): ' + token);
+    yield put(actions.authStart());
+    //yield console.log('AUTH_CHECK_STATE(token): ' + token);
     if (!token) {
         yield put(actions.logout());
     } else {
         const expirationDate = yield new Date(
             localStorage.getItem("expirationDate")
         );
-        yield console.log('AUTH_CHECK_STATE(expDate): ' + expirationDate);
+        //yield console.log('AUTH_CHECK_STATE(expDate): ' + expirationDate);
         if (expirationDate <= new Date()) {
             yield put(actions.logout());
         } else {
             const userId = yield localStorage.getItem("userId");
-            yield console.log("AUTH_CHECK_STATE (to timeout): " + (expirationDate.getTime() - new Date().getTime()).toString());
+            //yield console.log("AUTH_CHECK_STATE (to timeout): " + (expirationDate.getTime() - new Date().getTime()).toString());
             yield put(actions.authSuccess(token, userId));
-            yield put(actions.checkAuthTimeout(
-                    (expirationDate.getTime() - new Date().getTime()))
-            );
+            yield put(actions.checkAuthTimeout( expirationDate.getTime() ));
         }
     }
 };

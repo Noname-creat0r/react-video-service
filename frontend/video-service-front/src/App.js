@@ -12,6 +12,18 @@ import Logout from './containers/Auth/Logout/Logout';
 
 import './App.css';
 
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.auth.token !== null,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignup: () => dispatch( actions.authCheckState() ),
+  };
+};
+
 class App extends Component {
 
   componentDidMount() {
@@ -49,18 +61,5 @@ class App extends Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    isAuthenticated: state.auth.token !== null,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onTryAutoSignup: () => dispatch( actions.authCheckState() ),
-    
-  };
-};
 
 export default connect( mapStateToProps, mapDispatchToProps ) ( App ) ;

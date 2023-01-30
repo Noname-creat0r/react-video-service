@@ -92,12 +92,10 @@ export const videoUploadCommentFailed = (error) => {
     };
 };
 
-export const videoUploadCommentSuccess = (videoId, userId, text) => {
+export const videoUploadCommentSuccess = (comment) => {
     return {
         type: actionTypes.VIDEO_UPLOAD_COMMENTS_SUCCESS,
-        videoId: videoId,
-        userId: userId,
-        text: text,
+        comment: comment,
     }
 }
 

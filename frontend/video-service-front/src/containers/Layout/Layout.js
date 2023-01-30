@@ -9,6 +9,23 @@ import Auth from '../Auth/Auth';
 
 import './Layout.css';
 import { updateObject } from '../../shared/utility';
+import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
+
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.auth.token !== null,
+        isLoading: state.auth.loading ,
+        userData: state.profile.data,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchUserData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
+        fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
+        
+    };
+};
 
 class Layout extends Component {
     state = {
@@ -92,7 +109,7 @@ class Layout extends Component {
                     updatedFilters[category][optionKey].checked = false;
             };
         
-        console.log(updatedFilters);
+        //console.log(updatedFilters);
         this.setState({ filterOptions: updatedFilters });
     };
 
@@ -114,23 +131,33 @@ class Layout extends Component {
         }
     };
 
-    componentDidUpdate() {
-        if (this.props.isAuthenticated && this.props.userName == null){
+    /*componentDidUpdate() {
+        if (this.props.isAuthenticated && this.props.userData.name == null ){
             //console.log(localStorage.getItem('userId'));
             //console.log(localStorage.getItem('token'));
             this.props.fetchUserData( 
                 localStorage.getItem('userId'),
                 localStorage.getItem('token'));
         }
-        //console.log('Layout update');
-    };
+        console.log('Layout update');
+    };*/
+
+    componentDidMount(){
+        this.props.fetchUserData( 
+            localStorage.getItem('userId'),
+            localStorage.getItem('token'));
+    }
 
     render() {
-        return(
+        if (this.props.isLoading){
+           return <LoadingSpinner />
+        }
+
+        else return(
             <div>
                 <Toolbar 
                     isAuthenticated={this.props.isAuthenticated}
-                    userName={this.props.userName}
+                    userName={this.props.userData.name}
                     searchHandler={this.searchHandler}
                     filterOptionsClicked={this.filterOptionsToggleHandler}
                     drawerToggleClicked={this.sideDrawerToggleHandler} 
@@ -156,19 +183,6 @@ class Layout extends Component {
     };
 };
 
-const mapStateToProps = state => {
-    return {
-        isAuthenticated: state.auth.token !== null,
-        userName: state.profile.data.name,
-    };
-};
 
-const mapDispatchToProps = dispatch => {
-    return {
-        fetchUserData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
-        fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
-        
-    };
-};
 
 export default connect( mapStateToProps, mapDispatchToProps ) ( Layout );

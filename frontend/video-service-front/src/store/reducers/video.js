@@ -73,7 +73,9 @@ const videoUploadCommentsFailed = (state, action) => {
 };
 
 const videoUploadCommentsSuccess = (state, action) => {
-   
+    return updateObject(state, {
+        comments:  [action.comment, ...state.comments]
+   })
 };
 
 const videoFetchCommentsFailed = (state, action) => {
@@ -112,6 +114,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.VIDEO_STREAM_START: return videoStreamStart(state, action);
         case actionTypes.VIDEO_STREAM_INTERRUPT: return videoStreamInterupt(state, action);
         case actionTypes.VIDEO_UPLOAD_COMMENTS_FAILED: return videoUploadCommentsFailed(state, action);
+        case actionTypes.VIDEO_UPLOAD_COMMENTS_SUCCESS: return videoUploadCommentsSuccess(state, action);
         case actionTypes.VIDEO_FETCH_COMMENTS_FAILED: return videoFetchCommentsFailed(state, action);
         case actionTypes.VIDEO_FETCH_COMMENTS_SUCCESS: return videoFetchCommentsSuccess(state, action);
         case actionTypes.VIDEO_RATE_START: return videoRateStart(state);

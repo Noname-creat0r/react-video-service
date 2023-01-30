@@ -15,6 +15,21 @@ import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 
 import './Profile.css';
 
+const mapStateToProps = state => {
+    return {
+        nickname: state.profile.data.name,
+        fetchingData: state.profile.fetchingInfo,
+        videosInfo: state.video.videosInfo,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
+        videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
+    };
+};
+
 class Profile extends Component {
       /*
         1. Avatar + Username on a random background
@@ -109,21 +124,6 @@ class Profile extends Component {
                 </Container>
             );
         }
-    };
-};
-
-const mapStateToProps = state => {
-    return {
-        nickname: state.profile.data.name,
-        fetchingData: state.profile.fetchingInfo,
-        videosInfo: state.video.videosInfo,
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
-        videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
     };
 };
 

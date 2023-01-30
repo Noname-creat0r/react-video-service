@@ -7,7 +7,7 @@ const Dislike = require('../models/Dislike');
 const Commentary = require('../models/Commentary');
 const methods = require('../db/methods');
 const { insertAuthorNames, handleLikeDislike, 
-    updateVideoLikes, updateVideoDislikes } = require('../shared/utility');
+    updateVideoLikes, updateVideoDislikes, sortByUploadDate } = require('../shared/utility');
 
 exports.getVideoThumbnail = async (req, res, next) => {
     console.log(req.query.id + " thumbnail id");
@@ -230,7 +230,12 @@ exports.postComment = async (req, res, next) => {
         });
 
         await newComment.save();
-        res.status(201).json({ message: 'Posted a comment'});
+        const postedComment = await insertAuthorNames([newComment.toObject()]);
+        //console.log(postedComment);
+        res.status(201).json({ 
+            message: 'Posted a comment',
+            comment: postedComment
+        });
     } catch (err) {
         console.log(err);
         next(err);
@@ -245,6 +250,7 @@ exports.getComments = async (req, res, next) => {
             })
             .lean();
 
+        comments = sortByUploadDate(comments);
         comments = await insertAuthorNames(comments);
         //console.log(comments);
         res.status(201).json({ comments: comments });
@@ -257,7 +263,7 @@ exports.getComments = async (req, res, next) => {
 exports.likeVideo = async (req, res, next) => {
     try {
         const result = await handleLikeDislike(Like, req);
-        let updatedVideo = await updateVideoLikes(req.body.videoId, req.body.userId, result.action).lean;
+        let updatedVideo = await updateVideoLikes(req.body.videoId, req.body.userId, result.action);
         updatedVideo = await insertAuthorNames([updatedVideo]);
        //console.log(updatedVideo);
         res.status(200).json({ video: updatedVideo });

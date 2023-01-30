@@ -49,7 +49,8 @@ export function* uploadVideoCommentsSaga(action) {
             userId: action.userId,
             text: action.text,
         }, { headers: { 'Authorization': action.token, }});
-        //yield put(actions.videoUploadCommentSuccess(action.videoId, action.userId, action.text));
+        //yield console.log(response.data.comment);
+        yield put(actions.videoUploadCommentSuccess(response.data.comment[0]));
     } catch(error){
         yield console.log(error);
     }
@@ -60,7 +61,7 @@ export function* fetchVideoCommentsSaga(action) {
         const response = yield axios.get('/video/comment', {
             params: { videoId: action.videoId }, 
         });
-        yield console.log(response.data.comments);
+        //yield console.log(response.data.comments);
         yield put(actions.videoFetchCommentsSuccess(response.data.comments));
     } catch (error) {
         yield console.log(error);
@@ -74,7 +75,7 @@ export function* rateVideoSaga(action) {
             videoId: action.videoId,
             userId: action.userId,
         }, { headers: { 'Authorization': action.token, }});
-        yield console.log(response.data.video);
+        //yield console.log(response.data.video);
         yield put(actions.videoRateSuccess(response.data.video[0]));
     } catch (error) {
         yield console.log(error);
