@@ -116,6 +116,8 @@ class Layout extends Component {
 
     componentDidUpdate() {
         if (this.props.isAuthenticated && this.props.userName == null){
+            //console.log(localStorage.getItem('userId'));
+            //console.log(localStorage.getItem('token'));
             this.props.fetchUserData( 
                 localStorage.getItem('userId'),
                 localStorage.getItem('token'));

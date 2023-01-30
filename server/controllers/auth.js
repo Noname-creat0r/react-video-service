@@ -66,9 +66,12 @@ exports.signin = (req, res, next) => {
                 '172b-3c4g-5w6O-7x8h',
             );
 
+            const expirationDate = new Date().getTime() + 8639998;
             res.status(200).json({
                 token: token,
-                userId: loadedUser._id.toString()});
+                userId: loadedUser._id.toString(),
+                expiresIn: expirationDate,
+            });
         })
         .catch((err) => {
             if (!err.statusCode) {

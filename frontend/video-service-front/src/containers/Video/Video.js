@@ -36,7 +36,6 @@ class Video extends Component {
             text: '',
             touched: false,
         },
-        rated: false,
    };
 
     componentDidMount() {
@@ -50,10 +49,15 @@ class Video extends Component {
 
     componentDidUpdate() {
         console.log('Did update: '+ this.props.videosInfo.size);
-        //if (this.state.rated){
-            //this.props.fetchVideoInfo(localStorage.getItem('videoId'));
-          // this.setState({ rated: false });
-        //}
+        const isRated = this.state.rated;
+        if (isRated){
+            this.props.fetchVideoInfo(localStorage.getItem('videoId'));
+            this.setState({ rated: !isRated });
+            console.log(this.props.videosInfo);
+        }
+        /*if (this.state.rated){
+            this.setState({ rated: false });
+        }*/
     }
 
     componentWillUnmount() {
@@ -89,14 +93,15 @@ class Video extends Component {
             localStorage.getItem('token'),
             action
         );
-       // this.setState({ rated: true });
+        //this.props.fetchVideoInfo(localStorage.getItem('videoId'));
+        //this.setState({ rated: true });
     };
 
     render() {
         if (this.props.videosInfo.size === 0 ) {
             return <LoadingSpinner />
         }
-
+        
         else {
             //console.log(this.props.videosInfo);
             const videoInfo = this.props.videosInfo.get(localStorage.getItem('videoId'));

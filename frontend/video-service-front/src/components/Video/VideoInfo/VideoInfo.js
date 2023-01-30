@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Alert from 'react-bootstrap/Alert';
 import Image from 'react-bootstrap/Image';
 import Accordion from 'react-bootstrap/Accordion';
+import Placeholder from 'react-bootstrap/Placeholder';
 
 import UserBadge from '../../UI/User/UserBadge/UserBadge';
 import PlaylistIcon from '../../../assets/images/playlist.svg';
@@ -17,6 +18,7 @@ import './VideoInfo.css';
 
 const VideoInfo = (props) => {
     const userInteractionStyles = { clicked: '', default: ''};
+    //const isRating = props.isRating;
 
     return (
         <Container className='my-4'>

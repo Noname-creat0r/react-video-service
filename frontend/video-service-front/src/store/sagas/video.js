@@ -69,10 +69,13 @@ export function* fetchVideoCommentsSaga(action) {
 
 export function* rateVideoSaga(action) {
     try {
+        yield put(actions.videoRateStart());
         const response = yield axios.post(`/video/${action.actionType}`,  {
             videoId: action.videoId,
             userId: action.userId,
         }, { headers: { 'Authorization': action.token, }});
+        yield console.log(response.data.video);
+        yield put(actions.videoRateSuccess(response.data.video[0]));
     } catch (error) {
         yield console.log(error);
     }

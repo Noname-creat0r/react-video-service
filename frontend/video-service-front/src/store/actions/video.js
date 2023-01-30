@@ -132,8 +132,15 @@ export const videoRate = (videoId, userId, token, actionType) => {
     };
 };
 
-export const videoRateSuccess = (result) => {
+export const videoRateStart = () => {
     return {
-        
+        type: actionTypes.VIDEO_RATE_START
+    }
+}
+
+export const videoRateSuccess = (updatedVideo) => {
+    return {
+        type: actionTypes.VIDEO_RATE_SUCCESS,
+        updatedVideo: updatedVideo,
     }
 };

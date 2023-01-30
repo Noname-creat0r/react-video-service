@@ -8,6 +8,7 @@ const initialState = {
     interupted: false,
     videosInfo: new Map(),
     videoId: null,
+    isRating: false,
     comments: [],
     error: null,
 };
@@ -85,7 +86,20 @@ const videoFetchCommentsSuccess = (state, action) => {
     return updateObject(state, {
         comments: action.comments,
     });
-}
+};
+
+const videoRateStart = (state) => {
+    return updateObject(state, {
+        //isRating: true,
+    });
+};
+
+const videoRateSuccess = (state, action) => {
+    //console.log(action.updatedVideo);
+    return updateObject(state, {
+        videosInfo: new Map([[action.updatedVideo._id, action.updatedVideo]])
+    });
+};
 
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
@@ -100,6 +114,8 @@ const reducer = (state = initialState, action) => {
         case actionTypes.VIDEO_UPLOAD_COMMENTS_FAILED: return videoUploadCommentsFailed(state, action);
         case actionTypes.VIDEO_FETCH_COMMENTS_FAILED: return videoFetchCommentsFailed(state, action);
         case actionTypes.VIDEO_FETCH_COMMENTS_SUCCESS: return videoFetchCommentsSuccess(state, action);
+        case actionTypes.VIDEO_RATE_START: return videoRateStart(state);
+        case actionTypes.VIDEO_RATE_SUCCESS: return videoRateSuccess(state, action);
         default: return state;
     }
 };

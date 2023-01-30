@@ -11,27 +11,30 @@ export function* logoutSaga(action) {
 };
 
 export function* checkAuthTimeoutSaga(action) {
-    yield delay(action.expirationTime - new Date().getTime());
+    yield console.log('CHECK_AUTH_TIMEOUT (expDate): ' + action.expirationTime);
+    yield console.log('DELAY: ' + new Date(action.expirationTime).getTime());
+    yield delay(new Date(action.expirationTime).getTime());
     yield put(actions.logout());
 };
 
 export function* authCheckStateSaga(action) {
     const token = yield localStorage.getItem('token');
+    yield console.log('AUTH_CHECK_STATE(token): ' + token);
     if (!token) {
         yield put(actions.logout());
     } else {
         const expirationDate = yield new Date(
             localStorage.getItem("expirationDate")
         );
+        yield console.log('AUTH_CHECK_STATE(expDate): ' + expirationDate);
         if (expirationDate <= new Date()) {
             yield put(actions.logout());
         } else {
             const userId = yield localStorage.getItem("userId");
+            yield console.log("AUTH_CHECK_STATE (to timeout): " + (expirationDate.getTime() - new Date().getTime()).toString());
             yield put(actions.authSuccess(token, userId));
-            yield put(
-                actions.checkAuthTimeout(
-                    (expirationDate.getTime() - new Date().getTime()) / 1000
-                )
+            yield put(actions.checkAuthTimeout(
+                    (expirationDate.getTime() - new Date().getTime()))
             );
         }
     }
@@ -51,7 +54,8 @@ export function* authUserSaga(action) {
         }
         else {
             const response = yield axios.post('/auth/signin/', authData)
-            const expirationDate = new Date(new Date().getTime() + 24 * 360000);
+            const expirationDate = new Date(response.data.expiresIn);
+            //yield console.log(expirationDate);
             yield localStorage.setItem('token', response.data.token);
             yield localStorage.setItem('userId', response.data.userId);
             yield localStorage.setItem('expirationDate', expirationDate);

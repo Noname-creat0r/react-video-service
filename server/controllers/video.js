@@ -6,7 +6,8 @@ const Like = require('../models/Like');
 const Dislike = require('../models/Dislike');
 const Commentary = require('../models/Commentary');
 const methods = require('../db/methods');
-const { insertVideoAuthors, insertAuthorNames, handleLikeDislike, updateVideoLikes, updateVideoDislikes } = require('../shared/utility');
+const { insertAuthorNames, handleLikeDislike, 
+    updateVideoLikes, updateVideoDislikes } = require('../shared/utility');
 
 exports.getVideoThumbnail = async (req, res, next) => {
     console.log(req.query.id + " thumbnail id");
@@ -51,7 +52,6 @@ exports.getVideosInfoByUserId = async (req, res, next) => {
             info.push({ ...video, authorName: author.name} );
         }
     } 
-    console.log('he');
     res.status(200).json({ videos: info });
 };
 
@@ -191,18 +191,24 @@ exports.getVideo = (req, res, next) => {
                     "Content-Type": file.contentType,
                 } 
                
-                /*if (start === end) {
-                    res.end();
-                }*/
+                if (start >= end ) {
+                    res.writeHead(206, {
+                        "Content-Length": contentLength,
+                        "Content-Type": file.contentType
+                    });
+                    //res.end();
+                }
+                else {
 
-                res.writeHead(206, headers);
-               
-                methods
-                    .getGridBucket('videos')
-                    .openDownloadStreamByName(
-                        file.filename,
-                        {start: start, end: end})
-                    .pipe(res);
+                    res.writeHead(206, headers);
+                
+                    methods
+                        .getGridBucket('videos')
+                        .openDownloadStreamByName(
+                            file.filename,
+                            {start: start, end: end})
+                        .pipe(res);
+                }
             })
 
     } catch (err) {
@@ -251,8 +257,10 @@ exports.getComments = async (req, res, next) => {
 exports.likeVideo = async (req, res, next) => {
     try {
         const result = await handleLikeDislike(Like, req);
-        await updateVideoLikes(req.body.videoId, req.body.userId, result.action);
-        res.status(200).json({ result });
+        let updatedVideo = await updateVideoLikes(req.body.videoId, req.body.userId, result.action).lean;
+        updatedVideo = await insertAuthorNames([updatedVideo]);
+       //console.log(updatedVideo);
+        res.status(200).json({ video: updatedVideo });
     } catch(err) {
         console.log(err);
         next(err);
@@ -262,8 +270,10 @@ exports.likeVideo = async (req, res, next) => {
 exports.dislikeVideo = async (req, res, next) => {
     try {
         const result = await handleLikeDislike(Dislike, req);
-        await updateVideoDislikes(req.body.videoId, req.body.userId, result.action);
-        res.status(200).json({ result });
+        let updatedVideo = await updateVideoDislikes(req.body.videoId, req.body.userId, result.action);
+        updatedVideo = await insertAuthorNames([updatedVideo]);
+        //console.log(updatedVideo);
+        res.status(200).json({ video: updatedVideo });
     } catch(err) {
         console.log(err);
         next(err);

@@ -76,6 +76,7 @@ exports.updateVideoLikes = async (video, author, action) => {
 
     videoDoc.$inc('likes', action === 'added' ? 1 : -1);
     await videoDoc.save();
+    return videoDoc.toObject();
 };
 
 exports.updateVideoDislikes = async (video, author, action) => {
@@ -98,4 +99,5 @@ exports.updateVideoDislikes = async (video, author, action) => {
    
     videoDoc.$inc('dislikes', action === 'added' ? 1 : -1);
     await videoDoc.save();
+    return videoDoc.toObject();
 }
