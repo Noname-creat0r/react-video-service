@@ -32,22 +32,22 @@ I will update this project during my futher learning process.
 ![HomeScreen](/screenshots/HomeV1.png)
 
 #### Video page
-![VideoPageScreen](/screensots/VideoPageV1.png)
+![VideoPageScreen](/screenshots/VideoPageV1.png)
 
-![VideoInfoScreen](/screensots/VideoInfoV1.png)
+![VideoInfoScreen](/screenshots/VideoInfoV1.png)
 
 #### Filter/Search
-![FilterScreen](/screensots/FilterV1.png)
+![FilterScreen](/screenshots/FilterV1.png)
 
-![SearchScreen](/screensots/SearchV1.png)
+![SearchScreen](/screenshots/SearchV1.png)
 
 #### Profile page
-![ProfilePageScreen](/screensots/ProfilePageV1.png)
+![ProfilePageScreen](/screenshots/ProfilePageV1.png)
 
 #### Forms
-![VideoUploadFormScreen](/screensots/VideoUploadFormV1.png)
+![VideoUploadFormScreen](/screenshots/VideoUploadFormV1.png)
 
-![SignInForm](/screensots/SignInFormV1.png)
+![SignInForm](/screenshots/SignInFormV1.png)
 
-![SignUpForm](/screensots/SignUpFormV1.png)
+![SignUpForm](/screenshots/SignUpFormV1.png)
 
