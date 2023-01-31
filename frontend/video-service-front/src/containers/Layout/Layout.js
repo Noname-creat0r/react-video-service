@@ -131,7 +131,7 @@ class Layout extends Component {
         }
     };
 
-    /*componentDidUpdate() {
+    componentDidUpdate() {
         if (this.props.isAuthenticated && this.props.userData.name == null ){
             //console.log(localStorage.getItem('userId'));
             //console.log(localStorage.getItem('token'));
@@ -140,20 +140,20 @@ class Layout extends Component {
                 localStorage.getItem('token'));
         }
         console.log('Layout update');
-    };*/
+    };
 
-    componentDidMount(){
+    /*componentDidMount(){
         this.props.fetchUserData( 
             localStorage.getItem('userId'),
             localStorage.getItem('token'));
-    }
+    }*/
 
     render() {
-        if (this.props.isLoading){
+        /*if (this.props.isLoading){
            return <LoadingSpinner />
-        }
+        }*/
 
-        else return(
+        return(
             <div>
                 <Toolbar 
                     isAuthenticated={this.props.isAuthenticated}
