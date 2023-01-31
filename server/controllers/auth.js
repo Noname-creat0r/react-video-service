@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+const key = process.env.KEY;
+
 exports.signup = (req, res, next) => {
     // validation
 
@@ -63,7 +65,7 @@ exports.signin = (req, res, next) => {
                     email: loadedUser.email,
                     userId: loadedUser._id.toString()
                 },
-                '172b-3c4g-5w6O-7x8h',
+                key,
             );
 
             const expirationDate = new Date().getTime() + 8639998;

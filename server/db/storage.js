@@ -1,20 +1,19 @@
 const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const mongoose = require('mongoose');
-const dbConfig = require('./config');
 const path = require('path');
 const ext = require('./fileExtensions');
 
+const baseUrl = process.env.BASE_URL;
+
 const storage = new GridFsStorage({
-    url: dbConfig.baseUrl,
+    url: baseUrl,
     file: (req, file) => {
         return new Promise((resolve, reject) => {
             const fileExt = path.extname(file.originalname);
             const filename = Date.now() + '-' + file.originalname;
             let bucketName;
-            // maybe create new mode
         
-            console.log(file);
             switch (fileExt) {
                 case ext.MP4:
                     bucketName = 'videos';

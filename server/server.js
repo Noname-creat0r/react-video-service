@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { default: mongoose } = require('mongoose');
-const dbConfig = require('./db/config');
+require('dotenv').config({ path: './config.env' });
 
 const app = express();
-const port = 8080;
+const port = process.env.SERVER_PORT;
+const baseUrl = process.env.BASE_URL;
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
@@ -29,7 +30,7 @@ app.use('/video', videoRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {
-    console.log(error);
+    //console.log(error);
     const status = error.statusCode || 500;
     const message = error.message;
     const data = error.data;
@@ -37,7 +38,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-    .connect(dbConfig.baseUrl)
+    .connect(baseUrl)
     .then(result => {
         app.listen(port, () => {
             console.log('App broadcasts on localhost:' + port);
