@@ -14,8 +14,8 @@ import './Toolbar.css';
 
 const toolbar = (props) => (
     // TODO: Wrapper for User section (Name + Icon = new Element)
-    <header>
-        <NavBar sticky="top" className='d-flex'>
+    <header className='Toolbar'>
+        <NavBar fixed="top" className='d-flex'>
             <DrawerToggle clicked={props.drawerToggleClicked}/>
             <NavBar.Brand>VideoService</NavBar.Brand>
 

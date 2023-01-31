@@ -52,7 +52,7 @@ export function* uploadVideoCommentsSaga(action) {
         //yield console.log(response.data.comment);
         yield put(actions.videoUploadCommentSuccess(response.data.comment[0]));
     } catch(error){
-        yield console.log(error);
+        yield put(actions.videoUploadCommentFailed(error));
     }
 };
 
@@ -64,7 +64,7 @@ export function* fetchVideoCommentsSaga(action) {
         //yield console.log(response.data.comments);
         yield put(actions.videoFetchCommentsSuccess(response.data.comments));
     } catch (error) {
-        yield console.log(error);
+        yield put(actions.videoFetchCommentsFailed(error));
     }
 };
 
@@ -78,6 +78,7 @@ export function* rateVideoSaga(action) {
         //yield console.log(response.data.video);
         yield put(actions.videoRateSuccess(response.data.video[0]));
     } catch (error) {
-        yield console.log(error);
+        yield put(actions.videoRateFailed(error));
+        //yield console.log(error);
     }
 };

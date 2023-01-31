@@ -3,6 +3,10 @@
     --main-toolbar-text-color: #1D1E2C;
 }
 
+.Toolbar{
+    padding-bottom: 3em;
+}
+
 header .navbar {
     background-color: var(--main-toollbar-color); 
     color: var(--main-toolbar-text-color);

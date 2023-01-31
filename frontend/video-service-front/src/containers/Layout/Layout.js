@@ -9,7 +9,6 @@ import Auth from '../Auth/Auth';
 
 import './Layout.css';
 import { updateObject } from '../../shared/utility';
-import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 
 const mapStateToProps = state => {
     return {

@@ -8,12 +8,15 @@ import VideoPlayer from '../../components/Video/VideoPlayer/VideoPlayer';
 import VideoInfo from '../../components/Video/VideoInfo/VideoInfo';
 import VideoFooter from '../../components/Video/VideoFooter/VideoFooter';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
+import ErrorToast from '../../components/Error/ErrorToasts/ErrorToast/ErrorToast';
+import NotifiactionContainer from '../../components/Notification/NotifiactionContainer';
 
 function mapStateToProps(state) {
     return {
         videoId: localStorage.getItem('videoId'),
         videosInfo: state.video.videosInfo,
         comments: state.video.comments,
+        error: state.video.error,
     };
 }
 
@@ -25,6 +28,7 @@ function mapDispatchToProps(dispatch) {
         fetchVideoComments: (videoId) => dispatch(actions.videoFetchComments(videoId)),
         uploadVideoComment: (videoId, userId, token, text) => dispatch(actions.videoUploadComment(videoId, userId, token, text)),
         rateVideo: (videoId, userId, token, actionType ) => dispatch(actions.videoRate(videoId, userId, token, actionType)),
+        clearError: () => dispatch(actions.videoClearError()),
     };
 }
 
@@ -72,7 +76,6 @@ class Video extends Component {
             this.state.commentary.text
         );
         this.props.fetchVideoComments(localStorage.getItem('videoId'));
-       
     }
 
     interactionItemClickHandler = (itemName) => {
@@ -84,7 +87,7 @@ class Video extends Component {
         })
        
         this.setState({interactionItems: updatedState});
-    }
+    };
 
     rateVideoHandler = (action) => {
         this.interactionItemClickHandler(action);
@@ -96,32 +99,40 @@ class Video extends Component {
         );
     };
 
+    errorToastClickHandler = () => {
+        this.props.clearError();
+    };
+
     render() {
         if (this.props.videosInfo.size === 0 ) {
             return <LoadingSpinner />
         }
+
+        const videoInfo = this.props.videosInfo.get(localStorage.getItem('videoId'));
+        return (
+            <Container >
+                <ErrorToast 
+                    text={this.props.error} 
+                    show={this.props.error}
+                    click={this.errorToastClickHandler} />
+                    
+                <VideoPlayer 
+                    videoId={videoInfo._id}/>
+                <VideoInfo 
+                    title={videoInfo.title}
+                    author={videoInfo.authorName}
+                    description={videoInfo.description}
+                    interactionItems={this.state.interactionItems}
+                    likes={videoInfo.likes}
+                    dislikes={videoInfo.dislikes}
+                    comments={this.props.comments}
+                    rateVideoHandler={this.rateVideoHandler}
+                    typeCommentHandler={this.typeCommentHandler}
+                    postCommentHandler={this.postCommentHandler}/>
+                <VideoFooter />
+            </Container>
+        );
         
-        else {
-            const videoInfo = this.props.videosInfo.get(localStorage.getItem('videoId'));
-            return (
-                <Container >
-                    <VideoPlayer 
-                        videoId={videoInfo._id}/>
-                    <VideoInfo 
-                        title={videoInfo.title}
-                        author={videoInfo.authorName}
-                        description={videoInfo.description}
-                        interactionItems={this.state.interactionItems}
-                        likes={videoInfo.likes}
-                        dislikes={videoInfo.dislikes}
-                        comments={this.props.comments}
-                        rateVideoHandler={this.rateVideoHandler}
-                        typeCommentHandler={this.typeCommentHandler}
-                        postCommentHandler={this.postCommentHandler}/>
-                    <VideoFooter />
-                </Container>
-            );
-        }
     }
 }
 

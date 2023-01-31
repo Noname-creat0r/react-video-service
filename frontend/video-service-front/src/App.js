@@ -5,7 +5,7 @@ import * as actions from './store/actions/index';
 
 import Layout from './containers/Layout/Layout';
 import ErrorBoundary from './hoc/ErrorBoundary/ErrorBoundary';
-import NotFound from './components/Error/NotFound';
+import NotFound from './components/Error/ErrorComponents/NotFound';
 import Home from './containers/Home/Home';
 import Video from './containers/Video/Video';
 import Profile from './containers/Profile/Profile';
@@ -35,8 +35,8 @@ class App extends Component {
 
     let routes = (
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/video" element={<Video />} />
+        <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     );

@@ -79,7 +79,7 @@ const videoUploadCommentsSuccess = (state, action) => {
 
 const videoFetchCommentsFailed = (state, action) => {
     return updateObject(state, {
-        error: action.error,
+        error: action.error
     });
 };
 
@@ -95,10 +95,22 @@ const videoRateStart = (state) => {
     });
 };
 
+const videoRateFailed = (state, action) => {
+    return updateObject(state, {
+        error: action.error,
+    });
+} 
+
 const videoRateSuccess = (state, action) => {
     //console.log(action.updatedVideo);
     return updateObject(state, {
         videosInfo: new Map([[action.updatedVideo._id, action.updatedVideo]])
+    });
+};
+
+const videoClearError = (state) => {
+    return updateObject(state, {
+        error: null,
     });
 };
 
@@ -118,6 +130,8 @@ const reducer = (state = initialState, action) => {
         case actionTypes.VIDEO_FETCH_COMMENTS_SUCCESS: return videoFetchCommentsSuccess(state, action);
         case actionTypes.VIDEO_RATE_START: return videoRateStart(state);
         case actionTypes.VIDEO_RATE_SUCCESS: return videoRateSuccess(state, action);
+        case actionTypes.VIDEO_RATE_FAILED: return videoRateFailed(state, action);
+        case actionTypes.VIDEO_CLEAR_ERROR: return videoClearError(state);
         default: return state;
     }
 };

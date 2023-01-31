@@ -34,4 +34,6 @@ export {
     videoRate,
     videoRateStart,
     videoRateSuccess,
+    videoRateFailed,
+    videoClearError,
 } from './video'

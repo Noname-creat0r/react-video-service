@@ -86,9 +86,17 @@ export const videoUploadComment = (videoId, userId, token, text) => {
 };
 
 export const videoUploadCommentFailed = (error) => {
+    let message ;
+    switch (error.response.status){
+        case 401:
+            message = "Sign In to post comments!"
+            break; 
+        default:
+            message = "Can't post this comment.";
+    }
     return {
         type: actionTypes.VIDEO_UPLOAD_COMMENTS_FAILED,
-        error: error,
+        error: message,
     };
 };
 
@@ -109,7 +117,7 @@ export const videoFetchComments = (videoId) => {
 export const videoFetchCommentsFailed = (error) => {
     return {
         type: actionTypes.VIDEO_FETCH_COMMENTS_FAILED,
-        error: error,
+        error: "Sorry, can't get the comments for this video :(",
     };
 };
 
@@ -133,12 +141,25 @@ export const videoRate = (videoId, userId, token, actionType) => {
 export const videoRateStart = () => {
     return {
         type: actionTypes.VIDEO_RATE_START
-    }
-}
+    };
+};
 
 export const videoRateSuccess = (updatedVideo) => {
     return {
         type: actionTypes.VIDEO_RATE_SUCCESS,
         updatedVideo: updatedVideo,
-    }
+    };
+};
+
+export const videoRateFailed = (error) => {
+    return {
+        type: actionTypes.VIDEO_RATE_FAILED,
+        error: "Sign In to rate video!",
+    };
+};
+
+export const videoClearError = () => {
+    return {
+        type: actionTypes.VIDEO_CLEAR_ERROR,
+    };
 };
