@@ -5,6 +5,7 @@ import * as actions from './store/actions/index';
 
 import Layout from './containers/Layout/Layout';
 import ErrorBoundary from './hoc/ErrorBoundary/ErrorBoundary';
+import NotFound from './components/Error/NotFound';
 import Home from './containers/Home/Home';
 import Video from './containers/Video/Video';
 import Profile from './containers/Profile/Profile';
@@ -36,6 +37,7 @@ class App extends Component {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/video" element={<Video />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     );
 
@@ -46,6 +48,7 @@ class App extends Component {
           <Route path="/profile" element={<Profile />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       )
     }

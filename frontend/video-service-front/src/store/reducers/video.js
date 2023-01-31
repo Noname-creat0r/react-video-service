@@ -8,7 +8,6 @@ const initialState = {
     interupted: false,
     videosInfo: new Map(),
     videoId: null,
-    isRating: false,
     comments: [],
     error: null,
 };

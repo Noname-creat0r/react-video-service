@@ -8,7 +8,7 @@ import {
     authCheckStateSaga
 } from './auth';
 import {
-     profileFetchDataSaga, 
+    profileFetchDataSaga, 
 } from "./profile";
 import {
     uploadVideoSaga,
