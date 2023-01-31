@@ -9,7 +9,7 @@ import './HomeVideoCard.css';
 const HomeVideoCard = (props) => {
     return (
         <Card 
-            className='HomeVideoCard mx-2'
+            className='HomeVideoCard mx-2 my-2'
             onClick={props.clicked}>
                 <NavLink to={'../video'} className='link'>
                     <Card.Img 

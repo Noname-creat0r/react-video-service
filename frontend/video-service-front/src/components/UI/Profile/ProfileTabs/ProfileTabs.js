@@ -9,6 +9,7 @@ import UploadVideoCard from '../../Card/UploadVideoCard/UploadVideoCard';
 import ProfileVideoCard from '../../Card/ProfileVideoCard/ProfileVideoCard';
 
 import './ProfileTabs.css';
+import Container from 'react-bootstrap/esm/Container';
 
 const ProfileTabs = (props) => {
     /*const videoCards = props.videos.map((video) => 
@@ -30,7 +31,9 @@ const ProfileTabs = (props) => {
                 </Row>
                 <Row>
                     <hr />
-                    {props.videos}
+                    <Container className='d-flex flex-wrap'>
+                        {props.videos}
+                    </Container>
                 </Row>
 
             </Tab>

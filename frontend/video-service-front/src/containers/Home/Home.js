@@ -48,7 +48,7 @@ class Home extends Component {
         }
 
         return (
-            <Container className='d-flex my-3'>
+            <Container className='d-flex flex-wrap my-3'>
                 {content}
             </Container>
         );

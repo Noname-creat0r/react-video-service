@@ -9,13 +9,12 @@ import './ProfileVideoCard.css';
 const ProfileVideoCard = (props) => {
     return (
         <Card 
-            className='ProfileVideoCard mx-2'
+            className='ProfileVideoCard mx-2 my-2'
             onClick={props.clicked}>
                 <NavLink to={'../video'} className='link'>
                 {
                     props.thumbnail ? 
                         <Card.Img 
-                            className='my-2'
                             variant='top'
                             src={props.thumbnail}
                             alt='VideoThumbnail'
