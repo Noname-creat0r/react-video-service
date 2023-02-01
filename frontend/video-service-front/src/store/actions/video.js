@@ -13,10 +13,11 @@ export const videoUploadFailed = (error) => {
     };
 };
 
-export const videoUploadSuccess = () => {
+export const videoUploadSuccess = (video) => {
     return {
         type: actionTypes.VIDEO_UPLOAD_SUCCESS,
-        message: "Uploaded new video successfully!"
+        message: "Uploaded new video successfully!",
+        video: video,
     };
 };
 

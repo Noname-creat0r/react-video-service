@@ -15,8 +15,8 @@ export function* uploadVideoSaga(action) {
                 'Content-Type': 'multipart/form-data'
             },
         });
-        yield console.log(response);
-        yield put(actions.videoUploadSuccess());
+        //yield console.log(response);
+        yield put(actions.videoUploadSuccess(response.data.video));
     } catch (err) {
         yield put(actions.videoUploadFailed(err));
     }

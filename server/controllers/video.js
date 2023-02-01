@@ -103,7 +103,6 @@ exports.postVideo = (req, res, next) => {
     const thumbnailFileId = thumbnail.id;
     const message = [];
 
-
     const mongoVideo = new Video({
         title: req.body.title,
         description: req.body.description,
@@ -116,24 +115,14 @@ exports.postVideo = (req, res, next) => {
         length: video.size
     });
 
-    /*console.log(thumbnail.toString('base64'));
-    const thumbnailData = fs.readFileSync(thumbnail.path);
-    const mongoThumbnail = new Thumbnail({
-        data: thumbnailData.toString('base64'),
-        contentType: thumbnail.mimetype,
-    });*/
-
     mongoVideo
         .save()
         .then(result => {
             message.push('Video has been uploaded successfully.');
-            res.status(201).json({ message: message.join("\r\n") });
-            //return mongoThumbnail.save();
+            res.status(201).json({ 
+                video: result.toObject(),
+                message: message.join("\r\n") });
         })
-        /*.then(result => {
-            message.push('Thumbnail has been uploaded successfully.');
-            res.status(201).json({ message: message.join("\r\n") });
-        })*/
         .catch(err => {
             if (!err.statusCode){
                 err.statusCode = 500;

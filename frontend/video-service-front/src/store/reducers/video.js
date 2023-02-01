@@ -30,7 +30,8 @@ const videoUploadFailed = (state, action) => {
 const videoUploadSuccess = (state, action) => {
     return updateObject(state, {
         uploading: false,
-        notifications: [ ...state.notifications, { message: action.message, type: 'success' }]
+        videosInfo: new Map([...state.videosInfo, [action.video._id, action.video]]),
+        notifications: [ ...state.notifications, { message: action.message, type: 'success' }],
     });
 };
 
