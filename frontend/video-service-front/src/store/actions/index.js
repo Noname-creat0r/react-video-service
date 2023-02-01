@@ -15,6 +15,7 @@ export {
     profileFetchData,
     profileFetchDataFail,
     profileFetchDataSuccess,
+    profileClearData,
     profileClearNotification,
     profileClearNotifications,
 } from './profile'

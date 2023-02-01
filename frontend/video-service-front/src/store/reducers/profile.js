@@ -47,11 +47,18 @@ const profileFetchDataFail = (state, action) => {
     });
 };
 
+const profileClearData = (state) => {
+    return updateObject(state, {
+        data: {},
+    });
+};
+
 const reducer = ( state = initialState, action ) => {
     switch ( action.type ){
         case (actionTypes.PROFILE_FETCH_DATA_START) : return profileFetchDataStart(state, action);
         case (actionTypes.PROFILE_FETCH_DATA_SUCCESS) : return profileFetchDataSuccess(state, action);
         case (actionTypes.PROFILE_FETCH_DATA_FAIL) : return profileFetchDataFail(state, action);
+        case (actionTypes.PROFILE_CLEAR_DATA): return profileClearData(state);
         case (actionTypes.PROFILE_CLEAR_NOTIFICATION) : return clearNotification(state, action);
         case (actionTypes.PROFILE_CLEAR_NOTIFICATIONS) : return clearNotifications(state);
         default: return state;

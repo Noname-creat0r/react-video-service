@@ -8,6 +8,7 @@ import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 import NotifiactionContainer from '../../components/Notification/NotifiactionContainer';
 import NotificationToast from '../../components/Notification/NotificationToast/NotificationToast';
 import Auth from '../Auth/Auth';
+import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 
 import './Layout.css';
 import { updateObject, mapNotificationToasts } from '../../shared/utility';
@@ -15,7 +16,7 @@ import { updateObject, mapNotificationToasts } from '../../shared/utility';
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.token !== null,
-        isLoading: state.auth.loading ,
+        isLoading: state.auth.loading || state.profile.fetching ,
         userData: state.profile.data,
         notifications: state.auth.notifications,
     };
@@ -142,7 +143,7 @@ class Layout extends Component {
                 localStorage.getItem('userId'),
                 localStorage.getItem('token'));
         }
-        console.log('Layout update');
+        //console.log('Layout update');
     };
 
     notificationToastClickHandler = (event, key) => {
@@ -153,6 +154,7 @@ class Layout extends Component {
         /*if (this.props.isLoading){
            return <LoadingSpinner />
         }*/
+
         let notifications = mapNotificationToasts(
             this.props.notifications,
             NotificationToast,

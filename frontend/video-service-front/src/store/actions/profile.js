@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 export const profileFetchDataStart = () => {
     return {
-        type: actionTypes.PROFILE_FETCH_DATA_START
+        type: actionTypes.PROFILE_FETCH_DATA_START,
     };
 };
 
@@ -28,6 +28,12 @@ export const profileFetchData = (userId, token) => {
         type: actionTypes.PROFILE_FETCH_DATA,
         userId: userId,
         token: token,
+    };
+};
+
+export const profileClearData = () => {
+    return {
+        type: actionTypes.PROFILE_CLEAR_DATA,
     };
 };
 
