@@ -1,3 +1,4 @@
+
 export const updateObject = (oldObject, updatedProperties) => {
     return {
         ...oldObject,
@@ -42,3 +43,13 @@ export const mapVideoInfoToCards = (videoInfo, clickHandler, VideoCard) => {
   return videoArr;
 };
 
+export const mapNotificationToasts = (notifications, NotificationToast, clickHandler) => {
+  return notifications.map( (notification, index) => {
+    return <NotificationToast
+        key={index}
+        bg={notification.type}
+        show={true}
+        click={clickHandler} 
+        text={notification.message}/>
+  })
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateObject } from '../../shared/utility';
+import { mapNotificationToasts, updateObject } from '../../shared/utility';
 import * as actions from '../../store/actions/index';
 
 import Container from 'react-bootstrap/Container';
@@ -8,16 +8,16 @@ import VideoPlayer from '../../components/Video/VideoPlayer/VideoPlayer';
 import VideoInfo from '../../components/Video/VideoInfo/VideoInfo';
 import VideoFooter from '../../components/Video/VideoFooter/VideoFooter';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
-import ErrorToast from '../../components/Error/ErrorToasts/ErrorToast/ErrorToast';
 import NotifiactionContainer from '../../components/Notification/NotifiactionContainer';
+import NotificationToast from '../../components/Notification/NotificationToast/NotificationToast';
 
 function mapStateToProps(state) {
     return {
         videoId: localStorage.getItem('videoId'),
         videosInfo: state.video.videosInfo,
         comments: state.video.comments,
-        error: state.video.error,
-    };
+        notifications: state.video.notifications,
+    }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -28,7 +28,8 @@ function mapDispatchToProps(dispatch) {
         fetchVideoComments: (videoId) => dispatch(actions.videoFetchComments(videoId)),
         uploadVideoComment: (videoId, userId, token, text) => dispatch(actions.videoUploadComment(videoId, userId, token, text)),
         rateVideo: (videoId, userId, token, actionType ) => dispatch(actions.videoRate(videoId, userId, token, actionType)),
-        clearError: () => dispatch(actions.videoClearError()),
+        clearNotification: (event, index) => dispatch(actions.videoClearNotification(index)),
+        clearNotifications: () => dispatch(actions.videoClearNotifications()),
     };
 }
 
@@ -56,6 +57,10 @@ class Video extends Component {
             this.props.fetchVideoInfo(localStorage.getItem('videoId'));
         }
         this.props.fetchVideoComments(localStorage.getItem('videoId'));
+    }
+
+    componentWillUnmount() {
+        this.props.clearNotifications();
     }
 
    typeCommentHandler = (event) => {
@@ -99,8 +104,8 @@ class Video extends Component {
         );
     };
 
-    errorToastClickHandler = () => {
-        this.props.clearError();
+    notificationToastClickHandler = (event, key) => {
+        this.props.clearNotification(key);
     };
 
     render() {
@@ -108,13 +113,15 @@ class Video extends Component {
             return <LoadingSpinner />
         }
 
+        let notifications = mapNotificationToasts(
+            this.props.notifications,
+            NotificationToast,
+            this.notificationToastClickHandler);
+
         const videoInfo = this.props.videosInfo.get(localStorage.getItem('videoId'));
         return (
             <Container >
-                <ErrorToast 
-                    text={this.props.error} 
-                    show={this.props.error}
-                    click={this.errorToastClickHandler} />
+                <NotifiactionContainer toasts={notifications}/>
                     
                 <VideoPlayer 
                     videoId={videoInfo._id}/>

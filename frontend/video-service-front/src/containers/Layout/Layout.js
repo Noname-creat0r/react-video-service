@@ -5,16 +5,19 @@ import * as actions from '../../store/actions/index';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import FilterOptions from '../../components/Navigation/FilterOptions/FilterOptions';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
+import NotifiactionContainer from '../../components/Notification/NotifiactionContainer';
+import NotificationToast from '../../components/Notification/NotificationToast/NotificationToast';
 import Auth from '../Auth/Auth';
 
 import './Layout.css';
-import { updateObject } from '../../shared/utility';
+import { updateObject, mapNotificationToasts } from '../../shared/utility';
 
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.token !== null,
         isLoading: state.auth.loading ,
         userData: state.profile.data,
+        notifications: state.auth.notifications,
     };
 };
 
@@ -22,7 +25,8 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchUserData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
         fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
-        
+        clearNotification: (event, index) => dispatch(actions.authClearNotification(index)),
+        clearNotifications: () => dispatch(actions.authClearNotifications()),
     };
 };
 
@@ -141,16 +145,18 @@ class Layout extends Component {
         console.log('Layout update');
     };
 
-    /*componentDidMount(){
-        this.props.fetchUserData( 
-            localStorage.getItem('userId'),
-            localStorage.getItem('token'));
-    }*/
+    notificationToastClickHandler = (event, key) => {
+        this.props.clearNotification(key);
+    };
 
     render() {
         /*if (this.props.isLoading){
            return <LoadingSpinner />
         }*/
+        let notifications = mapNotificationToasts(
+            this.props.notifications,
+            NotificationToast,
+            this.notificationToastClickHandler);
 
         return(
             <div>
@@ -170,6 +176,7 @@ class Layout extends Component {
                     isOpen={this.state.showSideDrawer}
                     close={this.sideDrawerCloseHandler}/>
                 <main>
+                    <NotifiactionContainer toasts={notifications}/> 
                     <Auth 
                         show={this.state.showAuthModal}
                         hide={this.authModalToggleHandler}/>

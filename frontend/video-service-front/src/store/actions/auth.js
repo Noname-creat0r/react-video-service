@@ -8,13 +8,21 @@ export const authStart = () => {
     };
 };
 
-export const authSuccess = (token, userId) => {
+export const authSuccess = (token, userId, auto) => {
+    let message = 'Signed in successfully';
+    const payload = {
+        token: token,
+        userId: userId,
+    };
+
+    if (!token){
+        message = 'Signed up successfully';
+    }
+
     return {
         type: actionTypes.AUTH_SUCCESS,
-        payload: {
-            token: token,
-            userId: userId,
-        }
+        message: auto ? null : message,
+        payload: payload,
     };
 };
 
@@ -25,15 +33,17 @@ export const authFail = (error) => {
     };
 };
 
-export const logout = () => {
+export const logout = (message) => {
     return {
-        type: actionTypes.AUTH_INITIATE_LOGOUT
+        type: actionTypes.AUTH_INITIATE_LOGOUT,
+        message: message,
     };
 };
 
-export const logoutSucceed = () => {
+export const logoutSucceed = (message) => {
     return {
         type: actionTypes.AUTH_LOGOUT,
+        message: message,
     };
 };
 
@@ -57,4 +67,17 @@ export const auth = (email, password, name) => {
         password: password,
         name: name,
     }
+};
+
+export const authClearNotification = (index) => {
+    return {
+        type: actionTypes.AUTH_CLEAR_NOTIFICATION,
+        index: index,
+    }
+};
+
+export const authClearNotifications = () => {
+    return {
+        type: actionTypes.AUTH_CLEAR_NOTIFICATIONS,
+    };
 };

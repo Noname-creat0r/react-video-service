@@ -1,28 +1,22 @@
 import React from 'react';
 
-import ToastContainer from 'react-bootstrap/ToastContainer';
 import Toast from 'react-bootstrap/Toast';
 
-const NotificationToast = () => {
+const NotificationToast = (props) => {
     return (
-        <ToastContainer 
-            className='mx-2 my-2'
-            containerPosition='fixed' 
-            position='top-end'>
-            <Toast 
-                className='Toast'
-                bg='success' 
-                show={props.show}
-                onClose={props.click}>
-                <Toast.Header>
-                    <strong>Notification</strong>
-                </Toast.Header>
-                <Toast.Body>
-                    {props.text}
-                </Toast.Body>
-            </Toast>
-            
-        </ToastContainer>
+        <Toast 
+            className='Toast'
+            bg={props.bg} 
+            show={props.show}
+            autohide
+            onClose={(event, key) => props.click(event, key)}>
+            <Toast.Header closeButton>
+                <strong>Notification</strong>
+            </Toast.Header>
+            <Toast.Body>
+                {props.text}
+            </Toast.Body>
+        </Toast>
     );
 };
 

@@ -7,12 +7,16 @@ export {
     checkAuthTimeout,
     logout,
     logoutSucceed,
-} from './auth';
+    authClearNotification,
+    authClearNotifications,
+} from './auth'; 
 export {
     profileFetchDataStart,
     profileFetchData,
     profileFetchDataFail,
     profileFetchDataSuccess,
+    profileClearNotification,
+    profileClearNotifications,
 } from './profile'
 export {
     videoUploadStart,
@@ -35,5 +39,6 @@ export {
     videoRateStart,
     videoRateSuccess,
     videoRateFailed,
-    videoClearError,
+    videoClearNotification,
+    videoClearNotifications,
 } from './video'

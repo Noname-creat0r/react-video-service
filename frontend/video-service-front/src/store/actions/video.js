@@ -16,6 +16,7 @@ export const videoUploadFailed = (error) => {
 export const videoUploadSuccess = () => {
     return {
         type: actionTypes.VIDEO_UPLOAD_SUCCESS,
+        message: "Uploaded new video successfully!"
     };
 };
 
@@ -104,6 +105,7 @@ export const videoUploadCommentSuccess = (comment) => {
     return {
         type: actionTypes.VIDEO_UPLOAD_COMMENTS_SUCCESS,
         comment: comment,
+        notification: 'You posted a comment!',
     }
 }
 
@@ -158,8 +160,15 @@ export const videoRateFailed = (error) => {
     };
 };
 
-export const videoClearError = () => {
+export const videoClearNotification = (index) => {
     return {
-        type: actionTypes.VIDEO_CLEAR_ERROR,
+        type: actionTypes.VIDEO_CLEAR_NOTIFICATION,
+        index: index,
+    }
+}
+
+export const videoClearNotifications = () => {
+    return {
+        type: actionTypes.VIDEO_CLEAR_NOTIFICATIONS,
     };
 };

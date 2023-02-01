@@ -191,7 +191,9 @@ class Auth extends Component {
                 show={this.props.show}
                 onHide={this.props.hide}>
 
-                <Modal.Header> {this.state.currentAuthForm} </Modal.Header>
+                <Modal.Header> 
+                    {this.state.currentAuthForm}
+                </Modal.Header>
                 <Modal.Body> 
                     <Form id="authForm">
                         {formContent}
