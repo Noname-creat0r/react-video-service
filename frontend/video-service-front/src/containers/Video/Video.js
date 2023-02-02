@@ -39,6 +39,7 @@ class Video extends Component {
             text: '',
             touched: false,
         },
+        playing: true,
         interactionItems: {
             'playlist': {
                 clicked: false,
@@ -108,6 +109,16 @@ class Video extends Component {
         this.props.clearNotification(key);
     };
 
+    playingStateSwitch = () => {
+        this.setState( (prevState) => {
+            return { playing: !prevState.playing}
+        });
+    };
+
+    playingStateDisable = () => {
+        this.setState({ playing: false});
+    };
+
     render() {
         if (this.props.videosInfo.size === 0 ) {
             return <LoadingSpinner />
@@ -124,7 +135,10 @@ class Video extends Component {
                 <NotifiactionContainer toasts={notifications}/>
                     
                 <VideoPlayer 
-                    videoId={videoInfo._id}/>
+                    videoId={videoInfo._id}
+                    playing={this.state.playing}
+                    playSwitchHandler={this.playingStateSwitch}
+                    playDisableHandler={this.playingStateDisable}/>
                 <VideoInfo 
                     title={videoInfo.title}
                     author={videoInfo.authorName}

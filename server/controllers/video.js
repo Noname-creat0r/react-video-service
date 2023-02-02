@@ -10,7 +10,7 @@ const { insertAuthorNames, handleLikeDislike,
     updateVideoLikes, updateVideoDislikes, sortByUploadDate } = require('../shared/utility');
 
 exports.getVideoThumbnail = async (req, res, next) => {
-    console.log(req.query.id + " thumbnail id");
+    //console.log(req.query.id + " thumbnail id");
     const thumbnails = methods.getGridBucket('thumbnails'); 
     thumbnails
         .find({ _id: mongoose.Types.ObjectId(req.query.id) })
@@ -133,12 +133,6 @@ exports.postVideo = (req, res, next) => {
 
 exports.getVideo = (req, res, next) => {
     try {
-        const range = req.headers.range;
-        if (!range){
-            const error = new Error('Requires Range header.');
-            error.statusCode = 400;
-            throw error;
-        }
 
         const video = Video
             .find({ _id: mongoose.Types.ObjectId(req.query.id)})
@@ -163,40 +157,51 @@ exports.getVideo = (req, res, next) => {
                     error.statusCode = 500;
                     throw error;
                 }
-                //file.forEach(file => {console.log (file)});
-                //console.log(file.length);
 
-                //const CHUNK_SIZE = 261120;
                 const videoSize = file.length;
-                const start = Number(range.replace(/\D/g, ""));
-                const end = Math.min(start + 10**6, videoSize - 1);
-                const contentLength = end - start + 1; 
-                //console.log("start: " + start + " end: " + end);
-                //console.log(videoSize);
-                const headers = {
-                    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-                    "Accept-Ranges": "bytes",
-                    "Content-Length": contentLength,
-                    "Content-Type": file.contentType,
-                } 
-               
-                if (start >= end ) {
-                    res.writeHead(206, {
-                        "Content-Length": contentLength,
-                        "Content-Type": file.contentType
-                    });
-                    //res.end();
-                }
-                else {
-
-                    res.writeHead(206, headers);
-                
+                const range = req.headers.range;
+                /*if (!range){
+                    const error = new Error('Requires Range header.');
+                    error.statusCode = 400;
+                    throw error;
+                }*/
+                if (range) {
+                    res.writeHead(200, {
+                        "Connection": "close",
+                        "Content-Length": videoSize,
+                        "Content-Type": file.contentType,
+                    })
                     methods
                         .getGridBucket('videos')
-                        .openDownloadStreamByName(
-                            file.filename,
-                            {start: start, end: end})
+                        .openDownloadStreamByName(file.filename)
                         .pipe(res);
+
+                } else {
+
+                    //const CHUNK_SIZE = 261120;
+                    const parts = range.replace(/bytes=/, "").split("-")
+                    const start = parseInt(parts[0], 10)
+                    const end = parts[1] ? parseInt(parts[1], 10): videoSize-1
+                    const contentLength = (end - start) + 1; 
+                    console.log("start: " + start + ", end: " + end + ', videoSize: ' + videoSize);
+                    //console.log(videoSize);
+                    const headers = {
+                        "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+                        "Accept-Ranges": "bytes",
+                        "Content-Length": contentLength,
+                        "Content-Type": file.contentType,
+                    } 
+                
+                    
+                        res.writeHead(206, headers);
+                
+                        methods
+                            .getGridBucket('videos')
+                            .openDownloadStreamByName(
+                                file.filename,
+                                {start: start, end: end})
+                            .pipe(res);
+                    
                 }
             })
 
