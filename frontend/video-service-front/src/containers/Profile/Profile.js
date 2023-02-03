@@ -8,7 +8,7 @@ import Column from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 
 import UserIcon from '../../assets/images/default-user-icon.svg';
-import ProfileTabs from '../../components/UI/Profile/ProfileTabs/ProfileTabs';
+import ProfileTabs from '../../components/Profile/ProfileTabs/ProfileTabs';
 import UploadVideoForm from '../Video/UploadVideoForm/UploadVideoForm';
 import ProfileVideoCard from '../../components/UI/Card/ProfileVideoCard/ProfileVideoCard';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
@@ -16,7 +16,7 @@ import NotifiactionContainer from '../../components/Notification/NotifiactionCon
 import NotificationToast from '../../components/Notification/NotificationToast/NotificationToast';
 
 import './Profile.css';
-import { mapNotificationToasts } from '../../shared/utility';
+import { mapNotificationToasts, mapVideoInfoToCards } from '../../shared/utility';
 
 const mapStateToProps = state => {
     return {
@@ -37,14 +37,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 class Profile extends Component {
-      /*
-        1. Avatar + Username on a random background
-        2. Profile tabs (Videos, Playlists, About)
-        3. Content of the tabs
-        4. footer
-
-        - ProfileTabs component
-       */
 
     state = {
         showUploadVideoFormModal: false,
@@ -75,6 +67,7 @@ class Profile extends Component {
                 <ProfileVideoCard
                     key={id}
                     title={video.title}
+                    like={video.likes}
                     thumbnail={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
                     clicked={event => this.profileVideoCardClickHandler(event, id)}
                 />);
@@ -103,7 +96,12 @@ class Profile extends Component {
             NotificationToast,
             this.notificationToastClickHandler);
 
-        const videos = this.mapVideoInfoToCards(this.props.videosInfo);
+        const videos = mapVideoInfoToCards(
+            this.props.videosInfo,
+            this.profileVideoCardClickHandler,
+            ProfileVideoCard,
+        )
+        
         return (
             <Container className="my-2">
                 <NotifiactionContainer toasts={notifications}/>

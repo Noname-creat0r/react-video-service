@@ -5,8 +5,8 @@ import Tab from 'react-bootstrap/Tab';
 import Column from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import UploadVideoCard from '../../Card/UploadVideoCard/UploadVideoCard';
-import ProfileVideoCard from '../../Card/ProfileVideoCard/ProfileVideoCard';
+import UploadVideoCard from '../../UI/Card/UploadVideoCard/UploadVideoCard';
+import ProfileVideoCard from '../../UI/Card/ProfileVideoCard/ProfileVideoCard';
 
 import './ProfileTabs.css';
 import Container from 'react-bootstrap/esm/Container';
