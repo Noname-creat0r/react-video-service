@@ -12,4 +12,16 @@ router.get(
     userController.fetchData
 );
 
+router.get(
+    '/playlist',
+    isAuth,
+    userController.getPlaylist
+)
+
+router.post(
+    '/playlist',
+    isAuth,
+    userController.postPlaylist
+)
+
 module.exports = router;

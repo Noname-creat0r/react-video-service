@@ -9,7 +9,6 @@ const VideoPlayer = (props) => {
     return (
         <div className='player-wrapper'>
            <ReactPlayer
-               
                 onError={(error, data) => {console.log(error)}}
                 controls={true}
                 className='my-3 react-player'

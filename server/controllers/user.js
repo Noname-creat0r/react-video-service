@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Playlist = require('../models/Playlist');
 
 exports.fetchData = (req, res, next) => {
     const userId = req.query.userId.toString();
@@ -23,4 +24,12 @@ exports.fetchData = (req, res, next) => {
             }
             next(err);
         });
+};
+
+exports.getPlaylist = async (req, res, next) => {
+
+};
+
+exports.postPlaylist = async (req, res, next) => {
+    
 };
