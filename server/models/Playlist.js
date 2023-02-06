@@ -11,7 +11,11 @@ const playlistSchema = new Schema({
         ref: 'User',
         required: true
     },
-    about: { type: String },
+    description: { type: String },
+    thumbnail: {
+        type: Schema.Types.ObjectId, 
+        ref: 'Thumbnail'
+    },
     videos: [
         {
             type: Schema.Types.ObjectId,

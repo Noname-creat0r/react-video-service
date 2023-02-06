@@ -26,10 +26,3 @@ exports.fetchData = (req, res, next) => {
         });
 };
 
-exports.getPlaylist = async (req, res, next) => {
-
-};
-
-exports.postPlaylist = async (req, res, next) => {
-    
-};
