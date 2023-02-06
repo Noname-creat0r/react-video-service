@@ -3,24 +3,24 @@ import { NavLink } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Popover from 'react-bootstrap/Popover';
 import ListGroup from 'react-bootstrap/ListGroup';
+
+import Overlay from '../../Overlay/Overlay';
 import UserBadge from '../../User/UserBadge/UserBadge';
 import ActionsIcon from '../../../../assets/images/menu-kebab.svg';
 
 import './HomeVideoCard.css';
 
 const HomeVideoCard = (props) => {
-    const popover = (
-        <Popover id='options-popover'>
-            <Popover.Header as='h3'>Options</Popover.Header>
-            <Popover.Body>
-                <ListGroup>
-                    <ListGroup.Item action onClick={() => alert('bitch')}>Add to playlist</ListGroup.Item>
-                </ListGroup>
-            </Popover.Body>
-        </Popover>
+    const options = (
+        <ListGroup.Item action>Add to playlist</ListGroup.Item>
+    );
+    const menuIcon = (
+        <Image 
+            src={ActionsIcon} 
+            className='OptionsIcon align-self-center'
+            width='20px'
+            height='20px'/> 
     );
 
     return (
@@ -40,16 +40,12 @@ const HomeVideoCard = (props) => {
             </NavLink>
             <Card.Footer className='d-flex'>
                 <UserBadge name={props.authorName} />
-                <OverlayTrigger 
-                    trigger="click"
-                    placement="top-start"
-                    overlay={popover}>
-                    <Image 
-                        src={ActionsIcon} 
-                        className='OptionsIcon align-self-center'
-                        width='20px'
-                        height='20px'/> 
-                </OverlayTrigger>
+                <Overlay
+                    trigger='click'
+                    placement='top-start'
+                    header='Options'
+                    content={options}
+                    container={menuIcon} />
             </Card.Footer>
         </Card>
     );

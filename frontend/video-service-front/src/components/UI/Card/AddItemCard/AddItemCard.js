@@ -4,17 +4,17 @@ import Card from 'react-bootstrap/Card';
 
 import UploadIcon from '../../../../assets/images/plus-sign.svg';
 
-import './UploadVideoCard.css';
+import './AddItemCard.css';
 
-const UploadVideoCard = (props) => {
+const AddItemCard = (props) => {
     return (
         <Card 
-            className='UploadVideoCard'
+            className='AddItemCard'
             onClick={props.clicked}>
             <Card.Img 
                 className='my-2'
                 src={UploadIcon} 
-                alt='UploadVideoCardImg'
+                alt='AddItemCardImg'
                 style={{ width: '35%' }} />
             <Card.ImgOverlay>
             </Card.ImgOverlay>
@@ -22,4 +22,4 @@ const UploadVideoCard = (props) => {
     );
 }
 
-export default UploadVideoCard;
+export default AddItemCard;

@@ -1,0 +1,13 @@
+.AddItemCard {
+   display: flex;
+   align-items: center;
+   color: white;
+   width: 8rem; 
+}
+
+.AddItemCard:hover {
+   z-index: 100;
+   transform: scale(1.2);
+   border: 1px solid silver;
+   box-shadow: 3px 3px 3px #9C528B;
+}

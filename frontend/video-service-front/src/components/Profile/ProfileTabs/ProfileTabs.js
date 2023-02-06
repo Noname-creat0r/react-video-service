@@ -2,23 +2,14 @@ import React from 'react';
 
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import Column from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
 
-import UploadVideoCard from '../../UI/Card/UploadVideoCard/UploadVideoCard';
-import ProfileVideoCard from '../../UI/Card/ProfileVideoCard/ProfileVideoCard';
+import AddItemCard from '../../UI/Card/AddItemCard/AddItemCard';
 
 import './ProfileTabs.css';
-import Container from 'react-bootstrap/esm/Container';
 
 const ProfileTabs = (props) => {
-    /*const videoCards = props.videos.map((video) => 
-        <ProfileVideoCard 
-           clicked={props.videoCardClick}
-           thumbnail={video.thumbnail}
-           title={video.title} />
-    );*/
-    
     return (
         <Tabs 
             defaultActiveKey="Videos"
@@ -26,7 +17,7 @@ const ProfileTabs = (props) => {
             onSelect={props.tabSelectHandler}>
             <Tab eventKey="Videos" title="Videos">
                 <Row className='my-3'>
-                    <UploadVideoCard
+                    <AddItemCard
                         clicked={props.uploadVideoCardClicked}/>
                 </Row>
                 <Row>
@@ -35,10 +26,18 @@ const ProfileTabs = (props) => {
                         {props.videos}
                     </Container>
                 </Row>
-
             </Tab>
             <Tab eventKey="Playlists" title="Playlists">
-                Playlists
+                <Row className='my-3'>
+                    <AddItemCard
+                        clicked={props.uploadPlaylistCardClicked}/>
+                </Row>
+                <Row>
+                    <hr />
+                    <Container className='d-flex flex-wrap'>
+                        {props.playlists}
+                    </Container>
+                </Row>
             </Tab>
             
             <Tab eventKey="Settings" title="Settings">
