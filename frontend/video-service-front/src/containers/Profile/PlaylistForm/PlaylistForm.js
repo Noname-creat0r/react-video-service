@@ -1,17 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as actions from '../../../store/actions/index';
 
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
 import Modal from '../../../components/UI/Modal/Modal';
+import Button from 'react-bootstrap/Button';
+
+import { getFormInputsArray, getUpdatedControls,
+    checkFormValidity, getFormControlGroups} from '../../../shared/formUtil';
+
 
 function mapStateToProps(state) {
     return {
-        // props for show/close from redux!
+        showPlaylistForm: state.playlist.showPlaylistForm,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        // close/send data sagas + actions
+        close: () => dispatch(actions.playlistCloseForm()),
+        show: () => dispatch(actions.playlistShowForm()),
+        upload: (data) => dispatch(actions.playlistUpload(data)),
     };
 }
 
@@ -22,7 +32,7 @@ class PlaylistForm extends Component {
             title: {
                 elementType: 'input',
                 groupConfig: {
-                    group: 'name',
+                    group: 'title',
                     label: 'Title:',
                 },
                 controlConfig: {
@@ -35,22 +45,107 @@ class PlaylistForm extends Component {
                 },
                 value: '',
                 touched: false
+            },
+            description: {
+                elementType: 'input',
+                groupConfig: {
+                    group: 'description',
+                    label: 'Description:',
+                },
+                controlConfig: {
+                    type: 'text',
+                    placeholder: 'Playlist description',
+                },
+                validation: {
+                    valid: false,
+                    required: false
+                },
+                value: '',
+                touched: false
+            },
+            thumbnail: {
+                elementType: 'input',
+                groupConfig: {
+                    group: 'thumbnail',
+                    label: 'Thumbnail:',
+                },
+                controlConfig: {
+                    type: 'file',
+                    placeholder: 'Playlist thumbnail',
+                },
+                validation: {
+                    valid: false,
+                    required: true
+                },
+                value: '',
+                file: null,
+                touched: false
             }
         },
     };
 
-    render() {
-        // Sections with playlist cards of your own -> the first one is +
-        // if plus
-        const title = 'Playlist managment';
+    inputChangedHandler = (event) => {
+        this.setState({ controls: getUpdatedControls(event, this.state) });
+        this.setState({ isFormValid: checkFormValidity(this.state) });
+    }
 
-        const content = {};
-        const buttons =''
+    upload = (event) => {
+        event.preventDefault();
+        this.props.upload({
+            token: localStorage.getItem('token'),
+            userId: localStorage.getItem('userId'),
+            title: this.state.controls['title'].value,
+            description: this.state.controls['description'].value,
+            thumbnail: this.state.controls['thumbnail'].file,
+            imageType: 'thumbnail', 
+        });
+    }
+
+    render() {
+        const title = 'New playlist';
+
+        const formElementsArray = [];
+        for (let key in this.state.controls){
+            formElementsArray.push({
+                id: key,
+                config: this.state.controls[key]
+            });
+        }
+
+        const formContent = getFormControlGroups(
+            getFormInputsArray(formElementsArray, this.inputChangedHandler)
+        );
+
+        const form = (
+            <Form id="playlistUploadForm">
+                {formContent}
+            </Form>
+        );
+
+        const buttons = (
+            <Container className="text-center"> 
+                <Button 
+                    className="mx-2 my-2 btn-md"
+                    variant="secondary"
+                    onClick={this.props.close}>
+                        Close
+                </Button>
+                <Button 
+                    className="mx-2 my-2 btn-md"
+                    variant="success"
+                    disabled={!this.state.isFormValid}
+                    type="submit"
+                    onClick={this.upload}
+                    form="playlistUploadForm">
+                    Upload
+                </Button>
+            </Container>
+        );
 
         return (
             <Modal 
-                show={this.props.show}
-                hide={this.props.hide}
+                show={this.props.showPlaylistForm}
+                hide={this.props.close}
                 title={title}
                 body={form}
                 footer={buttons}/>

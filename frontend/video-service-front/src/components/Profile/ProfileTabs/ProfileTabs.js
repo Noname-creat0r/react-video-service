@@ -30,7 +30,7 @@ const ProfileTabs = (props) => {
             <Tab eventKey="Playlists" title="Playlists">
                 <Row className='my-3'>
                     <AddItemCard
-                        clicked={props.uploadPlaylistCardClicked}/>
+                        clicked={() => props.uploadPlaylistCardClicked()}/>
                 </Row>
                 <Row>
                     <hr />

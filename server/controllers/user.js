@@ -3,7 +3,7 @@ const Playlist = require('../models/Playlist');
 
 exports.fetchData = (req, res, next) => {
     const userId = req.query.userId.toString();
-    console.log(userId);
+    //console.log(userId);
     User.findOne({_id: userId})
         .then(user => {
             if (!user){
@@ -15,7 +15,7 @@ exports.fetchData = (req, res, next) => {
             const data = {
                 name: user.name,
             }
-            console.log({ message: 'User data fetched. ', data: data});
+           // console.log({ message: 'User data fetched. ', data: data});
             res.status(200).json({ message: 'User data fetched. ', data: data});
         })
         .catch(err => {

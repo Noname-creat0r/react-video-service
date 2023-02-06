@@ -8,6 +8,7 @@ import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 import NotifiactionContainer from '../../components/Notification/NotifiactionContainer';
 import NotificationToast from '../../components/Notification/NotificationToast/NotificationToast';
 import Auth from '../Auth/Auth';
+import PlaylistForm from '../Profile/PlaylistForm/PlaylistForm';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 
 import './Layout.css';
@@ -182,7 +183,7 @@ class Layout extends Component {
                     <Auth 
                         show={this.state.showAuthModal}
                         hide={this.authModalToggleHandler}/>
-
+                    <PlaylistForm />
                     {this.props.children}
 
                 </main>

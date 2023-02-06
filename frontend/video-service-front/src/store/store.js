@@ -4,7 +4,9 @@ import createSagaMiddleware from 'redux-saga';
 import authReducer from './reducers/auth';
 import profileReducer from './reducers/profile';
 import videoReducer from './reducers/video';
-import { watchAuth, watchProfile, watchVideo } from './sagas';
+import playlistReducer from './reducers/playlist';
+import { watchAuth, watchProfile,
+     watchVideo, watchPlaylist } from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -13,6 +15,7 @@ export default configureStore({
         auth: authReducer,
         profile: profileReducer,
         video: videoReducer,
+        playlist: playlistReducer,
     },
     middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware({ 
@@ -25,3 +28,4 @@ export default configureStore({
 sagaMiddleware.run(watchAuth);
 sagaMiddleware.run(watchProfile);
 sagaMiddleware.run(watchVideo);
+sagaMiddleware.run(watchPlaylist);

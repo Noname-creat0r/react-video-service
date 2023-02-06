@@ -11,6 +11,7 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const homeRoutes = require('./routes/home');
 const videoRoutes = require('./routes/video');
+const playlistRouter = require('./routes/playlist');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,6 +28,7 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/home', homeRoutes);
 app.use('/video', videoRoutes);
+app.use('/playlist', playlistRouter);
 
 // Error handling middleware
 app.use((error, req, res, next) => {

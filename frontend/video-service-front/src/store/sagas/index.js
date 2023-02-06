@@ -17,6 +17,11 @@ import {
     fetchVideoCommentsSaga,
     rateVideoSaga,
 } from './video';
+import {
+    fetchPlaylistsSaga,
+    uploadPlaylistSaga,
+} from './playlist';
+
 
 export function* watchAuth() {
     yield all([
@@ -40,5 +45,12 @@ export function* watchVideo() {
         takeEvery(actionTypes.VIDEO_UPLOAD_COMMENTS, uploadVideoCommentsSaga),
         takeEvery(actionTypes.VIDEO_FETCH_COMMENTS, fetchVideoCommentsSaga),
         takeEvery(actionTypes.VIDEO_RATE, rateVideoSaga),
+    ]);
+};
+
+export function* watchPlaylist() {
+    yield all([
+        takeEvery(actionTypes.PLAYLIST_UPLOAD, uploadPlaylistSaga),
+        takeEvery(actionTypes.PLAYLIST_FETCH_DATA, fetchPlaylistsSaga),
     ]);
 };

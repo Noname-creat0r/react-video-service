@@ -11,26 +11,32 @@ import UserIcon from '../../assets/images/default-user-icon.svg';
 import ProfileTabs from '../../components/Profile/ProfileTabs/ProfileTabs';
 import UploadVideoForm from '../Video/UploadVideoForm/UploadVideoForm';
 import ProfileVideoCard from '../../components/UI/Card/ProfileVideoCard/ProfileVideoCard';
+import ProfilePlaylistCard from '../../components/UI/Card/ProfilePlaylistCard/ProfilePlaylistCard';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 import NotifiactionContainer from '../../components/Notification/NotifiactionContainer';
 import NotificationToast from '../../components/Notification/NotificationToast/NotificationToast';
 
 import './Profile.css';
-import { mapNotificationToasts, mapVideoInfoToCards } from '../../shared/utility';
+import { mapNotificationToasts, mapVideoInfoToCards,
+    mapPlaylistsToCards } from '../../shared/utility';
 
 const mapStateToProps = state => {
     return {
         nickname: state.profile.data.name,
         fetchingData: state.profile.fetchingInfo,
         videosInfo: state.video.videosInfo,
-        notifications: state.video.notifications,
+        playlists: state.playlist.playlists,
+        videoNotifications: state.video.notifications,
+        playlistNotifications: state.playlist.notifications,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
+        fetchPlaylistData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
+        showPlaylistForm: () => dispatch(actions.playlistShowForm()),
         clearNotification: (event, index) => dispatch(actions.videoClearNotification(index)),
         clearNotifications: () => dispatch(actions.videoClearNotifications()),
     };
@@ -60,30 +66,24 @@ class Profile extends Component {
         localStorage.setItem('videoId', id);
     };
 
-    mapVideoInfoToCards = (videoInfo) => {
-        const videoArr = [];
-        videoInfo.forEach((video, id) => {
-            videoArr.push(
-                <ProfileVideoCard
-                    key={id}
-                    title={video.title}
-                    like={video.likes}
-                    thumbnail={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
-                    clicked={event => this.profileVideoCardClickHandler(event, id)}
-                />);
-        });
-
-        return videoArr;
-    };
+    playlistCardClickHandler = (event, id) => {
+        
+    }
 
     notificationToastClickHandler = (event, key) => {
         this.props.clearNotification(key);
     };
 
+    componentDidUpdate() {
+        console.log('Profile update');
+    }
+    
     componentDidMount() {
-        setTimeout( () => 
-            this.props.fetchVideosInfo(
-                'info',{ userId: localStorage.getItem('userId')}));
+        console.log('Profile mount');
+        this.props.fetchVideosInfo(
+            'info',{ userId: localStorage.getItem('userId')});
+        this.props.fetchPlaylistData(
+            '/', { userId: localStorage.getItem('userId') });
     };
 
     render(){
@@ -91,17 +91,27 @@ class Profile extends Component {
             return <LoadingSpinner />
         }
 
+        const videoNotifications = this.props.videoNotifications;
+        const playlistNotifications = this.props.playlistNotifications;
+
         let notifications = mapNotificationToasts(
-            this.props.notifications,
+            [...videoNotifications, ...playlistNotifications],
             NotificationToast,
-            this.notificationToastClickHandler);
+            this.notificationToastClickHandler
+        );
 
         const videos = mapVideoInfoToCards(
             this.props.videosInfo,
             this.profileVideoCardClickHandler,
             ProfileVideoCard,
-        )
-        
+        );
+
+        const playlists = mapPlaylistsToCards(
+            this.props.playlists,
+            this.playlistCardClickHandler,
+            ProfilePlaylistCard,
+        );
+
         return (
             <Container className="my-2">
                 <NotifiactionContainer toasts={notifications}/>
@@ -124,7 +134,9 @@ class Profile extends Component {
                         hide={this.uploadVideoFormToggleHandler}/>
                     <ProfileTabs 
                         videos={videos}
+                        playlists={playlists}
                         uploadVideoCardClicked={this.uploadVideoFormToggleHandler}
+                        uploadPlaylistCardClicked={this.props.showPlaylistForm}
                         tabSelectHandler={this.tabSelectHandler}
                         tabActiveKey={this.state.activeTab}/>
                 </Row>

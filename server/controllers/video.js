@@ -231,7 +231,7 @@ exports.postComment = async (req, res, next) => {
             comment: postedComment
         });
     } catch (err) {
-        console.log(err);
+        //console.log(err);
         next(err);
     } 
 };
@@ -249,7 +249,7 @@ exports.getComments = async (req, res, next) => {
         //console.log(comments);
         res.status(201).json({ comments: comments });
     } catch(err) {
-        console.log(err);
+        //console.log(err);
         next(err);
     }
 };
@@ -262,7 +262,7 @@ exports.likeVideo = async (req, res, next) => {
        //console.log(updatedVideo);
         res.status(200).json({ video: updatedVideo });
     } catch(err) {
-        console.log(err);
+        //console.log(err);
         next(err);
     }
 };
@@ -275,7 +275,7 @@ exports.dislikeVideo = async (req, res, next) => {
         //console.log(updatedVideo);
         res.status(200).json({ video: updatedVideo });
     } catch(err) {
-        console.log(err);
+        //console.log(err);
         next(err);
     }
 };
