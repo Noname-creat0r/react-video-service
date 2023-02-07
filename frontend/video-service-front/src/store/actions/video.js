@@ -9,14 +9,12 @@ export const videoUploadStart = () => {
 export const videoUploadFailed = (error) => {
     return {
         type: actionTypes.VIDEO_UPLOAD_FAILED,
-        error: error
     };
 };
 
 export const videoUploadSuccess = (video) => {
     return {
         type: actionTypes.VIDEO_UPLOAD_SUCCESS,
-        message: "Uploaded new video successfully!",
         video: video,
     };
 };
@@ -30,7 +28,6 @@ export const videoFetchInfoStart = () => {
 export const videoFetchInfoFailed = (error) => {
     return {
         type: actionTypes.VIDEO_FETCH_INFO_FAILED,
-        error: error.data,
     };
 };
 
@@ -88,17 +85,8 @@ export const videoUploadComment = (videoId, userId, token, text) => {
 };
 
 export const videoUploadCommentFailed = (error) => {
-    let message ;
-    switch (error.response.status){
-        case 401:
-            message = "Sign In to post comments!"
-            break; 
-        default:
-            message = "Can't post this comment.";
-    }
     return {
         type: actionTypes.VIDEO_UPLOAD_COMMENTS_FAILED,
-        error: message,
     };
 };
 
@@ -106,7 +94,6 @@ export const videoUploadCommentSuccess = (comment) => {
     return {
         type: actionTypes.VIDEO_UPLOAD_COMMENTS_SUCCESS,
         comment: comment,
-        notification: 'You posted a comment!',
     }
 }
 
@@ -120,7 +107,6 @@ export const videoFetchComments = (videoId) => {
 export const videoFetchCommentsFailed = (error) => {
     return {
         type: actionTypes.VIDEO_FETCH_COMMENTS_FAILED,
-        error: "Sorry, can't get the comments for this video :(",
     };
 };
 
@@ -157,19 +143,5 @@ export const videoRateSuccess = (updatedVideo) => {
 export const videoRateFailed = (error) => {
     return {
         type: actionTypes.VIDEO_RATE_FAILED,
-        error: "Sign In to rate video!",
-    };
-};
-
-export const videoClearNotification = (index) => {
-    return {
-        type: actionTypes.VIDEO_CLEAR_NOTIFICATION,
-        index: index,
-    }
-}
-
-export const videoClearNotifications = () => {
-    return {
-        type: actionTypes.VIDEO_CLEAR_NOTIFICATIONS,
     };
 };

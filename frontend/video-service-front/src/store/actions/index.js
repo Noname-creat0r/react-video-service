@@ -7,8 +7,6 @@ export {
     checkAuthTimeout,
     logout,
     logoutSucceed,
-    authClearNotification,
-    authClearNotifications,
 } from './auth'; 
 export {
     profileFetchDataStart,
@@ -16,8 +14,6 @@ export {
     profileFetchDataFail,
     profileFetchDataSuccess,
     profileClearData,
-    profileClearNotification,
-    profileClearNotifications,
 } from './profile'
 export {
     videoUploadStart,
@@ -40,8 +36,6 @@ export {
     videoRateStart,
     videoRateSuccess,
     videoRateFailed,
-    videoClearNotification,
-    videoClearNotifications,
 } from './video';
 export {
     playlistShowForm,
@@ -54,6 +48,9 @@ export {
     playlistFetchDataStart,
     playlistFetchDataSuccess,
     playlistFetchDataFailed,
-    playlistClearNotification,
-    playlistClearNotifications
 } from './playlist';
+export {
+    notificationSend,
+    notificationClose,
+    notificationCloseAll,
+} from './notification';

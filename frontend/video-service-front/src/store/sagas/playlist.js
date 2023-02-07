@@ -13,8 +13,14 @@ export function* uploadPlaylistSaga(action) {
             },
         });
         yield put(actions.playlistUploadSuccess(response.data.playlist));
+        yield put(actions.notificationSend(
+            'You have created a new playlist!',
+            'info'));
     } catch(error) {
         yield put(actions.playlistUploadFailed(error));
+        yield put(actions.notificationSend(
+            'Failed to upload a playlist!',
+            'danger'));
     }
 };
 
@@ -28,7 +34,7 @@ export function* fetchPlaylistsSaga(action) {
         yield response.data.playlists.forEach( playlist => 
             data.set(playlist._id, playlist)    
         );
-        yield console.log(data);
+        //yield console.log(data);
         yield put(actions.playlistFetchDataSuccess(data));
     } catch(error) {
         yield put(actions.playlistFetchDataFailed(error));

@@ -10,7 +10,7 @@ const { insertAuthorNames, handleLikeDislike,
     updateVideoLikes, updateVideoDislikes, sortByUploadDate } = require('../shared/utility');
 
 exports.getVideoThumbnail = async (req, res, next) => {
-    //console.log(req.query.id + " thumbnail id");
+    //onsole.log(req.query.id + " thumbnail id");
     const thumbnails = methods.getGridBucket('thumbnails'); 
     thumbnails
         .find({ _id: mongoose.Types.ObjectId(req.query.id) })

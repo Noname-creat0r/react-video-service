@@ -96,8 +96,8 @@ class PlaylistForm extends Component {
             userId: localStorage.getItem('userId'),
             title: this.state.controls['title'].value,
             description: this.state.controls['description'].value,
-            thumbnail: this.state.controls['thumbnail'].file,
             imageType: 'thumbnail', 
+            thumbnail: this.state.controls['thumbnail'].file,
         });
     }
 

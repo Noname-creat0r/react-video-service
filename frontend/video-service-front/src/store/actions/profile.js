@@ -18,7 +18,6 @@ export const profileFetchDataSuccess = (data) => {
 export const profileFetchDataFail = (error) => {
     return {
         type: actionTypes.PROFILE_FETCH_DATA_FAIL,
-        error: 'Failed to fetch data of this profile.'
     };
 };
 
@@ -34,18 +33,5 @@ export const profileFetchData = (userId, token) => {
 export const profileClearData = () => {
     return {
         type: actionTypes.PROFILE_CLEAR_DATA,
-    };
-};
-
-export const profileClearNotification = (index) => {
-    return {
-        type: actionTypes.PROFILE_CLEAR_NOTIFICATION,
-        index: index,
-    }
-}
-
-export const profileClearNotifications = () => {
-    return {
-        type: actionTypes.PROFILE_CLEAR_NOTIFICATIONS,
     };
 };

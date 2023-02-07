@@ -5,6 +5,7 @@ import authReducer from './reducers/auth';
 import profileReducer from './reducers/profile';
 import videoReducer from './reducers/video';
 import playlistReducer from './reducers/playlist';
+import notificationReducer from './reducers/notification';
 import { watchAuth, watchProfile,
      watchVideo, watchPlaylist } from './sagas';
 
@@ -16,6 +17,7 @@ export default configureStore({
         profile: profileReducer,
         video: videoReducer,
         playlist: playlistReducer,
+        notification: notificationReducer,
     },
     middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware({ 

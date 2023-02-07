@@ -17,9 +17,9 @@ import { updateObject, mapNotificationToasts } from '../../shared/utility';
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.token !== null,
-        isLoading: state.auth.loading || state.profile.fetching ,
+        isLoading: state.auth.loading || state.profile.fetching,
         userData: state.profile.data,
-        notifications: state.auth.notifications,
+        notifications: state.notification.notifications,
     };
 };
 
@@ -27,8 +27,8 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchUserData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
         fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
-        clearNotification: (event, index) => dispatch(actions.authClearNotification(index)),
-        clearNotifications: () => dispatch(actions.authClearNotifications()),
+        closeNotification: (key) => dispatch(actions.notificationClose(key)),
+        closeNotifications: () => dispatch(actions.notificationCloseAll()),
     };
 };
 
@@ -136,7 +136,12 @@ class Layout extends Component {
         }
     };
 
+    componentDidMount() {
+        console.log("Layout mount")
+    }
+
     componentDidUpdate() {
+        console.log('Layout update');
         if (this.props.isAuthenticated && this.props.userData.name == null ){
             //console.log(localStorage.getItem('userId'));
             //console.log(localStorage.getItem('token'));
@@ -144,11 +149,10 @@ class Layout extends Component {
                 localStorage.getItem('userId'),
                 localStorage.getItem('token'));
         }
-        //console.log('Layout update');
     };
 
     notificationToastClickHandler = (event, key) => {
-        this.props.clearNotification(key);
+        this.props.closeNotification(key);
     };
 
     render() {

@@ -1,7 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../shared/utility';
-import { clearNotification, clearNotifications } 
-    from './helpers/notification';
 
 const initialState = {
     uploading: false,
@@ -11,41 +9,29 @@ const initialState = {
     videosInfo: new Map(),
     videoId: null,
     comments: [],
-    notifications: [],
 };
 
 const videoUploadStart = (state) => {
-    return updateObject(state, {
-        uploading: true,
-    });
+    return updateObject(state, { uploading: true, });
 };
 
 const videoUploadFailed = (state, action) => {
-    return updateObject(state, {
-        uploading: false,
-        notifications: [ ...state.notifications, { message: action.error, type: 'warning' }],
-    });
+    return updateObject(state, { uploading: false, });
 };
 
 const videoUploadSuccess = (state, action) => {
     return updateObject(state, {
         uploading: false,
         videosInfo: new Map([...state.videosInfo, [action.video._id, action.video]]),
-        notifications: [ ...state.notifications, { message: action.message, type: 'success' }],
     });
 };
 
 const videoFetchInfoStart = (state) => {
-    return updateObject(state, {
-        fetchingInfo: true,
-    });
+    return updateObject(state, { fetchingInfo: true, });
 };
 
 const videoFetchInfoFailed = (state, action) => {
-    return updateObject(state, {
-        fetchingInfo: false,
-        notifications: [ ...state.notifications, { message: action.error, type: 'warning' }],
-    });
+    return updateObject(state, { fetchingInfo: false, });
 };
 
 const videoFetchInfoSuccess = (state, action) => {
@@ -71,40 +57,28 @@ const videoStreamInterupt = (state, action) => {
 
 const videoUploadCommentsFailed = (state, action) => {
     return updateObject(state, {
-        notifications: [ ...state.notifications, { message: action.error, type: 'warning' }],
     });
 };
 
 const videoUploadCommentsSuccess = (state, action) => {
-    return updateObject(state, {
-        comments:  [action.comment, ...state.comments],
-        notifications: [ ...state.notifications, { message: action.notification, type: 'success' }],
-   })
+    return updateObject(state, { comments:  [action.comment, ...state.comments],})
 };
 
 const videoFetchCommentsFailed = (state, action) => {
-    return updateObject(state, {
-        notifications: [ ...state.notifications, { message: action.error, type: 'warning' }]
-    });
+    return updateObject(state, {});
 };
 
 const videoFetchCommentsSuccess = (state, action) => {
-    return updateObject(state, {
-        comments: action.comments,
-    });
+    return updateObject(state, { comments: action.comments, });
 };
 
 const videoRateStart = (state) => {
-    return updateObject(state, {
-        //isRating: true,
-    });
+    return updateObject(state, { });
 };
 
 
 const videoRateFailed = (state, action) => {
-    return updateObject(state, {
-        notifications: [ ...state.notifications, { message: action.error, type: 'warning' } ],
-    });
+    return updateObject(state, { });
 }
 
 const videoRateSuccess = (state, action) => {
@@ -130,8 +104,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.VIDEO_RATE_START: return videoRateStart(state);
         case actionTypes.VIDEO_RATE_SUCCESS: return videoRateSuccess(state, action);
         case actionTypes.VIDEO_RATE_FAILED: return videoRateFailed(state, action);
-        case actionTypes.VIDEO_CLEAR_NOTIFICATION: return clearNotification(state, action);
-        case actionTypes.VIDEO_CLEAR_NOTIFICATIONS: return clearNotifications(state);
         default: return state;
     }
 };

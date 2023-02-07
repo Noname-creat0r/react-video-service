@@ -13,11 +13,9 @@ import UploadVideoForm from '../Video/UploadVideoForm/UploadVideoForm';
 import ProfileVideoCard from '../../components/UI/Card/ProfileVideoCard/ProfileVideoCard';
 import ProfilePlaylistCard from '../../components/UI/Card/ProfilePlaylistCard/ProfilePlaylistCard';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
-import NotifiactionContainer from '../../components/Notification/NotifiactionContainer';
-import NotificationToast from '../../components/Notification/NotificationToast/NotificationToast';
 
 import './Profile.css';
-import { mapNotificationToasts, mapVideoInfoToCards,
+import { mapVideoInfoToCards,
     mapPlaylistsToCards } from '../../shared/utility';
 
 const mapStateToProps = state => {
@@ -37,8 +35,6 @@ const mapDispatchToProps = dispatch => {
         fetchPlaylistData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
         showPlaylistForm: () => dispatch(actions.playlistShowForm()),
-        clearNotification: (event, index) => dispatch(actions.videoClearNotification(index)),
-        clearNotifications: () => dispatch(actions.videoClearNotifications()),
     };
 };
 
@@ -70,16 +66,12 @@ class Profile extends Component {
         
     }
 
-    notificationToastClickHandler = (event, key) => {
-        this.props.clearNotification(key);
-    };
-
     componentDidUpdate() {
-        console.log('Profile update');
+        //console.log('Profile update');
     }
     
     componentDidMount() {
-        console.log('Profile mount');
+        //console.log('Profile mount');
         this.props.fetchVideosInfo(
             'info',{ userId: localStorage.getItem('userId')});
         this.props.fetchPlaylistData(
@@ -90,15 +82,6 @@ class Profile extends Component {
         if (this.props.fetchingData){
             return <LoadingSpinner />
         }
-
-        const videoNotifications = this.props.videoNotifications;
-        const playlistNotifications = this.props.playlistNotifications;
-
-        let notifications = mapNotificationToasts(
-            [...videoNotifications, ...playlistNotifications],
-            NotificationToast,
-            this.notificationToastClickHandler
-        );
 
         const videos = mapVideoInfoToCards(
             this.props.videosInfo,
@@ -114,7 +97,6 @@ class Profile extends Component {
 
         return (
             <Container className="my-2">
-                <NotifiactionContainer toasts={notifications}/>
                 <Row> 
                     <Column className="col-3">
                         <Image 

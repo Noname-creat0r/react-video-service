@@ -23,14 +23,12 @@ export const playlistUploadSuccess = (playlist) => {
     return {
         type: actionTypes.PLAYLIST_UPLOAD_SUCCESS,
         playlist: playlist,
-        message: 'You created new playlist',
     }
 };
 
 export const playlistUploadFailed = (error) => {
     return {
         type: actionTypes.PLAYLIST_UPLOAD_FAILED,
-        error: 'Failed to create new playlist.'
     }
 };
 
@@ -45,7 +43,6 @@ export const playlistFetchData = (endpoint, options) => {
 export const playlistFetchDataStart = () => {
     return {
         type: actionTypes.PLAYLIST_FETCH_DATA_START,
-        error: 'Failed to create new playlist.'
     }
 };
 
@@ -59,20 +56,5 @@ export const playlistFetchDataSuccess = (playlists) => {
 export const playlistFetchDataFailed = (error) => {
     return {
         type: actionTypes.PLAYLIST_UPLOAD_FAILED,
-        error: 'Failed to fetch playlists data.'
     }
-};
-
-
-export const playlistClearNotification = (index) => {
-    return {
-        type: actionTypes.PLAYLIST_CLEAR_NOTIFICATION,
-        index: index,
-    }
-};
-
-export const playlistClearNotifications = () => {
-    return {
-        type: actionTypes.PLAYLIST_CLEAR_NOTIFICATIONS,
-    };
 };

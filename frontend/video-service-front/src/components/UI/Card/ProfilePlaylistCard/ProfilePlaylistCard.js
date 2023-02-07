@@ -11,14 +11,13 @@ const ProfilePlaylistCard = (props) => {
         <Card 
             className='ProfilePlaylistCard mx-2 my-2'
             onClick={props.clicked}>
-                <NavLink to={'../'} className='link'>
-                    <Card.Img 
-                        variant='top'
-                        src={props.thumbnail}
-                        alt='PlaylistThumbnail'
-                        width='200px'
-                        height='150px'/> :
-                    <Spinner className='Image mx-3 my-2' style={{ width: '5rem', height: '5rem'}}/>
+            <NavLink to={'../'} className='link'>
+                <Card.Img 
+                    variant='top'
+                    src={props.thumbnail}
+                    alt='PlaylistThumbnail'
+                    width='200px'
+                    height='150px'/> 
                 <Card.Body>
                     <Card.Title className='title'> {props.title} - {props.videoNumber} </Card.Title>
                 </Card.Body>

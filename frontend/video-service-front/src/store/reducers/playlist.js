@@ -1,7 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../shared/utility';
-import { clearNotification, clearNotifications } 
-    from './helpers/notification';
 
 const initialState = {
     playlists: new Map(),
@@ -9,7 +7,6 @@ const initialState = {
     showPlaylistForm: false,
     uploading: false,
     fetching: false,
-    notifications: [],
 };
 
 const playlistShowForm = (state) => {
@@ -29,18 +26,12 @@ const playlistUploadSuccess = (state, action) => {
         uploading: false,
         playlists: new Map([...state.playlists, [action.playlist._id,
              action.playlist]]),
-        notifications: action.message ? 
-            [ ...state.notifications,
-                { message: action.message, type: 'info' }] : 
-            state.notifications,
     });
 };
 
 const playlistUploadFailed = (state, action) => {
     return updateObject(state, { 
         uploading: false,
-        notifications: [ ...state.notifications, 
-            { message: action.error, type: 'danger' }],
     });
 };
 
@@ -58,8 +49,6 @@ const playlistFetchDataSuccess = (state, action) => {
 const playlistFetchDataFailed = (state, action) => {
     return updateObject(state, {
         fetching: false,
-        notifications: [ ...state.notifications, 
-            { message: action.error, type: 'danger' }],
     })
 };
 
@@ -73,8 +62,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.PLAYLIST_FETCH_DATA_START: return playlistFetchDataStart(state);
         case actionTypes.PLAYLIST_FETCH_DATA_SUCCESS: return playlistFetchDataSuccess(state, action);
         case actionTypes.PLAYLIST_FETCH_DATA_FAILED: return playlistFetchDataFailed(state, action);
-        case actionTypes.PLAYLIST_CLEAR_NOTIFICATION: return clearNotification(state, action)
-        case actionTypes.PLAYLIST_CLEAR_NOTIFICATIONS: return clearNotifications(state);
         default: return state;
     }
 };

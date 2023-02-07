@@ -17,8 +17,14 @@ export function* uploadVideoSaga(action) {
         });
         //yield console.log(response);
         yield put(actions.videoUploadSuccess(response.data.video));
+        yield put(actions.notificationSend(
+            'You have uploaded a video.',
+            'info'));
     } catch (err) {
         yield put(actions.videoUploadFailed(err));
+        yield put(actions.notificationSend(
+            'Failed to upload video.',
+            'danger'));
     }
 };
 
@@ -51,8 +57,14 @@ export function* uploadVideoCommentsSaga(action) {
         }, { headers: { 'Authorization': action.token, }});
         //yield console.log(response.data.comment);
         yield put(actions.videoUploadCommentSuccess(response.data.comment[0]));
+        yield put(actions.notificationSend(
+            'You have posted a comment.',
+            'info'));
     } catch(error){
         yield put(actions.videoUploadCommentFailed(error));
+        yield put(actions.notificationSend(
+            'Failed to post a comment. ' + error.response.data.message,
+            'danger'));
     }
 };
 
@@ -79,6 +91,9 @@ export function* rateVideoSaga(action) {
         yield put(actions.videoRateSuccess(response.data.video[0]));
     } catch (error) {
         yield put(actions.videoRateFailed(error));
+        yield put(actions.notificationSend(
+            'Failed to rate a video: ' + error.response.data.message,
+            'danger'));
         //yield console.log(error);
     }
 };
