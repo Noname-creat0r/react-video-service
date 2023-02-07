@@ -137,18 +137,21 @@ class Layout extends Component {
     };
 
     componentDidMount() {
-        console.log("Layout mount")
+        console.log("Layout mount");
+        this.props.fetchUserData( 
+            localStorage.getItem('userId'),
+            localStorage.getItem('token'));
     }
 
     componentDidUpdate() {
         console.log('Layout update');
-        if (this.props.isAuthenticated && this.props.userData.name == null ){
+        /*if (this.props.isAuthenticated && this.props.userData.name == null ){
             //console.log(localStorage.getItem('userId'));
             //console.log(localStorage.getItem('token'));
             this.props.fetchUserData( 
                 localStorage.getItem('userId'),
                 localStorage.getItem('token'));
-        }
+        }*/
     };
 
     notificationToastClickHandler = (event, key) => {
@@ -156,9 +159,9 @@ class Layout extends Component {
     };
 
     render() {
-        /*if (this.props.isLoading){
+        if (this.props.isLoading){
            return <LoadingSpinner />
-        }*/
+        }
 
         let notifications = mapNotificationToasts(
             this.props.notifications,

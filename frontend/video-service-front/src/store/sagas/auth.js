@@ -65,6 +65,9 @@ export function* authUserSaga(action) {
             yield localStorage.setItem('expirationDate', expirationDate);
             yield put(actions.authSuccess(response.data.token, response.data.userId));
             yield put(actions.checkAuthTimeout(expirationDate));
+            yield put(actions.profileFetchData(
+                localStorage.getItem('userId'),
+                localStorage.getItem('token')));
             yield put(actions.notificationSend(
                 'Signed in successfully. Welcome!',
                 'success'));
