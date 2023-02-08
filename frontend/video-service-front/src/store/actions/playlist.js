@@ -27,9 +27,7 @@ export const playlistUploadSuccess = (playlist) => {
 };
 
 export const playlistUploadFailed = (error) => {
-    return {
-        type: actionTypes.PLAYLIST_UPLOAD_FAILED,
-    }
+    return { type: actionTypes.PLAYLIST_UPLOAD_FAILED, }
 };
 
 export const playlistFetchData = (endpoint, options) => {
@@ -41,9 +39,7 @@ export const playlistFetchData = (endpoint, options) => {
 };
 
 export const playlistFetchDataStart = () => {
-    return {
-        type: actionTypes.PLAYLIST_FETCH_DATA_START,
-    }
+    return { type: actionTypes.PLAYLIST_FETCH_DATA_START, }
 };
 
 export const playlistFetchDataSuccess = (playlists) => {
@@ -54,7 +50,50 @@ export const playlistFetchDataSuccess = (playlists) => {
 };
 
 export const playlistFetchDataFailed = (error) => {
+    return { type: actionTypes.PLAYLIST_UPLOAD_FAILED,}
+};
+
+export const playlistFetchVideoInfo = (playlistId) => {
     return {
-        type: actionTypes.PLAYLIST_UPLOAD_FAILED,
+        type: actionTypes.PLAYLIST_FETCH_VIDEO_INFO,
+        playlistId: playlistId,
     }
+};
+
+export const playlistFetchVideoInfoStart = () => {
+    return { type: actionTypes.PLAYLIST_FETCH_VIDEO_INFO_START,}
+};
+
+export const playlistFetchVideoInfoFailed = () => {
+    return { type: actionTypes.PLAYLIST_FETCH_VIDEO_INFO_FAILED, }
+};
+
+export const playlistFetchVideoInfoSuccess = (playlistWithVideos) => {
+    return {
+        type: actionTypes.PLAYLIST_FETCH_VIDEO_INFO_SUCCESS,
+        playlist: playlistWithVideos,
+    }
+};
+
+export const playlistEdit = (token, playlistId, actionType, videoId) => {
+    return {
+        type: actionTypes.PLAYLIST_EDIT,
+        token: token,
+        editData: {
+            playlistId: playlistId,
+            actionType: actionType,
+            videoId: videoId
+        },
+    }
+};
+
+export const playlistEditSuccess = (updatedPlaylist) => {
+    return {
+        type: actionTypes.PLAYLIST_EDIT_SUCCESS,
+        playlist: updatedPlaylist,
+    }
+};
+
+export const playlistEditFailed = (error) => {
+    return { type: actionTypes.PLAYLIST_EDIT_FAILED }
 };

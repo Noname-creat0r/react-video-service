@@ -9,9 +9,9 @@ export function* uploadPlaylistSaga(action) {
             {...action.data}, 
             { headers: { 
                 'Authorization': action.data.token,
-                'Content-Type': 'multipart/form-data'
-            },
-        });
+                'Content-Type': 'multipart/form-data'}
+            }
+        );
         yield put(actions.playlistUploadSuccess(response.data.playlist));
         yield put(actions.notificationSend(
             'You have created a new playlist!',
@@ -40,6 +40,39 @@ export function* fetchPlaylistsSaga(action) {
         yield put(actions.playlistFetchDataFailed(error));
     }
 };
+
+export function* fetchPlaylistVideoInfoSaga(action) {
+    try {
+        yield put(actions.playlistFetchVideoInfoStart());
+        const response = yield axios.get('/playlist/info', {
+            params: { playlistId: action.playlistId }
+        })
+        yield put(actions.playlistFetchVideoInfoSuccess(response.data.playlist));
+    } catch(error) {
+        yield put(actions.playlistFetchVideoInfoFailed())
+    }
+};
+
+export function* editPlaylistSaga(action) {
+    try {
+        const response = yield axios.patch('/playlist', 
+            { ...action.editData } ,
+            { headers: {
+                'Authorization': action.data.token,
+                'Content-Type': 'multipart/form-data' }
+            }
+        );
+        yield put(actions.playlistEditSuccess(response.data.playlist));
+        yield put(actions.notificationSend(
+            'Edited playlist!',
+            'info'));
+    } catch(error) {
+        yield put(actions.playlistEditFailed(error));
+        yield put(actions.notificationSend(
+            'Failed to edit a playlist!',
+            'danger'));
+    }
+}
 
 export function* deletePlaylistSaga(){
 

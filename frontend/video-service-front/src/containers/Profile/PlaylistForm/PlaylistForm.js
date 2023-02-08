@@ -6,9 +6,11 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Modal from '../../../components/UI/Modal/Modal';
 import Button from 'react-bootstrap/Button';
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
 import { getFormInputsArray, getUpdatedControls,
     checkFormValidity, getFormControlGroups} from '../../../shared/formUtil';
+import { updateObject } from '../../../shared/utility';
 
 
 function mapStateToProps(state) {
@@ -82,6 +84,10 @@ class PlaylistForm extends Component {
                 touched: false
             }
         },
+        modes: {
+            New: true,
+            Playlists: false,
+        }
     };
 
     inputChangedHandler = (event) => {
@@ -101,8 +107,27 @@ class PlaylistForm extends Component {
         });
     }
 
+    modeToggleHandler = (mode) => {
+        const updatedState = this.state.modes;
+        for ( const key of Object.keys(updatedState))
+            if (key !== mode) updatedState[key] = false;
+        updatedState[mode] = true;
+
+        this.setState({ modes: updatedState });
+    }
+
     render() {
-        const title = 'New playlist';
+        const modes = Object.keys(this.state.modes);
+
+        const title = (
+            <Breadcrumb>
+                { modes.map((modeKey, id) => 
+                    <Breadcrumb.Item
+                        disabled
+                        active={this.state.modes[modeKey]}
+                        onClick={(event) => this.modeToggleHandler(modeKey)}> {modeKey} </Breadcrumb.Item>) }
+            </Breadcrumb>
+        );
 
         const formElementsArray = [];
         for (let key in this.state.controls){
@@ -125,13 +150,15 @@ class PlaylistForm extends Component {
         const buttons = (
             <Container className="text-center"> 
                 <Button 
-                    className="mx-2 my-2 btn-md"
+                    className="mx-2 my-2"
+                    size='md'
                     variant="secondary"
                     onClick={this.props.close}>
                         Close
                 </Button>
                 <Button 
-                    className="mx-2 my-2 btn-md"
+                    className="mx-2 my-2"
+                    size='md'
                     variant="success"
                     disabled={!this.state.isFormValid}
                     type="submit"
@@ -141,7 +168,7 @@ class PlaylistForm extends Component {
                 </Button>
             </Container>
         );
-
+    
         return (
             <Modal 
                 show={this.props.showPlaylistForm}

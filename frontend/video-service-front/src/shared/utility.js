@@ -26,9 +26,11 @@ export function* readBlobToBase64(blob, callback) {
   yield reader.readAsDataUrl(blob);
 }
 
-export const mapVideoInfoToCards = (videoInfo, clickHandler, VideoCard) => {
+export const mapVideoInfoToCards = (info, handlers, VideoCard) => {
   const videoArr = [];
-  videoInfo.forEach((video, id) => {
+ 
+
+  info.videos.forEach((video, id) => {
       //console.log(id);
       videoArr.push(
         <VideoCard
@@ -36,8 +38,10 @@ export const mapVideoInfoToCards = (videoInfo, clickHandler, VideoCard) => {
             title={video.title}
             authorName={video.authorName}
             thumbnail={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
-            clicked={event => clickHandler(event, id)}
-            //clicked={event => this.profileVideoCardClickHandler(event, id)}
+            playlists={info.playlists}
+            clicked={event => handlers.click(event, id)}
+            addToPlaylist={event => handlers.playlist(event, id)}
+            
         />
       );
   });

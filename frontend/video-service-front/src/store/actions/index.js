@@ -48,6 +48,13 @@ export {
     playlistFetchDataStart,
     playlistFetchDataSuccess,
     playlistFetchDataFailed,
+    playlistFetchVideoInfo,
+    playlistFetchVideoInfoStart,
+    playlistFetchVideoInfoSuccess,
+    playlistFetchVideoInfoFailed,
+    playlistEdit,
+    playlistEditSuccess,
+    playlistEditFailed,
 } from './playlist';
 export {
     notificationSend,

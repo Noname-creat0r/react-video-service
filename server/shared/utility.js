@@ -2,6 +2,7 @@ const User = require('../models/User');
 const Video = require('../models/Video');
 const Like = require('../models/Like');
 const Dislike = require('../models/Dislike');
+const Playlist = require('../models/Playlist');
 const mongoose = require('mongoose');
 
 exports.updateObject = (oldObject, updatedProperties) => {
@@ -107,4 +108,17 @@ exports.sortByUploadDate = (docsArr, asc) => {
         if ( docA.createdAt < docB.createdAt) return asc ? -1: 1;
         return 0;
     });
-}
+};
+
+exports.insertVideoInfoInPlaylist = async (playlistDoc) => {
+    const updatedPlaylist = {...playlistDoc};
+    updatedPlaylist.videos = [];
+    for (const videoRef of playlistDoc.videos) {
+        const id = mongoose.Types.ObjectId(videoRef._id);
+        const videoInfo = await Video.findOne({
+            _id: id
+        }).lean();
+        updatedPlaylist.videos.push(videoInfo);
+    }
+    return updatedPlaylist;
+};

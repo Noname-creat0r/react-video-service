@@ -13,8 +13,13 @@ import './HomeVideoCard.css';
 
 const HomeVideoCard = (props) => {
     const options = (
-        <ListGroup.Item action>Add to playlist</ListGroup.Item>
+        <ListGroup.Item 
+            action 
+            onClick={props.addToPlaylist}>
+                Add to playlist
+        </ListGroup.Item>
     );
+
     const menuIcon = (
         <Image 
             src={ActionsIcon} 

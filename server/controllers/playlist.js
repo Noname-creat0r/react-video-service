@@ -1,6 +1,7 @@
 const Types = require('mongoose').Types;
 
 const Playlist = require('../models/Playlist');
+const { insertVideoInfoInPlaylist } = require('../shared/utility');
 
 exports.getPlaylists = async (req, res, next) => {
     try {
@@ -31,6 +32,31 @@ exports.getUserPlaylists = async (req, res, next) => {
         });
 
     } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+exports.getPlaylistVideoInfo = async (req, res, next) => {
+    try {
+        if (!req.query.playlistId) {
+            const error = new Error('Missing playlist id in query param!');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        let playlist = await Playlist.findOne({
+            _id: Types.ObjectId(req.query.playlistId)
+        }).lean();
+
+        playlist = await insertVideoInfoInPlaylist(playlist);
+
+        res.status(200).json({
+            message: 'Fetched playlist videos inforamtion successfully',
+            playlist: playlist,
+        })
+
+    } catch(error) {
         console.log(error);
         next(error);
     }

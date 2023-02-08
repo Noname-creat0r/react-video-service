@@ -11,7 +11,7 @@ const ProfilePlaylistCard = (props) => {
         <Card 
             className='ProfilePlaylistCard mx-2 my-2'
             onClick={props.clicked}>
-            <NavLink to={'../'} className='link'>
+            <NavLink to={'/playlist'} className='link'>
                 <Card.Img 
                     variant='top'
                     src={props.thumbnail}
@@ -19,8 +19,11 @@ const ProfilePlaylistCard = (props) => {
                     width='200px'
                     height='150px'/> 
                 <Card.Body>
-                    <Card.Title className='title'> {props.title} - {props.videoNumber} </Card.Title>
+                    <Card.Title className='title'> {props.title} </Card.Title>
                 </Card.Body>
+                <Card.Footer>
+                    {props.videoNumber} videos
+                </Card.Footer>
             </NavLink>
         </Card>
     );

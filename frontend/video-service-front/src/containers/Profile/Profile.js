@@ -21,11 +21,10 @@ import { mapVideoInfoToCards,
 const mapStateToProps = state => {
     return {
         nickname: state.profile.data.name,
-        fetchingData: state.profile.fetchingInfo,
+        fetchingVideoData: state.profile.fetchingInfo,
+        fetchingPlaylistData: state.playlist.fetching,
         videosInfo: state.video.videosInfo,
         playlists: state.playlist.playlists,
-        videoNotifications: state.video.notifications,
-        playlistNotifications: state.playlist.notifications,
     };
 };
 
@@ -62,16 +61,18 @@ class Profile extends Component {
         localStorage.setItem('videoId', id);
     };
 
+    profileAddToPlaylistClickHandler = (event, id) => {
+
+    };
+
     playlistCardClickHandler = (event, id) => {
-        
+        localStorage.setItem('playlistId', id);
     }
 
     componentDidUpdate() {
-        //console.log('Profile update');
     }
     
     componentDidMount() {
-        //console.log('Profile mount');
         this.props.fetchVideosInfo(
             'info',{ userId: localStorage.getItem('userId')});
         this.props.fetchPlaylistData(
@@ -79,13 +80,20 @@ class Profile extends Component {
     };
 
     render(){
-        if (this.props.fetchingData){
+        if (this.props.fetchingVideoData ||
+            this.props.fetchingPlaylistData){
             return <LoadingSpinner />
         }
 
         const videos = mapVideoInfoToCards(
-            this.props.videosInfo,
-            this.profileVideoCardClickHandler,
+            { 
+                videos: this.props.videosInfo,
+                playlists: this.props.playlists,
+            },
+            {
+                click: this.profileVideoCardClickHandler,
+                playlist: this.profileAddToPlaylistClickHandler
+            },
             ProfileVideoCard,
         );
 

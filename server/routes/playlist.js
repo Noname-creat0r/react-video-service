@@ -13,6 +13,11 @@ router.get(
 )
 
 router.get(
+    '/info:playlistId',
+    playlistController.getPlaylistVideoInfo,
+)
+
+router.get(
     '/',
     playlistController.getPlaylists
 )

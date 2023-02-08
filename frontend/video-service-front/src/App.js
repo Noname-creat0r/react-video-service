@@ -10,6 +10,7 @@ import Home from './containers/Home/Home';
 import Video from './containers/Video/Video';
 import Profile from './containers/Profile/Profile';
 import Logout from './containers/Auth/Logout/Logout';
+import Playlist from './containers/Playlist/Playlist';
 
 import './App.css';
 
@@ -46,6 +47,7 @@ class App extends Component {
         <Routes>
           <Route path="/video" element={<Video />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/playlist" element={<Playlist />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />} />

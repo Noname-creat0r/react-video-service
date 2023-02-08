@@ -18,8 +18,11 @@ import {
     rateVideoSaga,
 } from './video';
 import {
-    fetchPlaylistsSaga,
     uploadPlaylistSaga,
+    editPlaylistSaga,
+    deletePlaylistSaga,
+    fetchPlaylistsSaga,
+    fetchPlaylistVideoInfoSaga,
 } from './playlist';
 
 
@@ -52,5 +55,7 @@ export function* watchPlaylist() {
     yield all([
         takeEvery(actionTypes.PLAYLIST_UPLOAD, uploadPlaylistSaga),
         takeEvery(actionTypes.PLAYLIST_FETCH_DATA, fetchPlaylistsSaga),
+        takeEvery(actionTypes.PLAYLIST_FETCH_VIDEO_INFO, fetchPlaylistVideoInfoSaga),
+        takeEvery(actionTypes.PLAYLIST_EDIT, editPlaylistSaga),
     ]);
 };
