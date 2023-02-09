@@ -43,7 +43,7 @@ class Home extends Component {
     }
 
     homeAddToPlaylistClickHandler = (event, id) => {
-       alert(JSON.stringify(Object.fromEntries(this.props.playlists)));
+
     }
 
     componentDidMount() {
@@ -56,7 +56,6 @@ class Home extends Component {
             this.props.fetchingPlaylistData){
             return <LoadingSpinner />;
         }
-
 
         let content = mapVideoInfoToCards(
             { 

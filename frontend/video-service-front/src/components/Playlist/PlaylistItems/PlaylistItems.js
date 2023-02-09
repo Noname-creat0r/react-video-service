@@ -7,8 +7,9 @@ import { mapVideoInfoToCards } from '../../../shared/utility';
 
 const PlaylistItems = (props) => {
     const mappedVideos = mapVideoInfoToCards(
-        props.videos,
-        props.videoClickHandler,
+        { videos: props.videos,},
+        { click: props.videoClickHandler,
+          playlist: props.addToPlaylist},
         PlaylistItem,
     ); 
 

@@ -28,20 +28,15 @@ export function* readBlobToBase64(blob, callback) {
 
 export const mapVideoInfoToCards = (info, handlers, VideoCard) => {
   const videoArr = [];
- 
-
   info.videos.forEach((video, id) => {
-      //console.log(id);
       videoArr.push(
         <VideoCard
             key={id}
             title={video.title}
             authorName={video.authorName}
             thumbnail={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
-            playlists={info.playlists}
             clicked={event => handlers.click(event, id)}
             addToPlaylist={event => handlers.playlist(event, id)}
-            
         />
       );
   });

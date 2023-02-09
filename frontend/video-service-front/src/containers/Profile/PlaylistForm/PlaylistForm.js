@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Modal from '../../../components/UI/Modal/Modal';
 import Button from 'react-bootstrap/Button';
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import FormContent from '../../../components/PlaylistForm/Form/Form';
 
 import { getFormInputsArray, getUpdatedControls,
     checkFormValidity, getFormControlGroups} from '../../../shared/formUtil';
@@ -84,10 +84,7 @@ class PlaylistForm extends Component {
                 touched: false
             }
         },
-        modes: {
-            New: true,
-            Playlists: false,
-        }
+        currentMode: 'Uploading',
     };
 
     inputChangedHandler = (event) => {
@@ -107,28 +104,10 @@ class PlaylistForm extends Component {
         });
     }
 
-    modeToggleHandler = (mode) => {
-        const updatedState = this.state.modes;
-        for ( const key of Object.keys(updatedState))
-            if (key !== mode) updatedState[key] = false;
-        updatedState[mode] = true;
-
-        this.setState({ modes: updatedState });
-    }
-
     render() {
-        const modes = Object.keys(this.state.modes);
-
-        const title = (
-            <Breadcrumb>
-                { modes.map((modeKey, id) => 
-                    <Breadcrumb.Item
-                        disabled
-                        active={this.state.modes[modeKey]}
-                        onClick={(event) => this.modeToggleHandler(modeKey)}> {modeKey} </Breadcrumb.Item>) }
-            </Breadcrumb>
-        );
-
+       
+        const title = 'Uploading';
+          
         const formElementsArray = [];
         for (let key in this.state.controls){
             formElementsArray.push({
@@ -169,14 +148,14 @@ class PlaylistForm extends Component {
             </Container>
         );
     
+
         return (
             <Modal 
                 show={this.props.showPlaylistForm}
                 hide={this.props.close}
                 title={title}
                 body={form}
-                footer={buttons}/>
-        );
+                footer={buttons} />)
     }
 }
 

@@ -53,7 +53,7 @@ const playlistFetchVideoInfoStart = (state) => {
 }
 
 const playlistFetchVideoInfoSuccess = (state, action) => {
-    const updatedPlaylists = {...state.playlists};
+    const updatedPlaylists = new Map([...state.playlists]);
     updatedPlaylists.set(action.playlist._id, action.playlist);
     return updateObject(state, {
         fetching: false,
@@ -66,7 +66,7 @@ const playlistFetchVideoInfoFailed = (state) => {
 }
 
 const playlistEditSuccess = (state, action) => {
-    const updatedPlaylists = {...state.playlists};
+    const updatedPlaylists = new Map([...state.playlists]);
     updatedPlaylists.set(action.playlist._id, action.playlist);
     return updateObject( state, { playlists: updatedPlaylists });
 }

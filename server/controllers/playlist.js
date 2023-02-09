@@ -1,7 +1,7 @@
 const Types = require('mongoose').Types;
 
 const Playlist = require('../models/Playlist');
-const { insertVideoInfoInPlaylist } = require('../shared/utility');
+const { insertVideoInfoInPlaylist, insertAuthorNames } = require('../shared/utility');
 
 exports.getPlaylists = async (req, res, next) => {
     try {
@@ -44,18 +44,18 @@ exports.getPlaylistVideoInfo = async (req, res, next) => {
             error.statusCode = 400;
             throw error;
         }
-
         let playlist = await Playlist.findOne({
             _id: Types.ObjectId(req.query.playlistId)
         }).lean();
 
         playlist = await insertVideoInfoInPlaylist(playlist);
+        playlist = await insertAuthorNames([playlist]);
+        console.log(playlist);
 
         res.status(200).json({
             message: 'Fetched playlist videos inforamtion successfully',
             playlist: playlist,
         })
-
     } catch(error) {
         console.log(error);
         next(error);
@@ -92,7 +92,7 @@ exports.postPlaylist = async (req, res, next) => {
 
 exports.patchPlaylist = async (req, res, next) => {
     try {
-
+        
     } catch (error){
         console.log(error);
         next(error);

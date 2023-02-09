@@ -8,13 +8,13 @@ const playlistController = require('../controllers/playlist');
 const router = express.Router();
 
 router.get(
-    ':userId?',
-    playlistController.getUserPlaylists
+    '/info:playlistId?',
+    playlistController.getPlaylistVideoInfo,
 )
 
 router.get(
-    '/info:playlistId',
-    playlistController.getPlaylistVideoInfo,
+    ':userId?',
+    playlistController.getUserPlaylists
 )
 
 router.get(

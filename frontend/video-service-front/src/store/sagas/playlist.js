@@ -4,6 +4,7 @@ import * as actions from '../actions/index';
 
 export function* uploadPlaylistSaga(action) {
     try {
+        yield console.log(action);
         yield put(actions.playlistUploadStart());
         const response = yield axios.post('/playlist',
             {...action.data}, 
@@ -38,6 +39,9 @@ export function* fetchPlaylistsSaga(action) {
         yield put(actions.playlistFetchDataSuccess(data));
     } catch(error) {
         yield put(actions.playlistFetchDataFailed(error));
+        yield put(actions.notificationSend(
+            error.response.data.message,
+            'danger'));
     }
 };
 
@@ -47,9 +51,11 @@ export function* fetchPlaylistVideoInfoSaga(action) {
         const response = yield axios.get('/playlist/info', {
             params: { playlistId: action.playlistId }
         })
-        yield put(actions.playlistFetchVideoInfoSuccess(response.data.playlist));
+        yield put(actions.playlistFetchVideoInfoSuccess(response.data.playlist[0]));
+        console.log(response.data.playlist);
     } catch(error) {
-        yield put(actions.playlistFetchVideoInfoFailed())
+        console.log(error);
+        yield put(actions.playlistFetchVideoInfoFailed());
     }
 };
 

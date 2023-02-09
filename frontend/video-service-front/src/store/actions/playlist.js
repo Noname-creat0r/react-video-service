@@ -50,7 +50,7 @@ export const playlistFetchDataSuccess = (playlists) => {
 };
 
 export const playlistFetchDataFailed = (error) => {
-    return { type: actionTypes.PLAYLIST_UPLOAD_FAILED,}
+    return { type: actionTypes.PLAYLIST_FETCH_DATA_FAILED,}
 };
 
 export const playlistFetchVideoInfo = (playlistId) => {

@@ -11,10 +11,7 @@ export function* profileFetchDataSaga(action){
                 headers: {'Authorization': action.token}
             });
         const data = yield response.data.data;
-        yield put(actions.playlistFetchData(
-            '/', 
-            { userId: localStorage.getItem('userId') }
-        ));
+        
         yield put(actions.profileFetchDataSuccess(data));
     } catch (error) {
         yield put(actions.profileFetchDataFail(error.response.data.error));
