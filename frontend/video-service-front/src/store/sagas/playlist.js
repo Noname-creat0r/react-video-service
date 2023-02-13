@@ -35,7 +35,7 @@ export function* fetchPlaylistsSaga(action) {
         yield response.data.playlists.forEach( playlist => 
             data.set(playlist._id, playlist)    
         );
-        //yield console.log(data);
+        yield console.log(data);
         yield put(actions.playlistFetchDataSuccess(data));
     } catch(error) {
         yield put(actions.playlistFetchDataFailed(error));
@@ -64,15 +64,17 @@ export function* editPlaylistSaga(action) {
         const response = yield axios.patch('/playlist', 
             { ...action.editData } ,
             { headers: {
-                'Authorization': action.data.token,
+                'Authorization': action.token,
                 'Content-Type': 'multipart/form-data' }
             }
         );
+        console.log(response.data.playlist);
         yield put(actions.playlistEditSuccess(response.data.playlist));
         yield put(actions.notificationSend(
             'Edited playlist!',
             'info'));
     } catch(error) {
+        console.log(error);
         yield put(actions.playlistEditFailed(error));
         yield put(actions.notificationSend(
             'Failed to edit a playlist!',
@@ -80,6 +82,18 @@ export function* editPlaylistSaga(action) {
     }
 }
 
-export function* deletePlaylistSaga(){
+export function* addVideoToPlaylistSaga(action){
+    try{
+        const response = yield axios.patch('/playlist/a')
+    } catch(error){
+        
+    }
+};
 
+export function* deletePlaylistSaga(action){
+    try{
+
+    } catch(error){
+
+    }
 }

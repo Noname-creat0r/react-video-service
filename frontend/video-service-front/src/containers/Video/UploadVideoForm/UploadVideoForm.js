@@ -76,7 +76,7 @@ class UploadVideoForm extends Component {
                     required: false
                 },
                 value: '',
-                file: null,
+                //file: null,
                 touched: false
             },
             video: {
@@ -94,7 +94,7 @@ class UploadVideoForm extends Component {
                     required: false
                 },
                 value: '',
-                file: null,
+                //file: null,
                 touched: false
             }
         },
@@ -112,8 +112,8 @@ class UploadVideoForm extends Component {
             description: this.state.controls.description.value,
             userId: localStorage.getItem('userId'),
             imageType: 'thumbnail',
-            thumbnail: this.state.controls.thumbnail.file,
-            video: this.state.controls.video.file,
+            thumbnail: this.state.controls.thumbnail.value,
+            video: this.state.controls.video.value,
             
         }, 
         {

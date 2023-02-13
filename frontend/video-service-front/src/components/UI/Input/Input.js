@@ -1,30 +1,38 @@
 import React from 'react';
 
 import Form from 'react-bootstrap/Form';
+import { updateObject } from '../../../shared/utility';
 
 const input = (props) => {
     const classes = props.classes;
-    const properties = {};
+    let properties = {};
     let inputElement = null;
 
     if (props.touched || props.isValid ) {
         properties['isValid'] = true;
     } 
 
-    switch (props.elementType) {
-        case ('input'):
+    properties = updateObject(properties, {
+        className: classes,
+        name: props.name,
+        onChange: props.changeHandler,
+        onClick: props.clickHandler,
+        placeholder: props.elementConfig.placeholder,
+        type: props.elementConfig.type,
+    })
+
+    switch (props.elementConfig.type) {
+        case ('file'):
             inputElement = <Form.Control 
-                className={classes}
-                name={props.name}
-                value={props.value}
-                onChange={props.changeHandler}
-                onClick={props.clickHandler}
-                placeholder={props.elementConfig.placeholder}
-                type={props.elementConfig.type}
                 {...properties}
+                title={props.value.name}
                 />;
             break;
-        
+        default:
+            inputElement = <Form.Control 
+                value={props.value}
+                {...properties}/>;
+            break;
     }
 
     return (

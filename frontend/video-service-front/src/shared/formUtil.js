@@ -9,14 +9,12 @@ export const getUpdatedControls = (event, state) => {
     const isValid = formValidator(event);
     const value = event.target.value;
     const file = event.target.type === "file" ? event.target.files[0] : '';
-
     const updatedControls = updateObject( state.controls, {
         [controlName]: updateObject( state.controls[controlName], {
-          value: value,
+          value: file || value,
           validation: updateObject( state.controls[controlName].validation, {
             valid: isValid
           }),
-          file: file,
           touched: true
         })
     });
@@ -50,6 +48,7 @@ export const getUpdatedControls = (event, state) => {
             group={element.config.groupConfig.group}
             label={element.config.groupConfig.label}
             value={element.config.value}
+            //file={element.config.file}
             name={element.id}
             isValid={element.config.validation.valid}
             changeHandler={changeHandler}
