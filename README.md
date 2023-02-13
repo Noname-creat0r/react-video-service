@@ -12,7 +12,7 @@ I will update this project during my futher learning process.
   - [x] Listing and watching the videos from DB in the app.
   - [ ] Categorizing and sorting videos.
   - [x] Every video should have its own page with user comments and additional information.
-  - [ ] Every video should have some specific counters like: "Views", "Likes"...
+  - [x] Every video should have some specific counters like: "Views", "Likes"...
   - [x] Video searching functionality.
   - [ ] Unauthorized users can't: view more than 10 videos, comment any video, like any video, create playlists, add videos to playlists.
   
