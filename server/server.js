@@ -1,9 +1,15 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const { default: mongoose } = require('mongoose');
 require('dotenv').config({ path: './config.env' });
 
 const app = express();
+const corsOptions = {
+    origin: '*',
+    credentials: true,
+    optionSuccessStatus: 200,
+}
 const port = process.env.SERVER_PORT;
 const baseUrl = process.env.BASE_URL;
 
@@ -13,6 +19,7 @@ const homeRoutes = require('./routes/home');
 const videoRoutes = require('./routes/video');
 const playlistRouter = require('./routes/playlist');
 
+//app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -32,7 +39,6 @@ app.use('/playlist', playlistRouter);
 
 // Error handling middleware
 app.use((error, req, res, next) => {
-    //console.log(error);
     const status = error.statusCode || 500;
     const message = error.message;
     const data = error.data;

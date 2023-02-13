@@ -6,12 +6,12 @@ import PlaylistItem from './PlaylistItem/PlaylistItem';
 import { mapVideoInfoToCards } from '../../../shared/utility';
 
 const PlaylistItems = (props) => {
-    const mappedVideos = mapVideoInfoToCards(
-        { videos: props.videos,},
-        { click: props.videoClickHandler,
-          playlist: props.addToPlaylist},
-        PlaylistItem,
-    ); 
+    const mappedVideos = props.videosInfo.map((info) => 
+        <PlaylistItem 
+            thumbnail={info.thumbnail}
+            title={info.title}/>
+    );
+    
 
     return (
         <Container>

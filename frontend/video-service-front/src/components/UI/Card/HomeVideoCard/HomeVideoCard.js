@@ -50,7 +50,8 @@ const HomeVideoCard = (props) => {
                     placement='top-start'
                     header='Options'
                     content={options}
-                    container={menuIcon} />
+                    container={menuIcon}
+                    />
             </Card.Footer>
         </Card>
     );

@@ -13,7 +13,6 @@ import './Playlist.css';
 
 function mapStateToProps(state) {
     return {
-        //playlistId: state.playlist.playlistId,
         playlists: state.playlist.playlists,
         fetching: state.playlist.fetching,
         fetchingProfile: state.profile.fetching
@@ -30,11 +29,7 @@ function mapDispatchToProps(dispatch) {
 class Playlist extends Component {
 
     componentDidMount() {
-        console.log('Helllo');
-        if (this.props.playlists.size === 0)    
-        this.props.fetchPlaylistVideoInfo(localStorage.getItem('playlistId'));
-        // const videoIds = this.props.playlists.get(this.props.playlistId);
-        // download playlist + video of the playlist info
+         this.props.fetchPlaylistVideoInfo(localStorage.getItem('playlistId'));
     }
 
     videoAddToPlaylistHandler = () => {
@@ -42,12 +37,11 @@ class Playlist extends Component {
     }
 
     render() {
-        if (this.props.fetching || this.props.playlists.size === 0)
+        if (this.props.fetching)
             return <LoadingSpinner />
-    
-        //console.log(this.props.playlists);
-        //console.log(this.props.playlists.get(localStorage.getItem('playlistId').toString()).thumbnail);
-        const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
+        else {
+            console.log(this.props.fetching);
+            const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
         return (
             <Container className='my-3 w-50'>
                 <Container className='d-flex flex-direction-column'>
@@ -60,9 +54,11 @@ class Playlist extends Component {
                     <strong className='PlaylistTitle mx-3'>{playlist.title}</strong>
                 </Container>
                 <PlaylistControls />
+                <PlaylistItems 
+                    videosInfo={playlist.videos}/>
                 <hr />
             </Container>
-        );
+        );}
     }
 }
 

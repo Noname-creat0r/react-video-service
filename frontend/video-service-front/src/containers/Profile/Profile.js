@@ -33,7 +33,7 @@ const mapDispatchToProps = dispatch => {
         fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
         fetchPlaylistData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
-        showPlaylistForm: () => dispatch(actions.playlistShowForm()),
+        showPlaylistForm: (mode) => dispatch(actions.playlistShowForm(mode)),
     };
 };
 

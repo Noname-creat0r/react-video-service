@@ -20,15 +20,24 @@ exports.getUserPlaylists = async (req, res, next) => {
             throw error;
         }
 
-        const userPlaylists = await Playlist.find({
+        let userPlaylists = await Playlist.find({
             author: Types.ObjectId(req.query.userId)
         }).lean();
+        
+        const informedPlaylists = [];
+        for await (let playlist of userPlaylists){
+            playlist = await insertVideoInfoInPlaylist(playlist);
+            informedPlaylists.push(playlist);
+        }
+        console.log(informedPlaylists);
+        //userPlaylists = await insertVideoInfoInPlaylist(userPlaylists);
 
         const message = `User ${req.query.userId} has ${userPlaylists.length} playlists at the moment.`;
-
+        
+        
         res.status(200).json({
             message: message,
-            playlists: userPlaylists
+            playlists: informedPlaylists
         });
 
     } catch (error) {
@@ -50,7 +59,7 @@ exports.getPlaylistVideoInfo = async (req, res, next) => {
 
         playlist = await insertVideoInfoInPlaylist(playlist);
         playlist = await insertAuthorNames([playlist]);
-        console.log(playlist);
+        //console.log(playlist);
 
         res.status(200).json({
             message: 'Fetched playlist videos inforamtion successfully',
@@ -90,9 +99,44 @@ exports.postPlaylist = async (req, res, next) => {
     }
 };
 
-exports.patchPlaylist = async (req, res, next) => {
+exports.addVideoToPlaylist = async (req, res, next) => {
     try {
         
+    } catch(error) {
+        next(error);
+    }
+};
+
+exports.patchPlaylist = async (req, res, next) => {
+    try {
+        if (!req.body.playlistId){
+            const error = new Error('Missing querry params!');
+            error.statusCode = 400;
+            throw error;
+        }
+        
+        let playlist = await Playlist.findOne({
+            _id: Types.ObjectId(req.body.playlistId)
+        });
+
+        if (req.body.videoId){
+            const id = playlist.videos.findIndex((video) =>
+                video._id === Types.ObjectId(req.body.videoId));
+            id === -1 ?
+                playlist.videos.push({
+                    _id: Types.ObjectId(req.body.videoId)
+                }) : 
+                playlist.videos.splice(id, 1);
+        }
+
+        await playlist.save();
+        playlist = await insertVideoInfoInPlaylist(playlist.toObject());
+
+        res.status(200).json({
+            message: 'Added a video to playlist.',
+            playlist: playlist,
+        });
+
     } catch (error){
         console.log(error);
         next(error);

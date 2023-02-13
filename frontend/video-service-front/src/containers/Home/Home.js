@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { mapVideoInfoToCards } from '../../shared/utility';
 import * as actions from '../../store/actions/index';
+import * as modalModes from '../../shared/playlistModalModes';
 
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -9,6 +10,7 @@ import HomeVideoCard from '../../components/UI/Card/HomeVideoCard/HomeVideoCard'
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 
 import './Home.css';
+import Overlay from '../../components/UI/Overlay/Overlay';
 
 function mapStateToProps(state) {
     return {
@@ -25,6 +27,7 @@ function mapDispatchToProps(dispatch) {
         fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
         fetchPlaylistsData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
+        showPlaylistForm: (mode) => dispatch(actions.playlistShowForm(mode)),
         editPlaylist: (playlistId, actionType, videoId) =>
              dispatch(actions.playlistEdit(
                 localStorage.getItem('token'),
@@ -43,12 +46,15 @@ class Home extends Component {
     }
 
     homeAddToPlaylistClickHandler = (event, id) => {
-
+        this.props.fetchPlaylistsData(
+            '/', { userId: localStorage.getItem('userId') })
+        this.props.showPlaylistForm(modalModes.ADDING);
     }
 
     componentDidMount() {
         this.props.fetchVideosInfo( 'info/home', { });
     }
+
 
     render() {
        

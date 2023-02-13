@@ -1,4 +1,5 @@
 import React from 'react';
+import * as modlaModes from '../../../shared/playlistModalModes';
 
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
@@ -30,7 +31,7 @@ const ProfileTabs = (props) => {
             <Tab eventKey="Playlists" title="Playlists">
                 <Row className='my-3'>
                     <AddItemCard
-                        clicked={() => props.uploadPlaylistCardClicked()}/>
+                        clicked={() => props.uploadPlaylistCardClicked(modlaModes.UPLOADING)}/>
                 </Row>
                 <Row>
                     <hr />

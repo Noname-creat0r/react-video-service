@@ -5,7 +5,6 @@ const key = process.env.KEY;
 module.exports = (req, res, next) => {
     try {
         const authHeader = req.get('Authorization')
-
         if (!authHeader) {
             const error = new Error('Not authenticated.');
             error.statusCode = 401;

@@ -1,16 +1,21 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../shared/utility';
+import * as modes from '../../shared/playlistModalModes';
 
 const initialState = {
     playlists: new Map(),
     playlistId: null,
     showPlaylistForm: false,
+    playlistFormMode: modes.UPLOADING,
     uploading: false,
     fetching: false,
 };
 
-const playlistShowForm = (state) => {
-    return updateObject(state, { showPlaylistForm: true });
+const playlistShowForm = (state, action) => {
+    return updateObject(state, { 
+        showPlaylistForm: true,
+        playlistFormMode: action.mode
+    });
 };
 
 const playlistCloseForm = (state) => {
@@ -77,7 +82,7 @@ const playlistEditFailed = (state) => {
 
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
-        case actionTypes.PLAYLIST_SHOW_FORM: return playlistShowForm(state); 
+        case actionTypes.PLAYLIST_SHOW_FORM: return playlistShowForm(state, action); 
         case actionTypes.PLAYLIST_CLOSE_FORM: return playlistCloseForm(state); 
         case actionTypes.PLAYLIST_UPLOAD_START: return playlistUploadStart(state);
         case actionTypes.PLAYLIST_UPLOAD_FAILED: return playlistUploadFailed(state, action);

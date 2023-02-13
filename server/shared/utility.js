@@ -120,5 +120,6 @@ exports.insertVideoInfoInPlaylist = async (playlistDoc) => {
         }).lean();
         updatedPlaylist.videos.push(videoInfo);
     }
+    //console.log(updatedPlaylist);
     return updatedPlaylist;
 };

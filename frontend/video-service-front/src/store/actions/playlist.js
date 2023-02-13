@@ -1,7 +1,10 @@
 import * as actionTypes from '../actions/actionTypes';
 
-export const playlistShowForm = () => {
-    return { type: actionTypes.PLAYLIST_SHOW_FORM }
+export const playlistShowForm = (mode) => {
+    return { 
+        type: actionTypes.PLAYLIST_SHOW_FORM,
+        mode: mode,
+    }
 };
 
 export const playlistCloseForm = () => {

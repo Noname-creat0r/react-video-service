@@ -7,7 +7,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 const Overlay = (props) => {
 
     const popover = (
-        <Popover id='options-popover'>
+        <Popover id='options-popover' >
             <Popover.Header as='h3'>{props.header}</Popover.Header>
             <Popover.Body>
                 <ListGroup>

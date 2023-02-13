@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
+import * as modalModes from '../../../shared/playlistModalModes';
 
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
-import Modal from '../../../components/UI/Modal/Modal';
 import Button from 'react-bootstrap/Button';
-import FormContent from '../../../components/PlaylistForm/Form/Form';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Placeholder from 'react-bootstrap/Placeholder';
+import Image from 'react-bootstrap/Image';
+
+import LoadingSpinner from '../../../components/UI/LoadingSpinner/LoadingSpinner';
+import AddImage from '../../../assets/images/plus-sign.svg';
+import Modal from '../../../components/UI/Modal/Modal';
+
 
 import { getFormInputsArray, getUpdatedControls,
     checkFormValidity, getFormControlGroups} from '../../../shared/formUtil';
@@ -16,14 +23,25 @@ import { updateObject } from '../../../shared/utility';
 function mapStateToProps(state) {
     return {
         showPlaylistForm: state.playlist.showPlaylistForm,
+        mode: state.playlist.playlistFormMode,
+        playlists: state.playlist.playlists,
+        fetching: state.playlist.fetching,
+        videoId: state.video.videoId,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         close: () => dispatch(actions.playlistCloseForm()),
-        show: () => dispatch(actions.playlistShowForm()),
+        showModal: (mode) => dispatch(actions.playlistShowForm(mode)),
         upload: (data) => dispatch(actions.playlistUpload(data)),
+        editPlaylist: (playlistId, actionType, videoId) =>
+             dispatch(actions.playlistEdit(
+                localStorage.getItem('token'),
+                playlistId,
+                actionType,
+                videoId)
+            ),
     };
 }
 
@@ -100,61 +118,113 @@ class PlaylistForm extends Component {
             title: this.state.controls['title'].value,
             description: this.state.controls['description'].value,
             imageType: 'thumbnail', 
-            thumbnail: this.state.controls['thumbnail'].file,
+            thumbnail: this.state.controls['thumbnail'].value,
         });
     }
 
+    add = () => {
+
+    };
+
     render() {
-       
-        const title = 'Uploading';
-          
-        const formElementsArray = [];
-        for (let key in this.state.controls){
-            formElementsArray.push({
-                id: key,
-                config: this.state.controls[key]
-            });
+        let title;
+        let content = <LoadingSpinner />;
+        let buttons = 
+            <Container className='text-center'>
+                <Placeholder.Button className='mx-2' variant='secondary' xs={2} animation='wave'/>
+                <Placeholder.Button className='mx-2' variant='secondary' xs={3} animation='wave'/>
+            </Container>;
+        const mode = this.props.mode;
+
+        if (this.props.fetching) 
+            return (
+                <Modal 
+                    show={this.props.showPlaylistForm}
+                    hide={this.props.close}
+                    title={title}
+                    body={content}
+                    footer={buttons} />)
+
+        switch (mode) {
+            case modalModes.UPLOADING: 
+                title = 'Uploading';
+            
+                const formElementsArray = [];
+                for (let key in this.state.controls){
+                    formElementsArray.push({
+                        id: key,
+                        config: this.state.controls[key]
+                    });
+                }
+        
+                const formContent = getFormControlGroups(
+                    getFormInputsArray(formElementsArray, this.inputChangedHandler)
+                );
+        
+                content = (
+                    <Form id="playlistUploadForm">
+                        {formContent}
+                    </Form>
+                );
+        
+                buttons = (
+                    <Container className="text-center"> 
+                        <Button 
+                            className="mx-2 my-2"
+                            size='md'
+                            variant="secondary"
+                            onClick={this.props.close}>
+                                Close
+                        </Button>
+                        <Button 
+                            className="mx-2 my-2"
+                            size='md'
+                            variant="success"
+                            disabled={!this.state.isFormValid}
+                            type="submit"
+                            onClick={this.upload}
+                            form="playlistUploadForm">
+                            Upload
+                        </Button>
+                    </Container>
+                );
+                break;
+            case modalModes.ADDING:
+                title='Add';
+                const items = [];
+                this.props.playlists.forEach((playlist) =>
+                    items.push(
+                        <ListGroup.Item 
+                            action
+                            onClick={() => this.props.editPlaylist(
+                                playlist._id,
+                                modalModes.ADDING,
+                                this.props.videoId)}>
+                            {playlist.title} 
+                        </ListGroup.Item>
+                    )
+                );
+                items.push(
+                    <ListGroup.Item 
+                        action 
+                        onClick={() => this.props.showModal(modalModes.UPLOADING)}> 
+                        <Image src={AddImage} width='15px' height='15px'/> <b>Create new </b>
+                    </ListGroup.Item>
+                );
+                console.log(this.props.playlists);
+                content=
+                    <ListGroup>
+                        {items}
+                    </ListGroup>
+                break;
         }
-
-        const formContent = getFormControlGroups(
-            getFormInputsArray(formElementsArray, this.inputChangedHandler)
-        );
-
-        const form = (
-            <Form id="playlistUploadForm">
-                {formContent}
-            </Form>
-        );
-
-        const buttons = (
-            <Container className="text-center"> 
-                <Button 
-                    className="mx-2 my-2"
-                    size='md'
-                    variant="secondary"
-                    onClick={this.props.close}>
-                        Close
-                </Button>
-                <Button 
-                    className="mx-2 my-2"
-                    size='md'
-                    variant="success"
-                    disabled={!this.state.isFormValid}
-                    type="submit"
-                    onClick={this.upload}
-                    form="playlistUploadForm">
-                    Upload
-                </Button>
-            </Container>
-        );
-    
 
         return (
             <Modal 
                 show={this.props.showPlaylistForm}
                 hide={this.props.close}
                 title={title}
-                body={form}
+                body={content}
                 footer={buttons} />)
     }
 }
