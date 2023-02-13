@@ -1,15 +1,11 @@
 import * as actionTypes from './actionTypes';
 
 export const videoUploadStart = () => {
-    return {
-        type: actionTypes.VIDEO_UPLOAD_START
-    };
+    return { type: actionTypes.VIDEO_UPLOAD_START, };
 };
 
 export const videoUploadFailed = (error) => {
-    return {
-        type: actionTypes.VIDEO_UPLOAD_FAILED,
-    };
+    return { type: actionTypes.VIDEO_UPLOAD_FAILED, };
 };
 
 export const videoUploadSuccess = (video) => {
@@ -20,15 +16,11 @@ export const videoUploadSuccess = (video) => {
 };
 
 export const videoFetchInfoStart = () => {
-    return {
-        type: actionTypes.VIDEO_FETCH_INFO_START,
-    };
+    return { type: actionTypes.VIDEO_FETCH_INFO_START, };
 };
 
 export const videoFetchInfoFailed = (error) => {
-    return {
-        type: actionTypes.VIDEO_FETCH_INFO_FAILED,
-    };
+    return { type: actionTypes.VIDEO_FETCH_INFO_FAILED, };
 };
 
 export const videoFetchInfoSuccess = (data) => {
@@ -85,17 +77,15 @@ export const videoUploadComment = (videoId, userId, token, text) => {
 };
 
 export const videoUploadCommentFailed = (error) => {
-    return {
-        type: actionTypes.VIDEO_UPLOAD_COMMENTS_FAILED,
-    };
+    return { type: actionTypes.VIDEO_UPLOAD_COMMENTS_FAILED, };
 };
 
 export const videoUploadCommentSuccess = (comment) => {
     return {
         type: actionTypes.VIDEO_UPLOAD_COMMENTS_SUCCESS,
         comment: comment,
-    }
-}
+    };
+};
 
 export const videoFetchComments = (videoId) => {
     return {
@@ -105,9 +95,7 @@ export const videoFetchComments = (videoId) => {
 };
 
 export const videoFetchCommentsFailed = (error) => {
-    return {
-        type: actionTypes.VIDEO_FETCH_COMMENTS_FAILED,
-    };
+    return { type: actionTypes.VIDEO_FETCH_COMMENTS_FAILED, };
 };
 
 export const videoFetchCommentsSuccess = (comments) => {
@@ -128,9 +116,7 @@ export const videoRate = (videoId, userId, token, actionType) => {
 };
 
 export const videoRateStart = () => {
-    return {
-        type: actionTypes.VIDEO_RATE_START
-    };
+    return { type: actionTypes.VIDEO_RATE_START };
 };
 
 export const videoRateSuccess = (updatedVideo) => {
@@ -141,7 +127,20 @@ export const videoRateSuccess = (updatedVideo) => {
 };
 
 export const videoRateFailed = (error) => {
+    return { type: actionTypes.VIDEO_RATE_FAILED, };
+};
+
+export const videoAddView = (videoId) => {
     return {
-        type: actionTypes.VIDEO_RATE_FAILED,
+        type: actionTypes.VIDEO_ADD_VIEW,
+        videoId: videoId,
     };
+};
+
+export const videoAddViewSuccess = () => {
+    return { type: actionTypes.VIDEO_ADD_VIEW_SUCCESS, };
+};
+
+export const videoAddViewFailed = () => {
+    return { type: actionTypes.VIDEO_ADD_VIEW_FAILED, };
 };

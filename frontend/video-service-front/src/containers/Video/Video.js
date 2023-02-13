@@ -25,6 +25,7 @@ function mapDispatchToProps(dispatch) {
         fetchVideoComments: (videoId) => dispatch(actions.videoFetchComments(videoId)),
         uploadVideoComment: (videoId, userId, token, text) => dispatch(actions.videoUploadComment(videoId, userId, token, text)),
         rateVideo: (videoId, userId, token, actionType ) => dispatch(actions.videoRate(videoId, userId, token, actionType)),
+        addView: (videoId) => dispatch(actions.videoAddView(videoId)), 
     };
 }
 
@@ -35,6 +36,7 @@ class Video extends Component {
             touched: false,
         },
         playing: true,
+        viewed: false,
         interactionItems: {
             'playlist': {
                 clicked: false,
@@ -96,6 +98,11 @@ class Video extends Component {
         );
     };
 
+    addViewHandler = () => {
+        this.setState({ viewed: true });
+        this.props.addView(localStorage.getItem('videoId'));
+    }
+
     playingStateSwitch = () => {
         this.setState( (prevState) => {
             return { playing: !prevState.playing}
@@ -117,15 +124,18 @@ class Video extends Component {
                 <VideoPlayer 
                     videoId={videoInfo._id}
                     playing={this.state.playing}
+                    viewed={this.state.viewed}
+                    addView={this.addViewHandler}
                     playSwitchHandler={this.playingStateSwitch}
                     playDisableHandler={this.playingStateDisable}/>
                 <VideoInfo 
                     title={videoInfo.title}
+                    views={videoInfo.views}
                     author={videoInfo.authorName}
                     description={videoInfo.description}
-                    interactionItems={this.state.interactionItems}
                     likes={videoInfo.likes}
                     dislikes={videoInfo.dislikes}
+                    interactionItems={this.state.interactionItems}
                     comments={this.props.comments}
                     rateVideoHandler={this.rateVideoHandler}
                     typeCommentHandler={this.typeCommentHandler}

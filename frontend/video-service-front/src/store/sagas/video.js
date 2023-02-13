@@ -97,3 +97,15 @@ export function* rateVideoSaga(action) {
         //yield console.log(error);
     }
 };
+
+
+export function* addViewSaga(action) {
+    try {
+        console.log(action);
+        const response = yield axios.post('/video/view', 
+            { videoId: action.videoId, });
+        //yield put(actions.videoAddViewSuccess());
+    } catch(error) {
+        //yield put(actions.videoAddViewFailed());
+    }
+}

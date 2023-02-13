@@ -26,8 +26,9 @@ const VideoInfo = (props) => {
     return (
         <Container className='my-4'>
             <Row className='videoMainInfo'>
-                <Col>
+                <Col className=''>
                     <h3>{props.title}</h3>
+                    <h4>{props.views} views</h4>
                     <UserBadge 
                         name={props.author}/> 
                 </Col>

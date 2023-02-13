@@ -7,12 +7,12 @@ import UserName from '../UserName/UserName';
 
 const userBadge = (props) => (
     //justify-content-lg-end
-    <Container className='d-flex'> 
+    <div className='d-flex'> 
         <UserIcon 
             icon={props.icon}/>
         <UserName
             name={props.name}/>
-    </Container>
+    </div>
 );
 
 export default userBadge;

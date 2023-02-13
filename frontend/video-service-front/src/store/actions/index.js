@@ -36,6 +36,9 @@ export {
     videoRateStart,
     videoRateSuccess,
     videoRateFailed,
+    videoAddView,
+    videoAddViewSuccess,
+    videoAddViewFailed,
 } from './video';
 export {
     playlistShowForm,

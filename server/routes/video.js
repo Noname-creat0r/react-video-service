@@ -16,6 +16,11 @@ router.post(
 );
 
 router.post(
+    '/view',
+    videoController.postView,
+)
+
+router.post(
     '/comment',
     isAuth,
     videoController.postComment,

@@ -6,7 +6,7 @@ const userName = (props) => {
     const name = "Unknown";
 
     return (
-        <div className="UserName">
+        <div className="UserName mx-1">
             {props.name}
         </div>
     );

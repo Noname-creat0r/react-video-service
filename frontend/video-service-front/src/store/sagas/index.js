@@ -16,6 +16,7 @@ import {
     uploadVideoCommentsSaga,
     fetchVideoCommentsSaga,
     rateVideoSaga,
+    addViewSaga
 } from './video';
 import {
     uploadPlaylistSaga,
@@ -48,6 +49,7 @@ export function* watchVideo() {
         takeEvery(actionTypes.VIDEO_UPLOAD_COMMENTS, uploadVideoCommentsSaga),
         takeEvery(actionTypes.VIDEO_FETCH_COMMENTS, fetchVideoCommentsSaga),
         takeEvery(actionTypes.VIDEO_RATE, rateVideoSaga),
+        takeEvery(actionTypes.VIDEO_ADD_VIEW, addViewSaga),
     ]);
 };
 

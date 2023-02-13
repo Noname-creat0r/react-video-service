@@ -279,3 +279,27 @@ exports.dislikeVideo = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.postView = async (req, res, next) => {
+    try {
+        const videoId = req.body.videoId;
+        if (!videoId){
+            const error = new Error('Missing videoId in body.');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        const video = await Video.findOne({
+            _id: mongoose.Types.ObjectId(videoId)
+        })
+        video.$inc('views', 1);
+        await video.save();
+
+        res.status(200).json({
+            message: 'Viewed a video.'  
+        })
+
+    } catch (err) {
+        next(err);
+    }
+};
