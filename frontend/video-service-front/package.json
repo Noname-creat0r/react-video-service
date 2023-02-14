@@ -1,6 +1,6 @@
 {
   "name": "video-service-front",
-  "version": "0.1.8",
+  "version": "0.2.40",
   "private": true,
   "dependencies": {
     "@redux-devtools/extension": "^3.2.3",
@@ -11,6 +11,7 @@
     "axios": "^1.2.0",
     "bootstrap": "^5.2.3",
     "buffer": "^6.0.3",
+    "crypto-js": "^4.1.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
     "react-dom": "^18.2.0",
@@ -25,8 +26,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env.config react-scripts start",
+    "build": "env-cmd -f .env.config react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -47,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3"
   }
 }

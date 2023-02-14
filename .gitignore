@@ -106,3 +106,4 @@ dist
 # Media content
 *.mp4
 *.jpg
+*.config

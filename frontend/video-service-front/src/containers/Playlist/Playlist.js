@@ -40,7 +40,7 @@ class Playlist extends Component {
         if (this.props.fetching)
             return <LoadingSpinner />
         else {
-            console.log(this.props.fetching);
+            //console.log(this.props.fetching);
             const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
         return (
             <Container className='my-3 w-50'>

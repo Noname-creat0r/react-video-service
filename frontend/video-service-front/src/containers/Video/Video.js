@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import { updateObject } from '../../shared/utility';
 import * as actions from '../../store/actions/index';
@@ -14,6 +15,7 @@ function mapStateToProps(state) {
         videoId: localStorage.getItem('videoId'),
         videosInfo: state.video.videosInfo,
         comments: state.video.comments,
+        isAuthenticated: state.auth.token !== null,
     }
 }
 
@@ -113,8 +115,15 @@ class Video extends Component {
         this.setState({ playing: false});
     };
 
-    render() {
-        if (this.props.videosInfo.size === 0 ) {
+   render() {
+        const unauthViews = localStorage.getItem('views');
+        /*const decryptedViews = 
+            CryptoJS
+                .AES
+                .decrypt(unauthViews, process.env.REACT_APP_STORAGE_KEY);
+        const number = JSON.parse(decryptedViews.toString(CryptoJS.enc.Utf8));*/
+        if (this.props.videosInfo.size === 0 || 
+            (!this.props.isAuthenticated && unauthViews <= 0)) {
             return <LoadingSpinner />
         }
 

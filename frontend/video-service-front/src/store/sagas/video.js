@@ -1,3 +1,4 @@
+import CryptoJS from 'crypto-js';
 import { put } from 'redux-saga/effects';
 import { updateObject } from '../../shared/utility';
 
@@ -101,10 +102,18 @@ export function* rateVideoSaga(action) {
 
 export function* addViewSaga(action) {
     try {
-        console.log(action);
+        //console.log(action);
         const response = yield axios.post('/video/view', 
             { videoId: action.videoId, });
         //yield put(actions.videoAddViewSuccess());
+        const unauthViews = localStorage.getItem('views');
+        let views = 3;
+
+        if (unauthViews) {
+            views = views === 0 ? 0 : Number(unauthViews) - 1;
+        }
+        localStorage.setItem('views', views);
+        console.log(views);
     } catch(error) {
         //yield put(actions.videoAddViewFailed());
     }

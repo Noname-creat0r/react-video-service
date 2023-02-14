@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
+import CryptoJS from 'crypto-js';
 import * as actions from './store/actions/index';
 
 import Layout from './containers/Layout/Layout';
@@ -30,6 +31,9 @@ class App extends Component {
 
   componentDidMount() {
     this.props.onTryAutoSignup();
+    if (!localStorage.getItem('views')){
+      localStorage.setItem('views', 3);
+    }
   }
 
   render () {
