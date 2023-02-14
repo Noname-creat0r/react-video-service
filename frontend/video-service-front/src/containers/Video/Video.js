@@ -117,11 +117,6 @@ class Video extends Component {
 
    render() {
         const unauthViews = localStorage.getItem('views');
-        /*const decryptedViews = 
-            CryptoJS
-                .AES
-                .decrypt(unauthViews, process.env.REACT_APP_STORAGE_KEY);
-        const number = JSON.parse(decryptedViews.toString(CryptoJS.enc.Utf8));*/
         if (this.props.videosInfo.size === 0 || 
             (!this.props.isAuthenticated && unauthViews <= 0)) {
             return <LoadingSpinner />

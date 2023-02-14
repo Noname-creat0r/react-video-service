@@ -39,6 +39,9 @@ export {
     videoAddView,
     videoAddViewSuccess,
     videoAddViewFailed,
+    videoFetchCategoreis,
+    videoFetchCategoreisSuccess,
+    videoFetchCategoreisFailed,
 } from './video';
 export {
     playlistShowForm,

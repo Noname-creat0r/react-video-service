@@ -12,14 +12,16 @@ import Button from 'react-bootstrap/Button';
 const mapStateToProps = state => {
     return {
         uploading: state.video.uploading,
-        error: state.video.error,
+        categoreis: state.video.categories,
+        fetching: state.video.fetching,
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onVideoUpload: (videoData, token) =>
-            dispatch(actions.uploadVideo(videoData, token)),  
+            dispatch(actions.uploadVideo(videoData, token)),
+        fetchCategoreis: () => dispatch(actions.videoFetchCategoreis()),
     };
 }
 
@@ -40,6 +42,21 @@ class UploadVideoForm extends Component {
                 validation: {
                     valid: false,
                     required: true
+                },
+                value: '',
+                touched: false
+            },
+            category: {
+                elementType: 'select',
+                groupConfig: {
+                    group: 'category',
+                    label: 'Category:',
+                },
+                controlConfig: {
+                    options: this.props.categoreis,
+                },
+                validation: {
+                    valid: true,
                 },
                 value: '',
                 touched: false
@@ -99,7 +116,15 @@ class UploadVideoForm extends Component {
             }
         },
     }
-    
+
+    componentDidMount() {
+        this.props.fetchCategoreis();
+    }
+
+    componentDidUpdate(){
+        console.log('upd vid form updated');
+    }
+
     inputChangedHandler = (event) => {
         this.setState({ controls: getUpdatedControls(event, this.state) });
         this.setState({ isFormValid: checkFormValidity(this.state) });
@@ -110,6 +135,7 @@ class UploadVideoForm extends Component {
         this.props.onVideoUpload({
             title: this.state.controls.title.value,
             description: this.state.controls.description.value,
+            category: this.state.controls.category.value,
             userId: localStorage.getItem('userId'),
             imageType: 'thumbnail',
             thumbnail: this.state.controls.thumbnail.value,

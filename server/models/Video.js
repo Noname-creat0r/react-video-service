@@ -15,6 +15,11 @@ const videoSchema = new Schema({
         ref: 'User',
         required: true
     },
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'Category',
+        required: false,
+    },
     views: {
         type: Number,
         min: 0,

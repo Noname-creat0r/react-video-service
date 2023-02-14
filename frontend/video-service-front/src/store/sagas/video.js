@@ -99,7 +99,6 @@ export function* rateVideoSaga(action) {
     }
 };
 
-
 export function* addViewSaga(action) {
     try {
         //console.log(action);
@@ -117,4 +116,13 @@ export function* addViewSaga(action) {
     } catch(error) {
         //yield put(actions.videoAddViewFailed());
     }
-}
+};
+
+export function* fetchCategoreisSaga(action) {
+    try {
+        const response = yield axios.get('/video/categories');
+        yield put(actions.videoFetchCategoreisSuccess(response.data.categories));
+    } catch(error) {
+        yield put(actions.videoFetchCategoreisFailed());
+    }
+};

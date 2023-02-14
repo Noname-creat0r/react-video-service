@@ -48,7 +48,7 @@ export const getUpdatedControls = (event, state) => {
             group={element.config.groupConfig.group}
             label={element.config.groupConfig.label}
             value={element.config.value}
-            //file={element.config.file}
+            options={element.config.controlConfig.options}
             name={element.id}
             isValid={element.config.validation.valid}
             changeHandler={changeHandler}

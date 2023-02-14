@@ -12,11 +12,12 @@ import {
 } from "./profile";
 import {
     uploadVideoSaga,
-    fetchVideoInfoSaga,
     uploadVideoCommentsSaga,
+    fetchVideoInfoSaga,
     fetchVideoCommentsSaga,
+    fetchCategoreisSaga,
     rateVideoSaga,
-    addViewSaga
+    addViewSaga,
 } from './video';
 import {
     uploadPlaylistSaga,
@@ -50,6 +51,7 @@ export function* watchVideo() {
         takeEvery(actionTypes.VIDEO_FETCH_COMMENTS, fetchVideoCommentsSaga),
         takeEvery(actionTypes.VIDEO_RATE, rateVideoSaga),
         takeEvery(actionTypes.VIDEO_ADD_VIEW, addViewSaga),
+        takeEvery(actionTypes.VIDEO_FETCH_CATEGOREIS, fetchCategoreisSaga),
     ]);
 };
 

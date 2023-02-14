@@ -5,7 +5,9 @@ const User = require('../models/User');
 const Like = require('../models/Like');
 const Dislike = require('../models/Dislike');
 const Commentary = require('../models/Commentary');
+const Category = require('../models/Category');
 const methods = require('../db/methods');
+
 const { insertAuthorNames, handleLikeDislike, 
     updateVideoLikes, updateVideoDislikes, sortByUploadDate } = require('../shared/utility');
 
@@ -105,6 +107,7 @@ exports.postVideo = (req, res, next) => {
 
     const mongoVideo = new Video({
         title: req.body.title,
+        category: req.body.category,
         description: req.body.description,
         author: mongoose.Types.ObjectId(req.body.userId),
         thumbnail: thumbnailFileId,
@@ -302,4 +305,39 @@ exports.postView = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+};
+
+exports.postCategory = async (req, res, next) => {
+    try {
+        const title = req.body.title;
+        if (!req.body.title) {
+            const error = new Error('Missing title in req body!');
+            error.statusCode = 400;
+            throw error;
+        }
+        
+        const category = await Category.create({
+            title: title,
+        });
+        await category.save();
+
+        res.status(200).json({
+            message: 'Posted a category',
+            category: category.toObject(),
+        })
+        
+    } catch(err) {
+        //console.log(err);
+        next(err);
+    }
+};
+
+exports.getCategories = async (req, res, next) => {
+    try {
+        const categories = await Category.find({}).lean();
+        res.status(200).json({ categories: categories});
+    } catch(err) {
+        //console.log(err);
+        next(err);
+    };
 };

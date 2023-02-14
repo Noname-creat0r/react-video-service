@@ -6,10 +6,10 @@ const initialState = {
     streaming: false,
     fetchingInfo: false,
     interupted: false,
-    //watchedVideos: 2,
     videosInfo: new Map(),
     videoId: null,
     comments: [],
+    categories: [],
 };
 
 const videoUploadStart = (state) => {
@@ -90,8 +90,18 @@ const videoRateSuccess = (state, action) => {
 
 const videoAddViewSuccess = (state, action) => {
     return updateObject(state, {
-        //watchedVideos: number - number === 0 ? 0 : 1,
     });
+};
+
+const videoFetchCategoriesSuccess = (state, action) => {
+    return updateObject(state, {
+        fetching: false,
+        categories: action.categories,
+    });
+};
+
+const videoFetchCategoriesFailed = (state) => {
+    return updateObject(state, { fetching: false,});
 };
 
 const reducer = (state = initialState, action) => {
@@ -112,6 +122,8 @@ const reducer = (state = initialState, action) => {
         case actionTypes.VIDEO_RATE_SUCCESS: return videoRateSuccess(state, action);
         case actionTypes.VIDEO_RATE_FAILED: return videoRateFailed(state, action);
         case actionTypes.VIDEO_ADD_VIEW_SUCCESS: return videoAddViewSuccess(state, action);
+        case actionTypes.VIDEO_FETCH_CATEGOREIS_SUCCESS: return videoFetchCategoriesSuccess(state, action);
+        case actionTypes.VIDEO_FETCH_CATEGOREIS_FAILED: return videoFetchCategoriesFailed(state);
         default: return state;
     }
 };

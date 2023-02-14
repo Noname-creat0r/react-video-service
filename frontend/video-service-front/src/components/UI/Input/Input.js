@@ -7,6 +7,7 @@ const input = (props) => {
     const classes = props.classes;
     let properties = {};
     let inputElement = null;
+    let Element = <Form.Control />;
 
     if (props.touched || props.isValid ) {
         properties['isValid'] = true;
@@ -21,15 +22,29 @@ const input = (props) => {
         type: props.elementConfig.type,
     })
 
+    switch (props.elementType) {
+        case ('select'):
+            inputElement = (
+                <Form.Select {...properties}>
+                    {props.options.map((option) => <option>{option.title}</option>)}
+                </Form.Select>);
+            break;
+        case ('input'):
+            Element = Form.Control;
+            break;
+    }
+
     switch (props.elementConfig.type) {
         case ('file'):
-            inputElement = <Form.Control 
+            inputElement = <Element 
                 {...properties}
                 title={props.value.name}
                 />;
             break;
+        case (undefined):
+            break;
         default:
-            inputElement = <Form.Control 
+            inputElement = <Element
                 value={props.value}
                 {...properties}/>;
             break;

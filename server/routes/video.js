@@ -16,6 +16,12 @@ router.post(
 );
 
 router.post(
+    '/category',
+    //isAuth, //isAdmin - future
+    videoController.postCategory,
+)
+
+router.post(
     '/view',
     videoController.postView,
 )
@@ -36,6 +42,11 @@ router.post(
     '/dislike',
     isAuth,
     videoController.dislikeVideo
+);
+
+router.get(
+    '/categories',
+    videoController.getCategories,
 );
 
 router.get(

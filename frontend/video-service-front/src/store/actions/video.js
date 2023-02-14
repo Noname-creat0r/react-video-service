@@ -144,3 +144,18 @@ export const videoAddViewSuccess = () => {
 export const videoAddViewFailed = () => {
     return { type: actionTypes.VIDEO_ADD_VIEW_FAILED, };
 };
+
+export const videoFetchCategoreis = () => {
+    return { type: actionTypes.VIDEO_FETCH_CATEGOREIS };
+};
+
+export const videoFetchCategoreisSuccess = (categoreis) => {
+    return { 
+        type: actionTypes.VIDEO_FETCH_CATEGOREIS_SUCCESS,
+        categories: categoreis,
+    };
+};
+
+export const videoFetchCategoreisFailed = () => {
+    return { type: actionTypes.VIDEO_FETCH_CATEGOREIS_FAILED};
+};
