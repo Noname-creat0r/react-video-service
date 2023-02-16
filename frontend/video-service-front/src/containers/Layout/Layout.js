@@ -19,6 +19,7 @@ const mapStateToProps = state => {
         isAuthenticated: state.auth.token !== null,
         isLoading: state.auth.loading || state.profile.fetching,
         userData: state.profile.data,
+        categories: state.video.categories,
         notifications: state.notification.notifications,
     };
 };
@@ -27,6 +28,7 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchUserData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
         fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
+        fetchCategoreis: () => dispatch(actions.videoFetchCategoreis()),
         closeNotification: (key) => dispatch(actions.notificationClose(key)),
         closeNotifications: () => dispatch(actions.notificationCloseAll()),
     };
@@ -39,40 +41,25 @@ class Layout extends Component {
         showFilterOptions: false,
         filterOptions: {
             'Sort' : {
-                'Popularity': {
-                    type: 'switch',
-                    checked: false,    
-                    disabled: true, 
-                },
-                'Upload date': {
-                    type: 'switch',
-                    checked: false,
-                    disabled: false,
-                }, 
-                'Most likes': {
-                    type: 'switch',
-                    checked: false,
-                    disabled: true,
-                },
+                options: [
+                    { title: 'Upload date', disabled: false,},
+                    { title: 'Most likes', disabled: false,},
+                    { title: 'Popularity', disabled: true,},
+                ],
+                value: null, 
+                type: 'radio',
             },
             'Type': {
-               'Video': {
-                        type: 'checkbox',
-                        checked: false,
-                        disabled: true,
-               },
-                'User': {
-                        type: 'checkbox',
-                        checked: false,
-                        disabled: true,
-                },
-                'Playlist': {
-                        type: 'checkbox',
-                        checked: false,
-                        disabled: true,
-                },
+                options: [
+                    { title: 'Video', disabled: true,},
+                    { title: 'User', disabled: true,},
+                    { title: 'Playlist', disabled: true,},
+                ],
+                value: null,
+                type: 'radio'
             },
         },
+        currentVideoCategory: 'Any',
     }
 
     sideDrawerToggleHandler = () => {
@@ -97,25 +84,31 @@ class Layout extends Component {
         });
     };
 
-    filterOptionCheckHandler = (optionTitle, category) => {
-        const isChecked = this.state.filterOptions[category][optionTitle].checked;
+    filterOptionCheckHandler = (value) => {
+        //console.log(value);
         const updatedFilters = updateObject(this.state.filterOptions, {
-            [category]: updateObject(this.state.filterOptions[category], {
-                [optionTitle]: updateObject(this.state.filterOptions[category][optionTitle], {
-                    checked: !isChecked,
-                })
+            [value.category]: updateObject(this.state.filterOptions[value.category], {
+                value: value.title,
             }),
         });
-
-        if (!isChecked)
-            for (const optionKey of Object.keys(updatedFilters[category])){
-                const isOptionChecked = updatedFilters[category][optionKey].checked ;
-                if (isOptionChecked && optionTitle !== optionKey)
-                    updatedFilters[category][optionKey].checked = false;
-            };
-        
         //console.log(updatedFilters);
         this.setState({ filterOptions: updatedFilters });
+    };
+
+    categoryChangeHandler = (event) => {
+        //console.log(event.target.value);
+        this.setState({ currentVideoCategory: event.target.value});
+        //console.log(this.state.currentVideoCategory);
+    };
+
+    clearFiltersHandler = () => {
+        const updatedState = this.state;
+        const filters = updatedState.filterOptions;
+        for (const category of Object.keys(filters)){
+            filters[category].value = null;
+        }
+        updatedState.currentVideoCategory = 'Any';
+        this.setState({ updatedState });
     };
 
     searchHandler = (event) => {
@@ -123,11 +116,20 @@ class Layout extends Component {
             const checkedOptions = [];
             const filters = this.state.filterOptions;
             for (const category of Object.keys(filters)){
-                for (const optionKey of Object.keys(filters[category])){
-                    if (filters[category][optionKey].checked)
-                        checkedOptions.push({category: category, option: optionKey});
-                }
+                const filterValue = filters[category].value;
+                if (filterValue) checkedOptions.push({
+                    category: category,
+                    option: filterValue,
+                });
             }
+
+            const currentCategory = this.state.currentVideoCategory;
+            //console.log(currentCategory);
+            if (currentCategory)
+                checkedOptions.push({
+                    category: 'Category',
+                    option: currentCategory,
+                });
 
             this.props.fetchVideosInfo('info/filter', {
                 videoName: event.target.value,
@@ -140,6 +142,7 @@ class Layout extends Component {
         this.props.fetchUserData( 
             localStorage.getItem('userId'),
             localStorage.getItem('token'));
+        this.props.fetchCategoreis();
     }
 
     notificationToastClickHandler = (event, key) => {
@@ -166,8 +169,12 @@ class Layout extends Component {
                     drawerToggleClicked={this.sideDrawerToggleHandler} 
                     authModalRequested={this.authModalToggleHandler}/>
                 <FilterOptions 
-                    options={this.state.filterOptions}
+                    filtersData={this.state.filterOptions}
+                    videoCategories={this.props.categories}
+                    currentVideoCategory={this.props.currentVideoCategory}
                     checkHandler={this.filterOptionCheckHandler}
+                    clearFiltersHandler={this.clearFiltersHandler}
+                    categoryChangeHandler={this.categoryChangeHandler}
                     show={this.state.showFilterOptions}/>
                 <SideDrawer 
                     isAuthenticated={this.props.isAuthenticated}

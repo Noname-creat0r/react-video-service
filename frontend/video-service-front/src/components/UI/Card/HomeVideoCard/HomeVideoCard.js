@@ -43,7 +43,7 @@ const HomeVideoCard = (props) => {
                     <Card.Title className='title'> {props.title} </Card.Title>
                 </Card.Body>
             </NavLink>
-            <Card.Footer className='d-flex'>
+            <Card.Footer className='d-flex justify-content-between'>
                 <UserBadge name={props.authorName} />
                 <Overlay
                     trigger='click'

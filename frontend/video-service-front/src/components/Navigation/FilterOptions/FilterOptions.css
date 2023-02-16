@@ -1,5 +1,12 @@
 .FilterOptions {
     z-index: 0;
-    background-color: #9C528B;
+    background-color: rgba(156, 82, 139, 25);
     color: #1D1E2C;
+    width: 52%;
+}
+
+.ClearButton {
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
 }

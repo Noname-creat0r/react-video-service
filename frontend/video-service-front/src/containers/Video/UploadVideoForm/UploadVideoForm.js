@@ -118,7 +118,7 @@ class UploadVideoForm extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchCategoreis();
+        //this.props.fetchCategoreis();
     }
 
     componentDidUpdate(){

@@ -106,13 +106,12 @@ export function* addViewSaga(action) {
             { videoId: action.videoId, });
         //yield put(actions.videoAddViewSuccess());
         const unauthViews = localStorage.getItem('views');
-        let views = 3;
+        let views = Number(process.env.REACT_APP_UNAUTH_VIEWS);
 
         if (unauthViews) {
             views = views === 0 ? 0 : Number(unauthViews) - 1;
         }
         localStorage.setItem('views', views);
-        console.log(views);
     } catch(error) {
         //yield put(actions.videoAddViewFailed());
     }

@@ -32,7 +32,8 @@ class App extends Component {
   componentDidMount() {
     this.props.onTryAutoSignup();
     if (!localStorage.getItem('views')){
-      localStorage.setItem('views', 3);
+      console.log(Number(process.env.REACT_APP_UNAUTH_VIEWS));
+      localStorage.setItem('views', Number(process.env.REACT_APP_UNAUTH_VIEWS));
     }
   }
 

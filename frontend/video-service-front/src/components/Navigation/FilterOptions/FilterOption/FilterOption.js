@@ -1,21 +1,20 @@
 import React from 'react';
 
-import Form from 'react-bootstrap/Form';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 
 import './FilterOption.css';
 
 const FilterOption = (props) => {
     return (
-        <Form.Check 
+        <ToggleButton
             className='FilterOption'
+            variant='outline-info'
+            id={props.label}
             key={props.label}
-            label={props.label}
-            type={props.type}
-            checked={props.checked}
             disabled={props.disabled}
-            //onChange={props.handler}
-            onClick={() => props.handler(props.label, props.category)}
-        />
+            value={[props.category, props.label]}>
+            {props.label}
+        </ToggleButton>
     );
 };
 
