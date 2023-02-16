@@ -10,11 +10,11 @@ I will update this project during my futher learning process.
 ## Service functionality:
   - [x] User authorization/registration module.
   - [x] Listing and watching the videos from DB in the app.
-  - [ ] Categorizing and sorting videos.
+  - [x] Categorizing and sorting videos.
   - [x] Every video should have its own page with user comments and additional information.
   - [x] Every video should have some specific counters like: "Views", "Likes"...
   - [x] Video searching functionality.
-  - [ ] Unauthorized users can't: view more than 10 videos, comment any video, like any video, create playlists, add videos to playlists.
+  - [x] Unauthorized users can't: view more than 10 videos, comment any video, like any video, create playlists, add videos to playlists.
   
 ## Functionality for authorized users:
   - [x] Unlimited number of videos to view.
