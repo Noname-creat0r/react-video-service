@@ -9,7 +9,8 @@ const Category = require('../models/Category');
 const methods = require('../db/methods');
 
 const { insertAuthorNames, handleLikeDislike, 
-    updateVideoLikes, updateVideoDislikes, sortByUploadDate } = require('../shared/utility');
+    updateVideoLikes, updateVideoDislikes, sortByUploadDate,
+    videoSort } = require('../shared/utility');
 
 exports.getVideoThumbnail = async (req, res, next) => {
     //console.log(req.query.id + " thumbnail id");
@@ -77,15 +78,35 @@ exports.getFilterVideoInfo = async (req, res, next) => {
     let videos = await Video
         .find({ title: { $regex: videoName, $options: 'i'}  })
         .lean();
-    const filters = req.query.filters;
-    if (filters)
-        videos = videos.sort((videoA, videoB) => {
-            if ( videoA.createdAt > videoB.createdAt) return -1; 
-            if ( videoA.createdAt < videoB.createdAt) return 1;
-            return 0;
-        });
-    videos = await insertAuthorNames(videos);
 
+    const filters = req.query.filters;
+    let filteredVideos = videos;
+    //console.log(filters);
+    if (filters) {
+        for (const filter of filters){
+            switch (filter.category){
+                case ('Category'):
+                    if (filter.option !== 'Any')
+                        filteredVideos = videos.filter((video) => video.category === filter.option);
+                    break;
+                case ('Sort'): 
+                    switch (filter.option){
+                        case ('Upload date'): 
+                            filteredVideos = videoSort(videos, 'createdAt', false);
+                            break;
+                        case ('Most likes'):
+                            filteredVideos = videoSort(videos, 'likes', false);
+                            break;
+                    }
+
+                    break;
+                case ('Type'): break;
+            }
+            videos = filteredVideos;
+            console.log(videos);
+        }
+    }
+    videos = await insertAuthorNames(videos);
     res.status(200).json({ videos: videos});
 }
 
@@ -98,7 +119,7 @@ exports.getHomeVideoInfo = async (req, res, next) => {
     res.status(200).json({ videos: info });
 };
 
-exports.postVideo = (req, res, next) => {
+exports.postVideo = async (req, res, next) => {
     const video = { ...req.files['video'][0] };
     const videoFileId = video.id;
     const thumbnail = { ...req.files['thumbnail'][0] };
@@ -130,6 +151,7 @@ exports.postVideo = (req, res, next) => {
             if (!err.statusCode){
                 err.statusCode = 500;
             }
+            console.log(err);
             next(err);
         })
 };
@@ -303,6 +325,7 @@ exports.postView = async (req, res, next) => {
         })
 
     } catch (err) {
+        console.log(err);
         next(err);
     }
 };

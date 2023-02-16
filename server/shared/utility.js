@@ -110,6 +110,14 @@ exports.sortByUploadDate = (docsArr, asc) => {
     });
 };
 
+exports.videoSort = (videosArr, property, asc) => {
+    return videosArr.sort((videoA, videoB) => {
+        if ( videoA[property] > videoB[property]) return asc ? 1 : -1; 
+        if ( videoA[property] < videoB[property]) return asc ? -1: 1;
+        return 0;
+    });
+}
+
 exports.insertVideoInfoInPlaylist = async (playlistDoc) => {
     const updatedPlaylist = {...playlistDoc};
     updatedPlaylist.videos = [];
