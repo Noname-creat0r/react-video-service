@@ -1,0 +1,31 @@
+.PlaylistItem {
+    display: flex;
+    align-items: center;
+}
+
+.PlaylistItem:hover {
+    transform: scale(1.1);
+    color: #0DCAF0;
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(237,250,255,1) 100%);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.PlaylistItem__current {
+    border: 1px solid silver;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.PlaylistItemImage {
+    border-radius: 10px;
+}
+
+.PlaylistItemTitle {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.PlaylistItemRemove {
+    margin-left: auto;
+}

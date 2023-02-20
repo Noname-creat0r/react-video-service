@@ -34,6 +34,10 @@ const mapDispatchToProps = dispatch => {
         fetchPlaylistData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
         showPlaylistForm: (mode) => dispatch(actions.playlistShowForm(mode)),
+        deletePlaylist: (playlistId) => dispatch(actions.playlistDelete(
+            playlistId,
+            localStorage.getItem('token'),
+            localStorage.getItem('userId') )),
     };
 };
 
@@ -65,6 +69,10 @@ class Profile extends Component {
 
     };
 
+    profileDeletePlaylistClickHandler = (event, id) => {
+        this.props.deletePlaylist(id);
+    };
+
     playlistCardClickHandler = (event, id) => {
         localStorage.setItem('playlistId', id);
     }
@@ -92,14 +100,17 @@ class Profile extends Component {
             },
             {
                 click: this.profileVideoCardClickHandler,
-                playlist: this.profileAddToPlaylistClickHandler
+                playlist: this.profileAddToPlaylistClickHandler,
             },
             ProfileVideoCard,
         );
 
         const playlists = mapPlaylistsToCards(
             this.props.playlists,
-            this.playlistCardClickHandler,
+            {
+                click: this.playlistCardClickHandler,
+                delete: this.profileDeletePlaylistClickHandler,
+            },
             ProfilePlaylistCard,
         );
 

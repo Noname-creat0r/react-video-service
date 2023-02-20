@@ -55,7 +55,7 @@ const playlistFetchDataFailed = (state, action) => {
 
 const playlistFetchVideoInfoStart = (state) => {
     return updateObject(state, { fetching: true });
-}
+};
 
 const playlistFetchVideoInfoSuccess = (state, action) => {
     const updatedPlaylists = new Map([...state.playlists]);
@@ -63,8 +63,8 @@ const playlistFetchVideoInfoSuccess = (state, action) => {
     return updateObject(state, {
         fetching: false,
         playlists: updatedPlaylists,
-    })
-}
+    });
+};
 
 const playlistFetchVideoInfoFailed = (state) => {
     return updateObject( state, { fetching: false });
@@ -74,11 +74,19 @@ const playlistEditSuccess = (state, action) => {
     const updatedPlaylists = new Map([...state.playlists]);
     updatedPlaylists.set(action.playlist._id, action.playlist);
     return updateObject( state, { playlists: updatedPlaylists });
-}
+};
 
 const playlistEditFailed = (state) => {
     return updateObject(state, {});
-}
+};
+
+const playlistDeleteSuccess = (state, action) => {
+    const updPlaylists = new Map([...state.playlists]);
+    updPlaylists.delete(action.id);
+    return updateObject(state, { playlists: updPlaylists });
+};
+
+const playlistDeleteFailed = (state) => { return state; } 
 
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
@@ -95,6 +103,8 @@ const reducer = (state = initialState, action) => {
         case actionTypes.PLAYLIST_FETCH_VIDEO_INFO_FAILED: return playlistFetchVideoInfoFailed(state);
         case actionTypes.PLAYLIST_EDIT_SUCCESS: return playlistEditSuccess(state, action);
         case actionTypes.PLAYLIST_EDIT_FAILED: return playlistEditFailed(state);
+        case actionTypes.PLAYLIST_DELETE_SUCCESS: return playlistDeleteSuccess(state, action);
+        case actionTypes.PLAYLIST_DELETE_FAILED: return playlistDeleteFailed(state);
         default: return state;
     }
 };

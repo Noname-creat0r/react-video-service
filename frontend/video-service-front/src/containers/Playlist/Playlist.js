@@ -21,27 +21,25 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchPlaylistVideoInfo: (playlistId) => 
-            dispatch(actions.playlistFetchVideoInfo(playlistId)),
+        fetchPlaylistData: (endpoint, options) => 
+            dispatch(actions.playlistFetchData(endpoint, options)),
     };
 }
 
 class Playlist extends Component {
 
     componentDidMount() {
-         this.props.fetchPlaylistVideoInfo(localStorage.getItem('playlistId'));
+        this.props.fetchPlaylistData(
+            '/', { userId: localStorage.getItem('userId') });
     }
 
-    videoAddToPlaylistHandler = () => {
-
-    }
 
     render() {
         if (this.props.fetching)
             return <LoadingSpinner />
-        else {
-            //console.log(this.props.fetching);
-            const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
+        //console.log(localStorage.getItem('playlistId'));
+        const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
+        console.log(playlist.videos);
         return (
             <Container className='my-3 w-50'>
                 <Container className='d-flex flex-direction-column'>
@@ -54,11 +52,11 @@ class Playlist extends Component {
                     <strong className='PlaylistTitle mx-3'>{playlist.title}</strong>
                 </Container>
                 <PlaylistControls />
-                <PlaylistItems 
-                    videosInfo={playlist.videos}/>
                 <hr />
+                <PlaylistItems 
+                    videosInfo={playlist}/>
             </Container>
-        );}
+        )
     }
 }
 

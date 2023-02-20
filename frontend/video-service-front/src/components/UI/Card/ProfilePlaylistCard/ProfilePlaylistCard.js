@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
+import DeleteButton from 'react-bootstrap/CloseButton';
 
 import './ProfilePlaylistCard.css';
 
@@ -21,10 +22,11 @@ const ProfilePlaylistCard = (props) => {
                 <Card.Body>
                     <Card.Title className='title'> {props.title} </Card.Title>
                 </Card.Body>
-                <Card.Footer>
-                    {props.videoNumber} videos
-                </Card.Footer>
             </NavLink>
+            <Card.Footer className='d-flex justify-content-between'> 
+                {props.videoNumber} videos
+                <DeleteButton onClick={props.delete}/>
+            </Card.Footer>
         </Card>
     );
 };

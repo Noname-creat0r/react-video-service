@@ -1,15 +1,25 @@
 import React from 'react';
 
 import Container from 'react-bootstrap/Container';
-import PlaylistItem from './PlaylistItem/PlaylistItem';
+import Image from 'react-bootstrap/Image';
+import CloseButton from 'react-bootstrap/CloseButton';
 
-import { mapVideoInfoToCards } from '../../../shared/utility';
+import './PlaylistItems.css';
 
 const PlaylistItems = (props) => {
-    const mappedVideos = props.videosInfo.map((info) => 
-        <PlaylistItem 
-            thumbnail={info.thumbnail}
-            title={info.title}/>
+    console.log(props.videosInfo.videos);
+    const mappedVideos = props.videosInfo.videos.map((video, id) => 
+        <Container className='PlaylistItem'>
+            <bold>{id+1}</bold>
+            <Image 
+                className='PlaylistItemImage my-2 mx-2'
+                src={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
+                height='100px'
+                width='140px'/>
+            <span className='PlaylistItemTitle'> {video.title} </span>
+            <CloseButton className='PlaylistItemRemove'/>
+        </Container>
+       
     );
     
 

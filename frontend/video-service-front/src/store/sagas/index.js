@@ -58,8 +58,9 @@ export function* watchVideo() {
 export function* watchPlaylist() {
     yield all([
         takeEvery(actionTypes.PLAYLIST_UPLOAD, uploadPlaylistSaga),
+        takeEvery(actionTypes.PLAYLIST_EDIT, editPlaylistSaga),
+        takeEvery(actionTypes.PLAYLIST_DELETE, deletePlaylistSaga),
         takeEvery(actionTypes.PLAYLIST_FETCH_DATA, fetchPlaylistsSaga),
         takeEvery(actionTypes.PLAYLIST_FETCH_VIDEO_INFO, fetchPlaylistVideoInfoSaga),
-        takeEvery(actionTypes.PLAYLIST_EDIT, editPlaylistSaga),
     ]);
 };

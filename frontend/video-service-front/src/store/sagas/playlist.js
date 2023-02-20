@@ -68,13 +68,12 @@ export function* editPlaylistSaga(action) {
                 'Content-Type': 'multipart/form-data' }
             }
         );
-        console.log(response.data.playlist);
+        //console.log(response.data.playlist);
         yield put(actions.playlistEditSuccess(response.data.playlist));
         yield put(actions.notificationSend(
             'Edited playlist!',
             'info'));
     } catch(error) {
-        console.log(error);
         yield put(actions.playlistEditFailed(error));
         yield put(actions.notificationSend(
             'Failed to edit a playlist!',
@@ -92,8 +91,20 @@ export function* addVideoToPlaylistSaga(action){
 
 export function* deletePlaylistSaga(action){
     try{
+        console.log(action.token);
+        const response = yield axios.delete('/playlist', 
+            {
+                params: {
+                    userId: action.userId,
+                    playlistId: action.playlistId,}, 
+                headers: { 'Authorization': action.token,}
+            },
+        );
 
+        yield put(actions.playlistDeleteSuccess(response.data.playlistId));
+        yield put(actions.notificationSend('You have deleted a playlist', 'warning'));
     } catch(error){
-
+        console.log(error);
+        yield put(actions.playlistDeleteFailed());
     }
 }

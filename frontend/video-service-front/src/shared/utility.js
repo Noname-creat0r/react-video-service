@@ -54,14 +54,15 @@ export const mapNotificationToasts = (notifications, NotificationToast, clickHan
   })
 };
 
-export const mapPlaylistsToCards = (playlistInfo, clickHandler, PlaylistCard) => {
+export const mapPlaylistsToCards = (playlistInfo, handlers, PlaylistCard) => {
   const playlistArr = [];
   playlistInfo.forEach( (playlist, id) => {
       playlistArr.push( 
         <PlaylistCard
           key={id}
           thumbnail={'http://localhost:8080/video/thumbnail?id=' + playlist.thumbnail}
-          clicked={event => clickHandler(event, id)}
+          clicked={event => handlers.click(event, id)}
+          delete={event => handlers.delete(event, id)}
           title={playlist.title} 
           videoNumber={playlist.videos.length}/>
       );

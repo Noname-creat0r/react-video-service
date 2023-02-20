@@ -145,7 +145,27 @@ exports.patchPlaylist = async (req, res, next) => {
 
 exports.deletePlaylist = async (req, res, next) => {
     try {
+        if (!req.query.playlistId){
+            const error = new Error('Missing querry params!');
+            error.statusCode = 400;
+            throw error;
+        }
+        
 
+        const playlist = await Playlist.findOne({ 
+            _id: Types.ObjectId(req.query.playlistId)
+        });
+
+        playlist.delete();
+        if (playlist.$isDeleted)
+            res.status(200).json({
+                message: 'Playlist has been deleted',
+                playlistId: req.query.playlistId
+            });
+        else res.status(404).json({
+            message: 'There is no playlist with this id',
+        });
+        
     } catch (error){
         console.log(error);
         next(error);

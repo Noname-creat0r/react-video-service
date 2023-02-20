@@ -100,3 +100,23 @@ export const playlistEditSuccess = (updatedPlaylist) => {
 export const playlistEditFailed = (error) => {
     return { type: actionTypes.PLAYLIST_EDIT_FAILED }
 };
+
+export const playlistDelete = (playlistId, token, userId) => {
+    return {
+        type: actionTypes.PLAYLIST_DELETE,
+        playlistId: playlistId,
+        token: token,
+        userId: userId,
+    };
+};
+
+export const playlistDeleteSuccess = (id) => {
+    return { 
+        type: actionTypes.PLAYLIST_DELETE_SUCCESS,
+        id: id,
+    }
+};
+
+export const playlistDeleteFailed = () => {
+    return {type: actionTypes.PLAYLIST_DELETE_FAILED}
+};
