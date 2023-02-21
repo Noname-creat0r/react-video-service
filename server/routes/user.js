@@ -12,5 +12,10 @@ router.get(
     userController.fetchData
 );
 
+router.put(
+    '/bookmark',
+    isAuth,
+    userController.putPlaylistBookmark,
+);
 
 module.exports = router;

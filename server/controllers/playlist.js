@@ -29,7 +29,7 @@ exports.getUserPlaylists = async (req, res, next) => {
             playlist = await insertVideoInfoInPlaylist(playlist);
             informedPlaylists.push(playlist);
         }
-        console.log(informedPlaylists);
+        //console.log(informedPlaylists);
         //userPlaylists = await insertVideoInfoInPlaylist(userPlaylists);
 
         const message = `User ${req.query.userId} has ${userPlaylists.length} playlists at the moment.`;
@@ -41,7 +41,7 @@ exports.getUserPlaylists = async (req, res, next) => {
         });
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         next(error);
     }
 };
@@ -66,7 +66,7 @@ exports.getPlaylistVideoInfo = async (req, res, next) => {
             playlist: playlist,
         })
     } catch(error) {
-        console.log(error);
+        //console.log(error);
         next(error);
     }
 };
@@ -94,7 +94,7 @@ exports.postPlaylist = async (req, res, next) => {
         });
 
     } catch(error) {
-        console.log(error);
+        //console.log(error);
         next(err);
     }
 };
@@ -138,7 +138,7 @@ exports.patchPlaylist = async (req, res, next) => {
         });
 
     } catch (error){
-        console.log(error);
+        //console.log(error);
         next(error);
     }
 };
@@ -167,7 +167,7 @@ exports.deletePlaylist = async (req, res, next) => {
         });
         
     } catch (error){
-        console.log(error);
+        //console.log(error);
         next(error);
     }
 }

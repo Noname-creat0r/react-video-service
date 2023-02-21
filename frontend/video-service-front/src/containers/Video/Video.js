@@ -3,19 +3,24 @@ import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import { updateObject } from '../../shared/utility';
 import * as actions from '../../store/actions/index';
+import * as modalModes from '../../shared/playlistModalModes';
 
 import Container from 'react-bootstrap/Container';
 import VideoPlayer from '../../components/Video/VideoPlayer/VideoPlayer';
 import VideoInfo from '../../components/Video/VideoInfo/VideoInfo';
 import VideoFooter from '../../components/Video/VideoFooter/VideoFooter';
+import VideoPlaylistModal from '../../components/Video/VideoInfo/VideoPlaylistModal/VideoPlaylistModal';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 
 function mapStateToProps(state) {
     return {
         videoId: localStorage.getItem('videoId'),
         videosInfo: state.video.videosInfo,
+        playlists: state.playlist.playlists,
+        playlistVideoId: state.playlist.currentVideoId,
         comments: state.video.comments,
         isAuthenticated: state.auth.token !== null,
+        isPlaylist: state.playlist.playing,
     }
 }
 
@@ -25,9 +30,11 @@ function mapDispatchToProps(dispatch) {
             'info/one', { videoId: videoId }
         )),
         fetchVideoComments: (videoId) => dispatch(actions.videoFetchComments(videoId)),
+        fetchPlaylistsData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
         uploadVideoComment: (videoId, userId, token, text) => dispatch(actions.videoUploadComment(videoId, userId, token, text)),
         rateVideo: (videoId, userId, token, actionType ) => dispatch(actions.videoRate(videoId, userId, token, actionType)),
-        addView: (videoId) => dispatch(actions.videoAddView(videoId)), 
+        addView: (videoId) => dispatch(actions.videoAddView(videoId)),
+        showPlaylistForm: (mode) => dispatch(actions.playlistShowForm(mode)),
     };
 }
 
@@ -49,14 +56,17 @@ class Video extends Component {
             'dislike': {
                 clicked: false,
             }
-        }
+        },
+        showCurrentPlaylistModal: false,
    };
 
     componentDidMount() {
-        if (this.props.videosInfo.size === 0) {
-            this.props.fetchVideoInfo(localStorage.getItem('videoId'));
-        }
+        this.props.fetchVideoInfo(localStorage.getItem('videoId'));
         this.props.fetchVideoComments(localStorage.getItem('videoId'));
+    };
+
+    componentDidUpdate() {
+        console.log('upd');
     }
 
    typeCommentHandler = (event) => {
@@ -90,6 +100,12 @@ class Video extends Component {
         this.setState({interactionItems: updatedState});
     };
 
+    videoAddToPlaylistClickHandler = () => {
+        this.props.fetchPlaylistsData(
+            '/', { userId: localStorage.getItem('userId') })
+        this.props.showPlaylistForm(modalModes.ADDING);
+    };
+
     rateVideoHandler = (action) => {
         this.interactionItemClickHandler(action);
         this.props.rateVideo(
@@ -113,6 +129,12 @@ class Video extends Component {
 
     playingStateDisable = () => {
         this.setState({ playing: false});
+    };
+
+    showCurrentPlaylistModalToggle = () => {
+        this.setState( (prevState) => {
+            return { showCurrentPlaylistModal: !prevState.showCurrentPlaylistModal, }
+        });
     };
 
    render() {
@@ -141,10 +163,16 @@ class Video extends Component {
                     dislikes={videoInfo.dislikes}
                     interactionItems={this.state.interactionItems}
                     comments={this.props.comments}
+                    isPlaylist={this.props.isPlaylist}
+                    addToPlaylist={this.videoAddToPlaylistClickHandler}
+                    showCurrentPlaylist={this.showCurrentPlaylistModalToggle}
                     rateVideoHandler={this.rateVideoHandler}
                     typeCommentHandler={this.typeCommentHandler}
                     postCommentHandler={this.postCommentHandler}/>
                 <VideoFooter />
+                <VideoPlaylistModal 
+                    show={this.state.showCurrentPlaylistModal}
+                    hide={this.showCurrentPlaylistModalToggle}/>
             </Container>
         );
     }

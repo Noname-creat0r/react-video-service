@@ -7,9 +7,23 @@
     height: min-content;
 }
 
-.userInteractionSection_container:hover{
+.userInteractionSection_playlistControl{
+    margin-bottom: 10px;
+}
+
+.userInteractionSection_playlistControl:hover{
+    transform: scale(1.2);
+}
+
+.userInteractionSection_container{
+    border-radius: 40px;
     cursor: pointer;
-    border: 1px solid black;
+    width: max-content;
+}
+
+.userInteractionSection_container:hover{
+    border: 1px solid grey;
+    transform: scale(1.1);
 }
 
 .userInteractionSection_item{

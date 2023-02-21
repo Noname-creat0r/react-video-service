@@ -61,6 +61,7 @@ export function* fetchPlaylistVideoInfoSaga(action) {
 
 export function* editPlaylistSaga(action) {
     try {
+        
         const response = yield axios.patch('/playlist', 
             { ...action.editData } ,
             { headers: {
@@ -79,7 +80,7 @@ export function* editPlaylistSaga(action) {
             'Failed to edit a playlist!',
             'danger'));
     }
-}
+};
 
 export function* addVideoToPlaylistSaga(action){
     try{
@@ -104,7 +105,7 @@ export function* deletePlaylistSaga(action){
         yield put(actions.playlistDeleteSuccess(response.data.playlistId));
         yield put(actions.notificationSend('You have deleted a playlist', 'warning'));
     } catch(error){
-        console.log(error);
+        //console.log(error);
         yield put(actions.playlistDeleteFailed());
     }
-}
+};

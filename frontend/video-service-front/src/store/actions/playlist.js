@@ -120,3 +120,13 @@ export const playlistDeleteSuccess = (id) => {
 export const playlistDeleteFailed = () => {
     return {type: actionTypes.PLAYLIST_DELETE_FAILED}
 };
+
+export const playlistOn = () => {
+    return {
+        type: actionTypes.PLAYLIST_ON
+    }
+};
+
+export const playlistOff = () => {
+    return {type: actionTypes.PLAYLIST_OFF}
+};

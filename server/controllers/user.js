@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Playlist = require('../models/Playlist');
+const Types = require('mongoose').Types;
 
 exports.fetchData = (req, res, next) => {
     const userId = req.query.userId.toString();
@@ -26,3 +27,40 @@ exports.fetchData = (req, res, next) => {
         });
 };
 
+exports.putPlaylistBookmark = async (req, res, next) => {
+    if (!req.body.videoId || !req.body.playlistId ||
+        !req.body.userId){
+        const error = new Error('Missing param in body.');
+        error.statusCode(400);
+        throw error;
+    }
+    
+    try {
+        const user = await User.findOne({
+            _id: Types.ObjectId(req.body.userId)}
+        );
+
+        const bookmarks = user.playlistBookmarks;
+        console.log(bookmarks);
+        const markId = bookmarks.findIndex(bookmark =>
+            bookmark.playlist === req.body.playlistId);
+        if (markId > -1)
+            bookmarks[markId].video = Types.ObjectId(req.body.videoId);
+        else {
+            bookmarks.push({
+                playlist: Types.ObjectId(req.body.playlistId),
+                video: Types.ObjectId(req.body.videoId),
+            });
+        }
+        user.save();
+
+        res.status(200).json({
+            message: 'Playlist bookmarked',
+            user: user.toObject(),
+        });
+        
+    } catch(error) {
+        console.log(error);
+        next(error);
+    }
+};

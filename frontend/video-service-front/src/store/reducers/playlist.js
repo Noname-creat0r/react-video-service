@@ -5,10 +5,12 @@ import * as modes from '../../shared/playlistModalModes';
 const initialState = {
     playlists: new Map(),
     playlistId: null,
+    currentVideoId: null,
     showPlaylistForm: false,
     playlistFormMode: modes.UPLOADING,
     uploading: false,
     fetching: false,
+    playing: false,
 };
 
 const playlistShowForm = (state, action) => {
@@ -88,6 +90,14 @@ const playlistDeleteSuccess = (state, action) => {
 
 const playlistDeleteFailed = (state) => { return state; } 
 
+const playlistOn = (state, action) => {
+    return updateObject(state, {
+        playing: true,
+    })
+};
+
+const playlistOff = (state) => { return updateObject(state, { playing: false})}
+
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
         case actionTypes.PLAYLIST_SHOW_FORM: return playlistShowForm(state, action); 
@@ -105,8 +115,10 @@ const reducer = (state = initialState, action) => {
         case actionTypes.PLAYLIST_EDIT_FAILED: return playlistEditFailed(state);
         case actionTypes.PLAYLIST_DELETE_SUCCESS: return playlistDeleteSuccess(state, action);
         case actionTypes.PLAYLIST_DELETE_FAILED: return playlistDeleteFailed(state);
+        case actionTypes.PLAYLIST_ON: return playlistOn(state, action);
+        case actionTypes.PLAYLIST_OFF: return playlistOff(state);
         default: return state;
-    }
+    };
 };
 
 export default reducer;

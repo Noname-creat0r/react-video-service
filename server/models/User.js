@@ -19,14 +19,18 @@ const userSchema = new Schema({
         default: 'User',
         required: true
     },
-    likes: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Video'
-    }],
-    playlists: [ {
-        type: Schema.Types.ObjectId,
-        ref: 'Playlist'
-    }]
+    playlistBookmarks: [
+        {
+            playlist: {
+                type: Schema.Types.ObjectId,
+                ref: 'Playlist'
+            },
+            video: {
+                type: Schema.Types.ObjectId,
+                ref: 'Video',
+            },
+        }
+    ],
 });
 
 module.exports = mongoose.model("User", userSchema);

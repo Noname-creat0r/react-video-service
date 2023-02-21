@@ -18,7 +18,7 @@ const VideoPlayer = (props) => {
                 className='my-3 react-player'
                 width='100%'
                 height='100%'
-                url={'http://localhost:8080/video?id=' + props.videoId }/>
+                url={['http://localhost:8080/video?id=' + props.videoId]}/>
         </div>
     );
 };

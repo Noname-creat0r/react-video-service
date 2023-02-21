@@ -23,16 +23,22 @@ function mapDispatchToProps(dispatch) {
     return {
         fetchPlaylistData: (endpoint, options) => 
             dispatch(actions.playlistFetchData(endpoint, options)),
+        playlistOn: () => dispatch(actions.playlistOn()),
+        playlistOff: () => dispatch(actions.playlistOff())
     };
 }
 
-class Playlist extends Component {
 
+class Playlist extends Component {
+    
+    playlistOn = () => {
+        this.props.playlistOn();
+    }
+    
     componentDidMount() {
         this.props.fetchPlaylistData(
             '/', { userId: localStorage.getItem('userId') });
     }
-
 
     render() {
         if (this.props.fetching)
@@ -51,7 +57,8 @@ class Playlist extends Component {
                         alt='PlaylistThumbnail' />
                     <strong className='PlaylistTitle mx-3'>{playlist.title}</strong>
                 </Container>
-                <PlaylistControls />
+                <PlaylistControls
+                    playlistOn={this.playlistOn} />
                 <hr />
                 <PlaylistItems 
                     videosInfo={playlist}/>

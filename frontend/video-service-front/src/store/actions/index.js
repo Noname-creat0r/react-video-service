@@ -64,6 +64,8 @@ export {
     playlistDelete,
     playlistDeleteFailed,
     playlistDeleteSuccess,
+    playlistOn,
+    playlistOff,
 } from './playlist';
 export {
     notificationSend,

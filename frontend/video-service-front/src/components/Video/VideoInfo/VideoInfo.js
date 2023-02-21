@@ -6,21 +6,45 @@ import Row from 'react-bootstrap/Row';
 import Alert from 'react-bootstrap/Alert';
 import Image from 'react-bootstrap/Image';
 import Accordion from 'react-bootstrap/Accordion';
-import Placeholder from 'react-bootstrap/Placeholder';
 
+import VideoComments from './VideoComments/VideoComments';
 import UserBadge from '../../UI/User/UserBadge/UserBadge';
+
 import PlaylistIcon from '../../../assets/images/playlist.svg';
 import LikeIcon from '../../../assets/images/like.svg';
 import DislikeIcon from '../../../assets/images/dislike.svg';
-import VideoComments from './VideoComments/VideoComments';
+import NextIcon from '../../../assets/images/next.svg';
+import PreviousIcon from '../../../assets/images/previous.svg';
+import PlaylistPlay from '../../../assets/images/playlist-play.svg';
 
 import './VideoInfo.css';
 
+// show the shit if it is a playlist playing mode and hide otherwise
+// styles and functions
+
 const VideoInfo = (props) => {
-    const userInteractionStyles = { 
-        clicked: 'mx-2 userInteractionSection_container__clicked',
-        default: 'mx-2 userInteractionSection_container'
-    };
+    const playlistPanel = (
+        <div className='d-flex align-items-center mx-2'>
+            <Image
+                className='userInteractionSection_playlistControl mx-1' 
+                height='45px'
+                width='45px'
+                src={PreviousIcon}/>
+            <Alert
+                className='mx-1 userInteractionSection_container'
+                variant='info'
+                onClick={props.showCurrentPlaylist}>
+                <Image 
+                    className='mx-1 userInteractionSection_item'
+                    src={PlaylistPlay}/>
+                Current playlist
+            </Alert>
+            <Image 
+                className='userInteractionSection_playlistControl mx-1' 
+                height='45px'
+                width='45px'
+                src={NextIcon}/>
+        </div>);
     const items = props.interactionItems;
 
     return (
@@ -33,8 +57,9 @@ const VideoInfo = (props) => {
                         name={props.author}/> 
                 </Col>
                 <Col className='userInteractionSection'>
+                    {props.isPlaylist ? playlistPanel : ''}                    
                     <Alert
-                        onClick={() => {}}
+                        onClick={() => props.addToPlaylist()}
                         className='mx-1 userInteractionSection_container'
                         variant='info'>
                         <Image 

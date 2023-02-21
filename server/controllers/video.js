@@ -217,15 +217,15 @@ exports.getVideo = (req, res, next) => {
                         "Content-Type": file.contentType,
                     } 
                 
-                    
-                        res.writeHead(206, headers);
                 
-                        methods
-                            .getGridBucket('videos')
-                            .openDownloadStreamByName(
-                                file.filename,
-                                {start: start, end: end})
-                            .pipe(res);
+                    res.writeHead(206, headers);
+            
+                    methods
+                        .getGridBucket('videos')
+                        .openDownloadStreamByName(
+                            file.filename,
+                            {start: start, end: end})
+                        .pipe(res);
                     
                 }
             })

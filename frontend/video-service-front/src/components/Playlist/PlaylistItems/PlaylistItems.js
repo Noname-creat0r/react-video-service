@@ -7,7 +7,7 @@ import CloseButton from 'react-bootstrap/CloseButton';
 import './PlaylistItems.css';
 
 const PlaylistItems = (props) => {
-    console.log(props.videosInfo.videos);
+    //console.log(props.videosInfo.videos);
     const mappedVideos = props.videosInfo.videos.map((video, id) => 
         <Container className='PlaylistItem'>
             <bold>{id+1}</bold>

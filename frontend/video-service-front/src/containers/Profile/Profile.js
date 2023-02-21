@@ -77,8 +77,7 @@ class Profile extends Component {
         localStorage.setItem('playlistId', id);
     }
 
-    componentDidUpdate() {
-    }
+    componentDidUpdate() {}
     
     componentDidMount() {
         this.props.fetchVideosInfo(

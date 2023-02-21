@@ -1,4 +1,3 @@
-
 export const updateObject = (oldObject, updatedProperties) => {
     return {
         ...oldObject,
@@ -17,14 +16,6 @@ export const getGroupsBy = (arrOfObj, category) => {
     }
     return groups;
 };
-
-export function* readBlobToBase64(blob, callback) {
-  const reader = yield new FileReader();
-  reader.onload = function* () {
-    yield callback(reader.result);
-  };
-  yield reader.readAsDataUrl(blob);
-}
 
 export const mapVideoInfoToCards = (info, handlers, VideoCard) => {
   const videoArr = [];
@@ -68,4 +59,26 @@ export const mapPlaylistsToCards = (playlistInfo, handlers, PlaylistCard) => {
       );
   });
  return playlistArr;
+};
+
+
+export const videoCardClickHandler = (id, videoStreamStart) => {
+  videoStreamStart(id);
+  localStorage.setItem('videoId', id);
+};
+
+export const addToPlaylistClickHandler = (
+  fetchPlaylistMethod,
+  showPlaylistModal,
+  modalMode,
+  notificate 
+) => {
+  if (!localStorage.getItem('userId'))
+    notificate(
+      'Sign in to manage playlists', 'warning');
+  else {
+    fetchPlaylistMethod(
+      '/', { userId: localStorage.getItem('userId') })
+    showPlaylistModal(modalMode);
+  }
 };
