@@ -12,12 +12,14 @@ import Video from './containers/Video/Video';
 import Profile from './containers/Profile/Profile';
 import Logout from './containers/Auth/Logout/Logout';
 import Playlist from './containers/Playlist/Playlist';
+import Admin from './containers/Admin/Admin';
 
 import './App.css';
 
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.token !== null,
+    profileData: state.profile.data,
   };
 };
 
@@ -32,39 +34,44 @@ class App extends Component {
   componentDidMount() {
     this.props.onTryAutoSignup();
     if (!localStorage.getItem('views')){
-      console.log(Number(process.env.REACT_APP_UNAUTH_VIEWS));
+      //console.log(Number(process.env.REACT_APP_UNAUTH_VIEWS));
       localStorage.setItem('views', Number(process.env.REACT_APP_UNAUTH_VIEWS));
     }
   }
 
   render () {
+    const basicRoutes = [
+      <Route path="/video" element={<Video />} />,
+      <Route path="/" element={<Home />} />,
+      <Route path="*" element={<NotFound />} />,
+    ];
 
-    let routes = (
-      <Routes>
-        <Route path="/video" element={<Video />} />
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    );
+    const authRoutes = [
+      <Route path="/profile" element={<Profile />} />,
+      <Route path="/playlist" element={<Playlist />} />,
+      <Route path="/logout" element={<Logout />} />,
+    ];
 
-    if (this.props.isAuthenticated){
-      routes =( 
-        <Routes>
-          <Route path="/video" element={<Video />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/playlist" element={<Playlist />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      )
-    }
+    const adminRoutes = [
+      <Route path="/admin" element={<Admin />} />,
+    ];
+
+    let routes = [...basicRoutes];
+
+    if (this.props.isAuthenticated)
+      routes = [...routes, ...authRoutes];
+
+    if (this.props.profileData.type === 'Admin' &&
+        this.props.isAuthenticated) 
+      routes = [...routes, ...adminRoutes];
     
   return (
       <div className="App">
         <ErrorBoundary>
           <Layout>
-            {routes}
+            <Routes>
+              {routes}
+            </Routes>
           </Layout>
         </ErrorBoundary>
       </div>

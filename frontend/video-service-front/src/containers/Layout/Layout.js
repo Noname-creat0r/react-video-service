@@ -179,7 +179,8 @@ class Layout extends Component {
                 <SideDrawer 
                     isAuthenticated={this.props.isAuthenticated}
                     isOpen={this.state.showSideDrawer}
-                    close={this.sideDrawerCloseHandler}/>
+                    close={this.sideDrawerCloseHandler}
+                    userType={this.props.userData.type}/>
                 <main>
                     <NotifiactionContainer toasts={notifications}/> 
                     <Auth 

@@ -15,6 +15,8 @@ exports.fetchData = (req, res, next) => {
             // More to fetch soon
             const data = {
                 name: user.name,
+                type: user.type,
+                playlistBookmarks: user.playlistBookmarks,
             }
            // console.log({ message: 'User data fetched. ', data: data});
             res.status(200).json({ message: 'User data fetched. ', data: data});

@@ -11,7 +11,9 @@ const sideDrawer = (props) => (
             <OffCanvas.Title>Menu</OffCanvas.Title>
         </OffCanvas.Header>
         <OffCanvas.Body onClick={props.close}>
-            <NavigationItems isAuthenticated={props.isAuthenticated}/>
+            <NavigationItems 
+                isAuthenticated={props.isAuthenticated}
+                userType={props.userType}/>
         </OffCanvas.Body>
     </OffCanvas>
 );

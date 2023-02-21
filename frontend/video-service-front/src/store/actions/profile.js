@@ -31,7 +31,43 @@ export const profileFetchData = (userId, token) => {
 };
 
 export const profileClearData = () => {
+    return { type: actionTypes.PROFILE_CLEAR_DATA, };
+};
+
+export const profileEdit = (token, editData) => {
     return {
-        type: actionTypes.PROFILE_CLEAR_DATA,
+        type: actionTypes.PROFILE_EDIT,
+        token: token,
+        data: editData,
     };
+};
+
+export const profileEditSuccess = (profile) => {
+    return {
+        type: actionTypes.PROFILE_EDIT_SUCCESS,
+        profile: profile,
+    };
+};
+
+export const profileEditFailed = () => {
+    return { type: actionTypes.PROFILE_EDIT_FAILED }
+};
+
+export const profileDelete = (token, profileId) => {
+    return {
+        type: actionTypes.PROFILE_DELETE,
+        token: token,
+        profileId: profileId,
+    };
+};
+
+export const profileDeleteSuccess = (profileId) => {
+    return {
+        type: actionTypes.PROFILE_DELETE_SUCCESS,
+        profileId: profileId,
+    };
+};
+
+export const profileDeleteFailed = () => {
+    return { type: actionTypes.PROFILE_DELETE_FAILED }
 };

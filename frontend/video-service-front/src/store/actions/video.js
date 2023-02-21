@@ -159,3 +159,9 @@ export const videoFetchCategoreisSuccess = (categoreis) => {
 export const videoFetchCategoreisFailed = () => {
     return { type: actionTypes.VIDEO_FETCH_CATEGOREIS_FAILED};
 };
+
+export const videoEdit = () => {
+    return {
+        type: actionTypes.VIDEO_EDIT
+    }
+}
