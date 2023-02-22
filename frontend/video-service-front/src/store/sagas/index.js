@@ -26,6 +26,9 @@ import {
     fetchPlaylistsSaga,
     fetchPlaylistVideoInfoSaga,
 } from './playlist';
+import {
+
+} from './admin';
 
 
 export function* watchAuth() {
@@ -62,5 +65,12 @@ export function* watchPlaylist() {
         takeEvery(actionTypes.PLAYLIST_DELETE, deletePlaylistSaga),
         takeEvery(actionTypes.PLAYLIST_FETCH_DATA, fetchPlaylistsSaga),
         takeEvery(actionTypes.PLAYLIST_FETCH_VIDEO_INFO, fetchPlaylistVideoInfoSaga),
+    ]);
+};
+
+export function* watchAdmin() {
+    yield all([
+        takeEvery(actionTypes.ADMIN_FETCH_PROFILES, ),
+        takeEvery(actionTypes.ADMIN_FETCH_VIDEOS, ),
     ]);
 };

@@ -72,3 +72,5 @@ export {
     notificationClose,
     notificationCloseAll,
 } from './notification';
+export {
+} from './admin';

@@ -163,5 +163,5 @@ export const videoFetchCategoreisFailed = () => {
 export const videoEdit = () => {
     return {
         type: actionTypes.VIDEO_EDIT
-    }
-}
+    };
+};
