@@ -1,4 +1,6 @@
+import axios from '../../axios-settings';
 import * as actionTypes from '../actions/actionTypes';
+import * as actions from './index';
 
 export const playlistShowForm = (mode) => {
     return { 
@@ -11,123 +13,135 @@ export const playlistCloseForm = () => {
     return { type: actionTypes.PLAYLIST_CLOSE_FORM }
 };
 
+export const playlistOn = () => ({ type: actionTypes.PLAYLIST_ON })
+export const playlistOff = () => ({ type: actionTypes.PLAYLIST_OFF });
+
 export const playlistUpload = (data) => {
-    return {
-        type: actionTypes.PLAYLIST_UPLOAD,
-        data: data,
+    return dispatch => {
+        dispatch({ type: actionTypes.PLAYLIST_UPLOAD_START });
+        return axios
+            .post(
+                '/playlist',
+                {...data}, 
+                { headers: { 
+                    'Authorization': data.token,
+                    'Content-Type': 'multipart/form-data'}
+                }
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.PLAYLIST_UPLOAD_SUCCESS,
+                    playlist: response.data.playlist,
+                });
+                dispatch(actions.notificationSend(
+                    'You have created a new playlist',
+                    'info'));
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.PLAYLIST_UPLOAD_FAILED,
+                    error: error.response.data.message,
+                });
+                dispatch(actions.notificationSend(
+                    'Failed to upload a playlist',
+                    'warning'));
+            });
     }
 };
 
-export const playlistUploadStart = () => {
-    return { type: actionTypes.PLAYLIST_UPLOAD_START }
-};
-
-export const playlistUploadSuccess = (playlist) => {
-    return {
-        type: actionTypes.PLAYLIST_UPLOAD_SUCCESS,
-        playlist: playlist,
-    }
-};
-
-export const playlistUploadFailed = (error) => {
-    return { type: actionTypes.PLAYLIST_UPLOAD_FAILED, }
-};
 
 export const playlistFetchData = (endpoint, options) => {
-    return {
-        type: actionTypes.PLAYLIST_FETCH_DATA,
-        endpoint: endpoint,
-        options: options,
-    }
-};
-
-export const playlistFetchDataStart = () => {
-    return { type: actionTypes.PLAYLIST_FETCH_DATA_START, }
-};
-
-export const playlistFetchDataSuccess = (playlists) => {
-    return {
-        type: actionTypes.PLAYLIST_FETCH_DATA_SUCCESS,
-        playlists: playlists,
-    }
-};
-
-export const playlistFetchDataFailed = (error) => {
-    return { type: actionTypes.PLAYLIST_FETCH_DATA_FAILED,}
-};
-
-export const playlistFetchVideoInfo = (playlistId) => {
-    return {
-        type: actionTypes.PLAYLIST_FETCH_VIDEO_INFO,
-        playlistId: playlistId,
-    }
-};
-
-export const playlistFetchVideoInfoStart = () => {
-    return { type: actionTypes.PLAYLIST_FETCH_VIDEO_INFO_START,}
-};
-
-export const playlistFetchVideoInfoFailed = () => {
-    return { type: actionTypes.PLAYLIST_FETCH_VIDEO_INFO_FAILED, }
-};
-
-export const playlistFetchVideoInfoSuccess = (playlistWithVideos) => {
-    return {
-        type: actionTypes.PLAYLIST_FETCH_VIDEO_INFO_SUCCESS,
-        playlist: playlistWithVideos,
+    return dispatch => {
+        dispatch({ type: actionTypes.PLAYLIST_FETCH_DATA_START });
+        return axios
+            .get(
+                `/playlist${endpoint}`,
+                {params: {...options}},
+            )
+            .then(response => {
+                const data = new Map();
+                response.data.playlists.forEach( playlist => 
+                    data.set(playlist._id, playlist)    
+                );
+                dispatch({
+                    type: actionTypes.PLAYLIST_FETCH_DATA_SUCCESS,
+                    playlists: data,
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.PLAYLIST_FETCH_DATA_FAILED,
+                    error: error.response.data.message,
+                });
+                dispatch(actions.notificationSend(
+                    'Failed to upload a playlist',
+                    'warning'));
+            });
     }
 };
 
 export const playlistEdit = (token, playlistId, actionType, videoId) => {
-    return {
-        type: actionTypes.PLAYLIST_EDIT,
-        token: token,
-        editData: {
-            playlistId: playlistId,
-            actionType: actionType,
-            videoId: videoId
-        },
+    return dispatch => {
+        dispatch({ type: actionTypes.PLAYLIST_EDIT_START });
+        return axios
+            .put(
+                '/playlist',
+                { 
+                    playlistId: playlistId,
+                    actionType: actionType,
+                    videoId: videoId 
+                },
+                { headers: {
+                    'Authorization': token,
+                    'Content-Type': 'multipart/form-data' }
+                }
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.PLAYLIST_EDIT_SUCCESS,
+                    playlists: response.data.playlist,
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.PLAYLIST_EDIT_FAILED,
+                    error: error.response.data.message,
+                });
+                dispatch(actions.notificationSend(
+                    'Failed to edit a playlist',
+                    'warning'));
+            });
     }
 };
 
-export const playlistEditSuccess = (updatedPlaylist) => {
-    return {
-        type: actionTypes.PLAYLIST_EDIT_SUCCESS,
-        playlist: updatedPlaylist,
-    }
-};
-
-export const playlistEditFailed = (error) => {
-    return { type: actionTypes.PLAYLIST_EDIT_FAILED }
-};
 
 export const playlistDelete = (playlistId, token, userId) => {
-    return {
-        type: actionTypes.PLAYLIST_DELETE,
-        playlistId: playlistId,
-        token: token,
-        userId: userId,
-    };
-};
-
-export const playlistDeleteSuccess = (id) => {
-    return { 
-        type: actionTypes.PLAYLIST_DELETE_SUCCESS,
-        id: id,
+    return dispatch => {
+        dispatch({ type: actionTypes.PLAYLIST_DELETE_START });
+        return axios
+            .delete(
+                '/playlist',
+                {
+                    params: {
+                        userId: userId,
+                        playlistId: playlistId,
+                    }, 
+                    headers: { 'Authorization': token,}
+                },
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.PLAYLIST_DELETE_SUCCESS,
+                    playlists: response.data.playlistId,
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.PLAYLIST_DELETE_FAILED,
+                    error: error.response.data.message,
+                });
+            });
     }
 };
 
-export const playlistDeleteFailed = () => {
-    return {type: actionTypes.PLAYLIST_DELETE_FAILED}
-};
 
-
-export const playlistOn = () => {
-    return {
-        type: actionTypes.PLAYLIST_ON
-    }
-};
-
-export const playlistOff = () => {
-    return {type: actionTypes.PLAYLIST_OFF}
-};

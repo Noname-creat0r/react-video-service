@@ -17,7 +17,7 @@ import { updateObject, mapNotificationToasts } from '../../shared/utility';
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.token !== null,
-        isLoading: state.auth.loading || state.profile.fetching,
+        isLoading: state.auth.loading || state.video.pendingRequests > 0,
         userData: state.profile.data,
         categories: state.video.categories,
         notifications: state.notification.notifications,
@@ -27,7 +27,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchUserData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
-        fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
+        fetchVideosInfo: (endpoint, options) => dispatch(actions.videoFetchInfo(endpoint, options)),
         fetchCategoreis: () => dispatch(actions.videoFetchCategoreis()),
         closeNotification: (key) => dispatch(actions.notificationClose(key)),
         closeNotifications: () => dispatch(actions.notificationCloseAll()),

@@ -107,7 +107,7 @@ exports.addVideoToPlaylist = async (req, res, next) => {
     }
 };
 
-exports.patchPlaylist = async (req, res, next) => {
+exports.putPlaylist = async (req, res, next) => {
     try {
         if (!req.body.playlistId){
             const error = new Error('Missing querry params!');

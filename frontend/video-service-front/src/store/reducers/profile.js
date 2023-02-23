@@ -30,7 +30,7 @@ const profileFetchDataStart = (state, action) => {
 const profileFetchDataSuccess = (state, action) => {
     return updateObject(state, { 
         fetching: false,
-        data: action.payload.data,
+        data: action.data,
     });
 };
 

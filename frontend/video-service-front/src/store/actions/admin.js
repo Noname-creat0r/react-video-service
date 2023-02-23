@@ -1,8 +1,5 @@
 import * as actionTypes from './actionTypes';
 
-export const adminFetchProfiles = () => {
-    return { type: actionTypes.ADMIN_FETCH_PROFILES}
-};
 
 export const adminFetchProfilesFailed = () => {
     return { type: actionTypes.ADMIN_FETCH_PROFILES_FAILED}
@@ -13,10 +10,6 @@ export const adminFetchProfilesSuccess = (profiles) => {
         type: actionTypes.ADMIN_FETCH_PROFILES_SUCCESS,
         profile: profiles,
     }
-};
-
-export const adminFetchVideos = () => {
-    return { type: actionTypes.ADMIN_FETCH_VIDEOS}
 };
 
 export const adminFetchVideosSuccess = (videos) => {

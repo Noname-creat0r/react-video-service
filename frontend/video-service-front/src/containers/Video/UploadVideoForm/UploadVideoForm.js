@@ -20,7 +20,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onVideoUpload: (videoData, token) =>
-            dispatch(actions.uploadVideo(videoData, token)),
+            dispatch(actions.videoUpload(videoData, token)),
         fetchCategoreis: () => dispatch(actions.videoFetchCategoreis()),
     };
 }

@@ -1,167 +1,211 @@
 import * as actionTypes from './actionTypes';
+import * as actions from './index';
+import axios from '../../axios-settings';
 
-export const videoUploadStart = () => {
-    return { type: actionTypes.VIDEO_UPLOAD_START, };
-};
+export const videoStreamStart = (videoId) => ({
+    type: actionTypes.VIDEO_STREAM_START,
+    payload: { videoId: videoId, }
+});
 
-export const videoUploadFailed = (error) => {
-    return { type: actionTypes.VIDEO_UPLOAD_FAILED, };
-};
-
-export const videoUploadSuccess = (video) => {
-    return {
-        type: actionTypes.VIDEO_UPLOAD_SUCCESS,
-        video: video,
-    };
-};
-
-export const videoFetchInfoStart = () => {
-    return { type: actionTypes.VIDEO_FETCH_INFO_START, };
-};
-
-export const videoFetchInfoFailed = (error) => {
-    return { type: actionTypes.VIDEO_FETCH_INFO_FAILED, };
-};
-
-export const videoFetchInfoSuccess = (data) => {
-    return {
-        type: actionTypes.VIDEO_FETCH_INFO_SUCCESS,
-        payload: {
-            data: data
-        },
-    };
-};
-
-export const uploadVideo = (videoData, userData) => {
-    return {
-        type: actionTypes.VIDEO_UPLOAD,
-        videoData: videoData,
-        userData: userData,
-    };
-};
-
-export const fetchVideoInfo = (endpoint, options) => {
-    return {
-        type: actionTypes.VIDEO_FETCH_INFO,
-        endpoint: endpoint,
-        options: options,
+export const videoUpload = (videoData, userData) => {
+    return dispatch => {
+        dispatch({ type: actionTypes.VIDEO_UPLOAD_START });
+        return axios
+            .post(
+                '/video/',
+                {...videoData},
+                { headers: { 
+                    'Authorization': userData.token,
+                    'Content-Type': 'multipart/form-data'}}
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.VIDEO_UPLOAD_SUCCESS,
+                    video: response.data.video,
+                });
+                dispatch(actions.notificationSend(
+                    'You have uploaded a new video',
+                    'info'));
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.VIDEO_UPLOAD_COMMENT_FAILED,
+                    error: error.response.data.message,
+                });
+            });
     }
 };
 
-export const videoStreamStart = (videoId) => {
-    return {
-        type: actionTypes.VIDEO_STREAM_START,
-        payload: {
-            videoId: videoId,
-        }
-    };
+export const videoFetchInfo = (endpoint, options) => {
+    return dispatch => {
+        dispatch({ type: actionTypes.VIDEO_FETCH_INFO_START });
+        return axios
+            .get(
+                `/video/${endpoint}`,
+                { params: { ...options }}
+            )
+            .then(response => {
+                const infos = new Map();
+                response.data.videos.forEach( video => 
+                    infos.set(video._id, video)
+                );
+
+                dispatch({
+                    type: actionTypes.VIDEO_FETCH_INFO_SUCCESS,
+                    info: infos,
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.VIDEO_FETCH_INFO_FAILED,
+                    error: error.response.data.message,
+                });
+            });
+    }
 };
 
-export const videoStreamInterupt = (videoId) => {
-    return {
-        type: actionTypes.VIDEO_STREAM_INTERRUPT,
-        payload: {
-            videoId: videoId,
-        }
-    };
+export const videoUploadComment = (payload) => {
+    return dispatch => {
+        dispatch({ type: actionTypes.VIDEO_UPLOAD_COMMENT_START});
+        return axios
+            .post(
+                '/video/comment',
+                { 
+                    videoId: payload.videoId,
+                    userId: payload.userId,
+                    text: payload.text ,
+                },
+                { headers: { 'Authorization': payload.token, }}
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.VIDEO_UPLOAD_COMMENT_SUCCESS,
+                    comment: response.data.comment[0],
+                });
+                dispatch(actions.notificationSend(
+                    'You have posted a new comment!',
+                    'info'));
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.VIDEO_UPLOAD_COMMENT_FAILED,
+                    error: error.response.data.message,
+                });
+                dispatch(actions.notificationSend(
+                    'You can not post a comment because of this problem' + error.response.data.message,
+                    'warning'));
+            })
+    }
 };
 
-export const videoUploadComment = (videoId, userId, token, text) => {
-    return {
-        type: actionTypes.VIDEO_UPLOAD_COMMENTS,
-        videoId: videoId,
-        userId: userId,
-        token: token,
-        text: text, 
-    };
-};
-
-export const videoUploadCommentFailed = (error) => {
-    return { type: actionTypes.VIDEO_UPLOAD_COMMENTS_FAILED, };
-};
-
-export const videoUploadCommentSuccess = (comment) => {
-    return {
-        type: actionTypes.VIDEO_UPLOAD_COMMENTS_SUCCESS,
-        comment: comment,
-    };
-};
 
 export const videoFetchComments = (videoId) => {
-    return {
-        type: actionTypes.VIDEO_FETCH_COMMENTS,
-        videoId: videoId,
-    };
+    return dispatch => {
+        dispatch({ type: actionTypes. VIDEO_FETCH_COMMENTS_START })
+        return axios
+            .get(
+                '/video/comment',
+                { params: { videoId: videoId }}
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.VIDEO_FETCH_COMMENTS_SUCCESS,
+                    comments: response.data.comments,
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.VIDEO_FETCH_COMMENTS_FAILED,
+                    error: error.response.data.message,
+                })
+            });
+    }
 };
 
-export const videoFetchCommentsFailed = (error) => {
-    return { type: actionTypes.VIDEO_FETCH_COMMENTS_FAILED, };
-};
 
-export const videoFetchCommentsSuccess = (comments) => {
-    return {
-        type: actionTypes.VIDEO_FETCH_COMMENTS_SUCCESS,
-        comments: comments,
-    };
-};
-
-export const videoRate = (videoId, userId, token, actionType) => {
-    return {
-        type: actionTypes.VIDEO_RATE,
-        videoId: videoId,
-        userId: userId,
-        token: token,
-        actionType: actionType
-    };
-};
-
-export const videoRateStart = () => {
-    return { type: actionTypes.VIDEO_RATE_START };
-};
-
-export const videoRateSuccess = (updatedVideo) => {
-    return {
-        type: actionTypes.VIDEO_RATE_SUCCESS,
-        updatedVideo: updatedVideo,
-    };
-};
-
-export const videoRateFailed = (error) => {
-    return { type: actionTypes.VIDEO_RATE_FAILED, };
+export const videoRate = (payload) => {
+    return dispatch => {
+        dispatch({ type: actionTypes.VIDEO_RATE_START });
+        return axios
+            .post(
+                `/video/${payload.actionType}`,
+                { 
+                    videoId: payload.videoId,
+                    userId: payload.userId
+                },
+                { headers: { 'Authorization': payload.token, }}
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.VIDEO_RATE_SUCCESS,
+                    updatedVideo: response.data.video[0]
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.VIDEO_RATE_FAILED,
+                    error: error.response.data.message,
+                });
+                dispatch(actions.notificationSend(
+                    'You can not rate a video because of this problem: ' + error.response.data.message,
+                    'warning'));
+            });
+    }
 };
 
 export const videoAddView = (videoId) => {
-    return {
-        type: actionTypes.VIDEO_ADD_VIEW,
-        videoId: videoId,
-    };
+    return dispatch => {
+        return axios
+            .post(
+                '/video/view',
+                { videoId: videoId }
+            )
+            .then(response => {
+                const unauthViews = localStorage.getItem('views');
+                let views = Number(process.env.REACT_APP_UNAUTH_VIEWS);
+
+                if (unauthViews) {
+                    views = views === 0 ? 0 : Number(unauthViews) - 1;
+                }
+                localStorage.setItem('views', views);
+
+                dispatch({
+                    type: actionTypes.VIDEO_ADD_VIEW_SUCCESS,
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.VIDEO_ADD_VIEW_FAILED,
+                    error: error.response.data.error,
+                })
+            });
+    }
 };
 
-export const videoAddViewSuccess = () => {
-    return { type: actionTypes.VIDEO_ADD_VIEW_SUCCESS, };
-};
-
-export const videoAddViewFailed = () => {
-    return { type: actionTypes.VIDEO_ADD_VIEW_FAILED, };
-};
 
 export const videoFetchCategoreis = () => {
-    return { type: actionTypes.VIDEO_FETCH_CATEGOREIS };
+    return dispatch => {
+        dispatch({ type: actionTypes.VIDEO_FETCH_CATEGOREIS_START });
+        return axios
+            .get('/video/categories')
+            .then(response => {
+                dispatch({
+                    type: actionTypes.VIDEO_FETCH_CATEGOREIS_SUCCESS,
+                    categories: response.data.categories,
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.VIDEO_FETCH_CATEGOREIS_FAILED,
+                    error: error.response.data.message,
+                })
+            });
+    }
 };
 
-export const videoFetchCategoreisSuccess = (categoreis) => {
-    return { 
-        type: actionTypes.VIDEO_FETCH_CATEGOREIS_SUCCESS,
-        categories: categoreis,
-    };
-};
 
-export const videoFetchCategoreisFailed = () => {
-    return { type: actionTypes.VIDEO_FETCH_CATEGOREIS_FAILED};
-};
-
-export const videoEdit = () => {
-    return {
-        type: actionTypes.VIDEO_EDIT
+export const videoEdit = (payload) => {
+    return dispatch => {
+       
     };
 };

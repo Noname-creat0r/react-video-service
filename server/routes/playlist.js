@@ -29,11 +29,11 @@ router.post(
     playlistController.postPlaylist
 )
 
-router.patch(
+router.put(
     '/',
     isAuth,
     storage.upload.any(),
-    playlistController.patchPlaylist,
+    playlistController.putPlaylist,
 )
 
 router.delete(

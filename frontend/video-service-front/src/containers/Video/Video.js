@@ -26,13 +26,23 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchVideoInfo: (videoId) => dispatch(actions.fetchVideoInfo(
+        fetchVideoInfo: (videoId) => dispatch(actions.videoFetchInfo(
             'info/one', { videoId: videoId }
         )),
         fetchVideoComments: (videoId) => dispatch(actions.videoFetchComments(videoId)),
         fetchPlaylistsData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
-        uploadVideoComment: (videoId, userId, token, text) => dispatch(actions.videoUploadComment(videoId, userId, token, text)),
-        rateVideo: (videoId, userId, token, actionType ) => dispatch(actions.videoRate(videoId, userId, token, actionType)),
+        uploadVideoComment: (videoId, userId, token, text) => dispatch(actions.videoUploadComment({
+            videoId: videoId,
+            userId: userId,
+            token: token,
+            text: text })
+        ),
+        rateVideo: (videoId, userId, token, actionType ) => dispatch(actions.videoRate({
+            videoId: videoId,
+            userId: userId,
+            token: token,
+            actionType: actionType})
+        ),
         addView: (videoId) => dispatch(actions.videoAddView(videoId)),
         showPlaylistForm: (mode) => dispatch(actions.playlistShowForm(mode)),
     };
@@ -61,12 +71,16 @@ class Video extends Component {
    };
 
     componentDidMount() {
+        console.log('mount');
         this.props.fetchVideoInfo(localStorage.getItem('videoId'));
         this.props.fetchVideoComments(localStorage.getItem('videoId'));
     };
 
     componentDidUpdate() {
         console.log('upd');
+    }
+    componentWillUnmount(){
+        
     }
 
    typeCommentHandler = (event) => {
@@ -139,9 +153,12 @@ class Video extends Component {
 
    render() {
         const unauthViews = localStorage.getItem('views');
-        if (this.props.videosInfo.size === 0 || 
-            (!this.props.isAuthenticated && unauthViews <= 0)) {
+        if (this.props.videosInfo.size === 0) {
             return <LoadingSpinner />
+        }
+        if (!this.props.isAuthenticated && unauthViews <= 0){
+            return <LoadingSpinner />
+            //show auth form
         }
 
         const videoInfo = this.props.videosInfo.get(localStorage.getItem('videoId'));

@@ -6,10 +6,10 @@ const initialState = {
     playlists: new Map(),
     playlistId: null,
     currentVideoId: null,
+    pendingRequests: 0,
     showPlaylistForm: false,
     playlistFormMode: modes.UPLOADING,
     uploading: false,
-    fetching: false,
     playing: false,
 };
 
@@ -41,35 +41,37 @@ const playlistUploadFailed = (state, action) => {
 };
 
 const playlistFetchDataStart = (state) => {
-    return updateObject(state, { fetching: true });
+    return updateObject(state, { pendingRequests: state.pendingRequests + 1 });
 };
 
 const playlistFetchDataSuccess = (state, action) => {
     return updateObject(state, {
-        fetching: false,
+        pendingRequests: state.pendingRequests - 1,
         playlists: action.playlists,
     });
 };
 
 const playlistFetchDataFailed = (state, action) => {
-    return updateObject(state, { fetching: false, });
+    return updateObject(state, { pendingRequests: state.pendingRequests - 1, });
 };
 
 const playlistFetchVideoInfoStart = (state) => {
-    return updateObject(state, { fetching: true });
+    return updateObject(state, { pendingRequests: state.pendingRequests + 1 });
 };
 
 const playlistFetchVideoInfoSuccess = (state, action) => {
     const updatedPlaylists = new Map([...state.playlists]);
     updatedPlaylists.set(action.playlist._id, action.playlist);
     return updateObject(state, {
-        fetching: false,
+        pendingRequests: state.pendingRequests - 1,
         playlists: updatedPlaylists,
     });
 };
 
 const playlistFetchVideoInfoFailed = (state) => {
-    return updateObject( state, { fetching: false });
+    return updateObject( state, {
+         pendingRequests: state.pendingRequests - 1 
+    });
 }
 
 const playlistEditSuccess = (state, action) => {
@@ -111,8 +113,10 @@ const reducer = (state = initialState, action) => {
         case actionTypes.PLAYLIST_FETCH_VIDEO_INFO_START: return playlistFetchVideoInfoStart(state);
         case actionTypes.PLAYLIST_FETCH_VIDEO_INFO_SUCCESS: return playlistFetchVideoInfoSuccess(state, action);
         case actionTypes.PLAYLIST_FETCH_VIDEO_INFO_FAILED: return playlistFetchVideoInfoFailed(state);
+        case actionTypes.PLAYLIST_EDIT_START: return state;
         case actionTypes.PLAYLIST_EDIT_SUCCESS: return playlistEditSuccess(state, action);
         case actionTypes.PLAYLIST_EDIT_FAILED: return playlistEditFailed(state);
+        case actionTypes.PLAYLIST_DELETE_START: return state;
         case actionTypes.PLAYLIST_DELETE_SUCCESS: return playlistDeleteSuccess(state, action);
         case actionTypes.PLAYLIST_DELETE_FAILED: return playlistDeleteFailed(state);
         case actionTypes.PLAYLIST_ON: return playlistOn(state, action);

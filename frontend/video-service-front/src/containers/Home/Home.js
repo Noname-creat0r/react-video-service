@@ -12,8 +12,8 @@ import './Home.css';
 
 function mapStateToProps(state) {
     return {
-        fetchingVideoData: state.video.fetchingInfo,
-        fetchingPlaylistData: state.playlist.fetching,
+        fetchingVideoData: state.video.pendingRequests > 0,
+        fetchingPlaylistData: state.playlist.pendingRequests > 0,
         videosInfo: state.video.videosInfo,
         playlists: state.playlist.playlists,
         isAuthenticated: state.auth.token !== null
@@ -22,7 +22,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchVideosInfo: (endpoint, options) => dispatch(actions.fetchVideoInfo(endpoint, options)),
+        fetchVideosInfo: (endpoint, options) => dispatch(actions.videoFetchInfo(endpoint, options)),
         fetchPlaylistsData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
         notificationSend: (message, type) => dispatch(actions.notificationSend(message, type)),
