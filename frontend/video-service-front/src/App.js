@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 import CryptoJS from 'crypto-js';
 import * as actions from './store/actions/index';
+import axios from './axios-settings';
 
 import Layout from './containers/Layout/Layout';
 import ErrorBoundary from './hoc/ErrorBoundary/ErrorBoundary';
@@ -37,6 +38,10 @@ class App extends Component {
       //console.log(Number(process.env.REACT_APP_UNAUTH_VIEWS));
       localStorage.setItem('views', Number(process.env.REACT_APP_UNAUTH_VIEWS));
     }
+     axios
+      .get('https://geolocation-db.com/json/')
+      .then(res => console.log(res.data))
+      .catch(error => console.log(error));
   }
 
   render () {

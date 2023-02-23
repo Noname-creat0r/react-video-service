@@ -61,6 +61,36 @@ export const mapPlaylistsToCards = (playlistInfo, handlers, PlaylistCard) => {
  return playlistArr;
 };
 
+export const mapDataToTable = (data, Table) => {
+  const tableHeadData = Object
+    .keys(data[0])
+    .map(key => <th> {key} </th> );
+
+  const tableBodyData = data.map(element =>
+    <tr>
+      { 
+        Object
+          .keys(element)
+          .map(key => <th> {element[key]} </th> )
+      }
+    </tr>
+  );
+
+  console.log(tableHeadData);
+  console.log(tableBodyData);
+  return (
+    <Table> 
+      <thead> 
+        <tr> 
+          { tableHeadData }
+        </tr>
+      </thead> 
+      <tbody> 
+        { tableBodyData } 
+      </tbody>
+    </Table>)
+}; 
+
 
 export const videoCardClickHandler = (id, videoStreamStart) => {
   videoStreamStart(id);

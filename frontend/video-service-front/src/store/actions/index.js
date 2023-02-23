@@ -35,4 +35,6 @@ export {
     notificationCloseAll,
 } from './notification';
 export {
+    adminFetchProfiles,
+    adminFetchVideos,
 } from './admin';

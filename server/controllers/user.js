@@ -29,6 +29,27 @@ exports.fetchData = (req, res, next) => {
         });
 };
 
+exports.fetchAll = async (req, res, next) => {
+    try {
+        const users = await User.find({}).lean();
+        res.status(200).json({
+            users: users,
+        });
+
+    } catch (error) {
+        console.log(error);
+        next(error);    
+    }
+};
+
+exports.deleteUser = async (req, res, next) => {
+
+};
+
+exports.editUser = async (req, res, next) => {
+
+};
+
 exports.putPlaylistBookmark = async (req, res, next) => {
     if (!req.body.videoId || !req.body.playlistId ||
         !req.body.userId){
