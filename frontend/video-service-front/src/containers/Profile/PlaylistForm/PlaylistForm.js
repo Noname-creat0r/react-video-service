@@ -80,7 +80,7 @@ class PlaylistForm extends Component {
                     valid: false,
                     required: false
                 },
-                value: '',
+                value: '',  
                 touched: false
             },
             thumbnail: {
@@ -105,6 +105,23 @@ class PlaylistForm extends Component {
         currentMode: 'Uploading',
     };
 
+    componentDidMount() {
+        if (this.props.mode === modalModes.EDITITNG){
+            const currentPlaylist = this.props.playlists.get(localStorage.getItem('playlistId'));
+            const controls = this.state.controls;
+            for (const property of Object.keys(currentPlaylist)){
+                if (controls[property]) 
+                    controls[property].value = currentPlaylist[property];
+            }
+
+            this.setState({ controls: controls });
+        }
+    }
+
+    componentDidUpdate() {
+        console.log('pfupdate');
+    }   
+
     inputChangedHandler = (event) => {
         this.setState({ controls: getUpdatedControls(event, this.state) });
         this.setState({ isFormValid: checkFormValidity(this.state) });
@@ -124,31 +141,9 @@ class PlaylistForm extends Component {
         );
 
         const content = (
-            <Form id="playlistUploadForm">
+            <Form id="playlistForm">
                 {formContent}
             </Form>
-        );
-
-        const buttons = (
-            <Container className="text-center"> 
-                <Button 
-                    className="mx-2 my-2"
-                    size='md'
-                    variant="secondary"
-                    onClick={this.props.close}>
-                    Close
-                </Button>
-                <Button 
-                    className="mx-2 my-2"
-                    size='md'
-                    variant="success"
-                    disabled={!this.state.isFormValid}
-                    type="submit"
-                    onClick={this.upload}
-                    form="playlistUploadForm">
-                    Upload
-                </Button>
-            </Container>
         );
 
         return {
@@ -170,6 +165,10 @@ class PlaylistForm extends Component {
         });
     };
 
+    edit = () => {
+        event.preventDefault();
+    };
+
     render() {
         let title;
         let content = <LoadingSpinner />;
@@ -178,6 +177,7 @@ class PlaylistForm extends Component {
                 <Placeholder.Button className='mx-2' variant='secondary' xs={2} animation='wave'/>
                 <Placeholder.Button className='mx-2' variant='secondary' xs={3} animation='wave'/>
             </Container>;
+        let formObject;
         const mode = this.props.mode;
 
         if (this.props.fetching) 
@@ -191,8 +191,28 @@ class PlaylistForm extends Component {
 
         switch (mode) {
             case modalModes.UPLOADING: 
-                const formObject = this.getBasicFormObject();
-                buttons = formObject.buttons;
+                buttons = (
+                    <Container className="text-center"> 
+                        <Button 
+                            className="mx-2 my-2"
+                            size='md'
+                            variant="secondary"
+                            onClick={this.props.close}>
+                            Close
+                        </Button>
+                        <Button 
+                            className="mx-2 my-2"
+                            size='md'
+                            variant="success"
+                            disabled={!this.state.isFormValid}
+                            type="submit"
+                            onClick={this.upload}
+                            form="playlistForm">
+                            Upload
+                        </Button>
+                    </Container>
+                );
+                formObject = this.getBasicFormObject(buttons);
                 content = formObject.content;
                 break;
             case modalModes.ADDING:
@@ -216,14 +236,37 @@ class PlaylistForm extends Component {
                         <Image src={AddImage} width='15px' height='15px'/> <b>Create new </b>
                     </ListGroup.Item>
                 );
-                console.log(this.props.playlists);
+                //console.log(this.props.playlists);
                 content=
                     <ListGroup>
                         {items}
                     </ListGroup>
                 break;
             case modalModes.EDITITNG:
+                // playlist form content here
                 
+                buttons = (
+                    <Container className="text-center"> 
+                        <Button 
+                            className="mx-2 my-2"
+                            size='md'
+                            variant="secondary"
+                            onClick={this.props.close}>
+                            Close
+                        </Button>
+                        <Button 
+                            className="mx-2 my-2"
+                            size='md'
+                            variant="success"
+                            disabled={!this.state.isFormValid}
+                            type="submit"
+                            onClick={this.edit}
+                            form="playlistForm">
+                            Edit
+                        </Button>
+                    </Container>
+                );
+                formObject = this.getBasicFormObject(buttons);
                 break;
         }
 
