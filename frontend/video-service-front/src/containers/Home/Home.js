@@ -7,6 +7,10 @@ import * as modalModes from '../../shared/playlistModalModes';
 import Container from 'react-bootstrap/Container';
 import HomeVideoCard from '../../components/UI/Card/HomeVideoCard/HomeVideoCard';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Modal from '../../components/UI/Modal/Modal';
+import Image from 'react-bootstrap/Image';
+import AddImage from '../../assets/images/plus-sign.svg';
 
 import './Home.css';
 
@@ -31,18 +35,29 @@ function mapDispatchToProps(dispatch) {
 
 class Home extends Component {
    
+    state = {
+        showPlaylists: false, 
+    }
+
+    showPlaylistsToggleHandler = () => {
+        this.setState( ( prevState ) => {
+            return { showPlaylists: !prevState.showPlaylists };
+        });
+    }
+
     homeVideoCardClickHandler = (event, id) => {
         this.props.videoStreamStart(id);
         localStorage.setItem('videoId', id);
     }
 
-    homeAddToPlaylistClickHandler = (event, id) => {
+    homeAddToPlaylistClickHandler = async (event, id) => {
         if (!localStorage.getItem('userId'))
             this.props.notificationSend(
                 'Sign in to manage playlists', 'warning');
         else {
-            this.props.fetchPlaylistsData(
-                '/', { userId: localStorage.getItem('userId') })
+            /*await this.props.fetchPlaylistsData(
+                '/', { userId: localStorage.getItem('userId') });*/
+            this.setState({ showPlaylists: true });
         }
     }
 
@@ -68,9 +83,46 @@ class Home extends Component {
             },
             HomeVideoCard
         );
+        
+        let playlistsList = []
+        if (this.state.showPlaylists){
+            const items = [];
+            this.props.playlists.forEach((playlist) =>
+                items.push(
+                    <ListGroup.Item 
+                        action
+                        onClick={() => this.props.editPlaylist(
+                            playlist._id,
+                            modalModes.ADDING,
+                            localStorage.getItem('videoId'))}>
+                        {playlist.title} 
+                    </ListGroup.Item>
+                )
+            );
+            items.push(
+                <ListGroup.Item 
+                    action> 
+                    <Image 
+                        src={AddImage} 
+                        width='15px'
+                        height='15px'/> 
+                        <b>Create new </b>
+                </ListGroup.Item>
+            );
+            //console.log(this.props.playlists);
+            playlistsList=
+                <ListGroup>
+                    {items}
+                </ListGroup>
+        }
 
         return (
             <Container className='d-flex flex-wrap my-3'>
+                <Modal
+                    show={this.state.showPlaylists}
+                    hide={this.showPlaylistsToggleHandler}
+                    title="Add to playlist" 
+                    content={playlistsList}/>
                 {content}
             </Container>
         );

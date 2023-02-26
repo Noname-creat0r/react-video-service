@@ -8,6 +8,7 @@ import Image from 'react-bootstrap/Image';
 
 import PlaylistItems from '../../components/Playlist/PlaylistItems/PlaylistItems';
 import PlaylistControls from '../../components/Playlist/PlaylistControls/PlaylistControls';
+import PlaylistForm from '../Forms/PlaylistForm/PlaylistForm';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
 
 import './Playlist.css';
@@ -15,7 +16,7 @@ import './Playlist.css';
 function mapStateToProps(state) {
     return {
         playlists: state.playlist.playlists,
-        fetching: state.playlist.fetching,
+        pendingRequests: state.playlist.pendingRequests,
         fetchingProfile: state.profile.fetching
     };
 }
@@ -25,12 +26,29 @@ function mapDispatchToProps(dispatch) {
         fetchPlaylistData: (endpoint, options) => 
             dispatch(actions.playlistFetchData(endpoint, options)),
         playlistOn: () => dispatch(actions.playlistOn()),
-        playlistOff: () => dispatch(actions.playlistOff())
+        playlistOff: () => dispatch(actions.playlistOff()),
+        playlistEdit: (playlistId, actionType, videoId) =>
+             dispatch(actions.playlistEdit(
+                localStorage.getItem('token'),
+                playlistId,
+                actionType,
+                videoId)
+            ),
     };
 }
 
 class Playlist extends Component {
     
+    state = {
+        showEditPlaylistForm: false,
+    }
+
+    showEditPlaylistToggleHandler = () => {
+        this.setState( (prevState)  => {
+            return { showEditPlaylistForm: !prevState.showEditPlaylistForm };
+        });
+    }
+
     playlistOn = () => {
         this.props.playlistOn();
     };
@@ -40,22 +58,29 @@ class Playlist extends Component {
             this.props.notificationSend(
                 'Sign in to manage playlists', 'warning');
         else {
-            // clear form state values and load there current playlist data shit
+            this.setState({ showEditPlaylistForm: true });
         }
-        
+    }
+
+    playlistRemoveVideo = (id) => {
+        this.props.playlistEdit(
+            localStorage.getItem('playlistId'),
+            modalModes.ADDING,
+            id
+        )
     }
 
     componentDidMount() {
-        this.props.fetchPlaylistData(
+       this.props.fetchPlaylistData(
             '/', { userId: localStorage.getItem('userId') });
     };
 
     render() {
-        if (this.props.fetching)
+        if (this.props.pendingRequests > 0)
             return <LoadingSpinner />
         //console.log(localStorage.getItem('playlistId'));
         const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
-        console.log(playlist.videos);
+        //console.log(playlist.videos);
         return (
             <Container className='my-3 w-50'>
                 <Container className='d-flex flex-direction-column'>
@@ -72,7 +97,12 @@ class Playlist extends Component {
                     playlistEdit={this.playlistEdit} />
                 <hr />
                 <PlaylistItems 
-                    videosInfo={playlist}/>
+                    videosInfo={playlist}
+                    removeItem={this.playlistRemoveVideo}/>
+                <PlaylistForm 
+                    show={this.state.showEditPlaylistForm}
+                    hide={this.showEditPlaylistToggleHandler}
+                    playlist={playlist}/>
             </Container>
         )
     }

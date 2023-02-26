@@ -121,8 +121,11 @@ export const playlistDelete = (playlistId, token, userId) => {
             .then(response => {
                 dispatch({
                     type: actionTypes.PLAYLIST_DELETE_SUCCESS,
-                    playlists: response.data.playlistId,
+                    id: response.data.playlistId,
                 });
+                dispatch(actions.notificationSend(
+                    "You have deleted a playlist",
+                    "warning"));
             })
             .catch(error => {
                 dispatch({

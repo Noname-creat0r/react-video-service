@@ -4,21 +4,14 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import * as actions from '../../../store/actions/index';
 import * as modalModes from '../../../shared/playlistModalModes';
+import * as validators from '../../../validators/validators';
 
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Placeholder from 'react-bootstrap/Placeholder';
 import Image from 'react-bootstrap/Image';
 
-import LoadingSpinner from '../../../components/UI/LoadingSpinner/LoadingSpinner';
-import AddImage from '../../../assets/images/plus-sign.svg';
 import Modal from '../../../components/UI/Modal/Modal';
-
-
-import { getFormInputsArray, getUpdatedControls,
-    checkFormValidity, getFormControlGroups} from '../../../shared/formUtil';
 
 
 function mapStateToProps(state) {
@@ -31,7 +24,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         upload: (data) => dispatch(actions.playlistUpload(data)),
-        editPlaylist: (playlistId, actionType, videoId) =>
+        edit: (playlistId, actionType, videoId) =>
              dispatch(actions.playlistEdit(
                 localStorage.getItem('token'),
                 playlistId,
@@ -162,10 +155,18 @@ class PlaylistForm extends Component {
                                             thumbnail: event.target.files[0]
                                         });
                                     }
-                                    reader.readAsDataURL(file);
                                     handleChange(event);
+                                    if (validators.fileImgValidator(event)){ 
+                                        reader.readAsDataURL(file);
+                                    }
                                 }}
                                 />
+                                {touched.thumbnail && !this.state.thumbnail && (
+                                <Form.Control.Feedback 
+                                    className="d-block text-danger mx-2"
+                                    type="invalid">
+                                        invalid file type for thumbnail
+                                </Form.Control.Feedback>)}
                         </Form.Group>
                         { (this.state.thumbnail || this.props.playlist ) && 
                             (<Form.Group className="my-2">

@@ -48,7 +48,7 @@ const HomeVideoCard = (props) => {
             <Card.Footer className='d-flex justify-content-between'>
                 <UserBadge name={props.authorName} />
                 <Overlay
-                    trigger='click'
+                    trigger='hover'
                     placement='top-start'
                     header='Options'
                     content={options}

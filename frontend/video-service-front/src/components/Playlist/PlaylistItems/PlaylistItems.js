@@ -17,7 +17,9 @@ const PlaylistItems = (props) => {
                 height='100px'
                 width='140px'/>
             <span className='PlaylistItemTitle'> {video.title} </span>
-            <CloseButton className='PlaylistItemRemove'/>
+            <CloseButton 
+                className='PlaylistItemRemove' 
+                onClick={() => props.removeItem(id)}/>
         </Container>
        
     );
