@@ -9,7 +9,8 @@ import Image from 'react-bootstrap/Image';
 
 import UserIcon from '../../assets/images/default-user-icon.svg';
 import ProfileTabs from '../../components/Profile/ProfileTabs/ProfileTabs';
-import UploadVideoForm from '../Video/UploadVideoForm/UploadVideoForm';
+import VideoForm from '../Forms/VideoForm/VideoForm';
+import PlaylistForm from '../Forms/PlaylistForm/PlaylistForm';
 import ProfileVideoCard from '../../components/UI/Card/ProfileVideoCard/ProfileVideoCard';
 import ProfilePlaylistCard from '../../components/UI/Card/ProfilePlaylistCard/ProfilePlaylistCard';
 import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
@@ -33,7 +34,6 @@ const mapDispatchToProps = dispatch => {
         fetchVideosInfo: (endpoint, options) => dispatch(actions.videoFetchInfo(endpoint, options)),
         fetchPlaylistData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
-        showPlaylistForm: (mode) => dispatch(actions.playlistShowForm(mode)),
         deletePlaylist: (playlistId) => dispatch(actions.playlistDelete(
             playlistId,
             localStorage.getItem('token'),
@@ -44,13 +44,20 @@ const mapDispatchToProps = dispatch => {
 class Profile extends Component {
 
     state = {
-        showUploadVideoFormModal: false,
+        showVideoForm: false,
+        showPlaylistForm: false,
         activeTab: 'Videos',
     };
 
-    uploadVideoFormToggleHandler = () => {
+    videoFormToggleHandler = () => {
         this.setState( (prevState)  => {
-            return { showUploadVideoFormModal: !prevState.showUploadVideoFormModal };
+            return { showVideoForm: !prevState.showVideoForm };
+        });
+    };
+
+    playlistFormToggleHandler = () => {
+        this.setState( (prevState)  => {
+            return { showPlaylistForm: !prevState.showPlaylistForm };
         });
     };
 
@@ -129,14 +136,18 @@ class Profile extends Component {
                     </Column>
                 </Row>
                 <Row>
-                    <UploadVideoForm 
-                        show={this.state.showUploadVideoFormModal}
-                        hide={this.uploadVideoFormToggleHandler}/>
+                    <VideoForm 
+                        show={this.state.showVideoForm}
+                        hide={this.videoFormToggleHandler}/>
+                    <PlaylistForm 
+                        show={this.state.showPlaylistForm}
+                        hide={this.playlistFormToggleHandler}/>
+
                     <ProfileTabs 
                         videos={videos}
                         playlists={playlists}
-                        uploadVideoCardClicked={this.uploadVideoFormToggleHandler}
-                        uploadPlaylistCardClicked={this.props.showPlaylistForm}
+                        uploadVideoCardClicked={this.videoFormToggleHandler}
+                        uploadPlaylistCardClicked={this.playlistFormToggleHandler}
                         tabSelectHandler={this.tabSelectHandler}
                         tabActiveKey={this.state.activeTab}/>
                 </Row>

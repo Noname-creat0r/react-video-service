@@ -7,21 +7,8 @@ const initialState = {
     playlistId: null,
     currentVideoId: null,
     pendingRequests: 0,
-    showPlaylistForm: false,
-    playlistFormMode: modes.UPLOADING,
     uploading: false,
     playing: false,
-};
-
-const playlistShowForm = (state, action) => {
-    return updateObject(state, { 
-        showPlaylistForm: true,
-        playlistFormMode: action.mode
-    });
-};
-
-const playlistCloseForm = (state) => {
-    return updateObject(state, { showPlaylistForm: false });
 };
 
 const playlistUploadStart = (state) => {
@@ -98,12 +85,10 @@ const playlistOn = (state, action) => {
     })
 };
 
-const playlistOff = (state) => { return updateObject(state, { playing: false})}
+const playlistOff = (state) => { return updateObject(state, { playing: false})};
 
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
-        case actionTypes.PLAYLIST_SHOW_FORM: return playlistShowForm(state, action); 
-        case actionTypes.PLAYLIST_CLOSE_FORM: return playlistCloseForm(state); 
         case actionTypes.PLAYLIST_UPLOAD_START: return playlistUploadStart(state);
         case actionTypes.PLAYLIST_UPLOAD_FAILED: return playlistUploadFailed(state, action);
         case actionTypes.PLAYLIST_UPLOAD_SUCCESS: return playlistUploadSuccess(state, action);

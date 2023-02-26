@@ -9,15 +9,16 @@ const PlaylistControls = (props) => {
             <Button 
                 size='lg'
                 className='mx-2 my-2'
-                variant='info'
+                variant='outline-info'
                 onClick={props.playlistOn}>
                 Play
             </Button>
             <Button 
                 size='lg'
                 className='mx-2 my-2'
-                variant='info'>
-                Delete
+                variant='outline-info'
+                onClick={props.playlistEdit}>
+                Edit
             </Button>
         </Container>
     );

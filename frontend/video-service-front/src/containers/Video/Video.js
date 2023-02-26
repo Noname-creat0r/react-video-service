@@ -44,7 +44,6 @@ function mapDispatchToProps(dispatch) {
             actionType: actionType})
         ),
         addView: (videoId) => dispatch(actions.videoAddView(videoId)),
-        showPlaylistForm: (mode) => dispatch(actions.playlistShowForm(mode)),
     };
 }
 
@@ -70,18 +69,16 @@ class Video extends Component {
         showCurrentPlaylistModal: false,
    };
 
-    componentDidMount() {
-        console.log('mount');
-        this.props.fetchVideoInfo(localStorage.getItem('videoId'));
-        this.props.fetchVideoComments(localStorage.getItem('videoId'));
+    async componentDidMount() {
+        await this.props.fetchVideoInfo(localStorage.getItem('videoId'))
+        await this.props.fetchVideoComments(localStorage.getItem('videoId'));
+        await this.props.addView(localStorage.getItem('videoId'));
     };
 
     componentDidUpdate() {
         console.log('upd');
     }
-    componentWillUnmount(){
-        
-    }
+    
 
    typeCommentHandler = (event) => {
         const updatedComment = updateObject(this.state.commentary, {
@@ -117,7 +114,6 @@ class Video extends Component {
     videoAddToPlaylistClickHandler = () => {
         this.props.fetchPlaylistsData(
             '/', { userId: localStorage.getItem('userId') })
-        this.props.showPlaylistForm(modalModes.ADDING);
     };
 
     rateVideoHandler = (action) => {

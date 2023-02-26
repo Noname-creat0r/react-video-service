@@ -2,17 +2,6 @@ import axios from '../../axios-settings';
 import * as actionTypes from '../actions/actionTypes';
 import * as actions from './index';
 
-export const playlistShowForm = (mode) => {
-    return { 
-        type: actionTypes.PLAYLIST_SHOW_FORM,
-        mode: mode,
-    }
-};
-
-export const playlistCloseForm = () => {
-    return { type: actionTypes.PLAYLIST_CLOSE_FORM }
-};
-
 export const playlistOn = () => ({ type: actionTypes.PLAYLIST_ON })
 export const playlistOff = () => ({ type: actionTypes.PLAYLIST_OFF });
 

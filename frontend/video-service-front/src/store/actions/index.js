@@ -19,11 +19,8 @@ export {
     videoAddView,
 } from './video';
 export {
-    playlistShowForm,
-    playlistCloseForm,
     playlistUpload,
     playlistFetchData,
-    //playlistFetchVideoInfo,
     playlistEdit,
     playlistDelete,
     playlistOn,

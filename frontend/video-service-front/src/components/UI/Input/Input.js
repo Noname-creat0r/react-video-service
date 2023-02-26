@@ -38,7 +38,7 @@ const input = (props) => {
         case ('file'):
             inputElement = <Element 
                 {...properties}
-                title={props.value.name}
+                //title={props.value.name || 'file'}
                 />;
             break;
         case (undefined):

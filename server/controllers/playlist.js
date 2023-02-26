@@ -73,6 +73,7 @@ exports.getPlaylistVideoInfo = async (req, res, next) => {
 
 exports.postPlaylist = async (req, res, next) => {
     try {
+        console.log(req.file);
         const thumbnailFileId = req.file.id;
         if (!req.body.title || !req.body.userId){
             const error = new Error('Missing querry params!');
@@ -94,8 +95,8 @@ exports.postPlaylist = async (req, res, next) => {
         });
 
     } catch(error) {
-        //console.log(error);
-        next(err);
+        console.log(error);
+        next(error);
     }
 };
 

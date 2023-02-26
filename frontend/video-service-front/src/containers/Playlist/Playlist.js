@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
+import * as modalModes from '../../shared/playlistModalModes';
 
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
@@ -28,17 +29,26 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-
 class Playlist extends Component {
     
     playlistOn = () => {
         this.props.playlistOn();
-    }
+    };
     
+    playlistEdit = () => {
+        if (!localStorage.getItem('userId'))
+            this.props.notificationSend(
+                'Sign in to manage playlists', 'warning');
+        else {
+            // clear form state values and load there current playlist data shit
+        }
+        
+    }
+
     componentDidMount() {
         this.props.fetchPlaylistData(
             '/', { userId: localStorage.getItem('userId') });
-    }
+    };
 
     render() {
         if (this.props.fetching)
@@ -58,7 +68,8 @@ class Playlist extends Component {
                     <strong className='PlaylistTitle mx-3'>{playlist.title}</strong>
                 </Container>
                 <PlaylistControls
-                    playlistOn={this.playlistOn} />
+                    playlistOn={this.playlistOn}
+                    playlistEdit={this.playlistEdit} />
                 <hr />
                 <PlaylistItems 
                     videosInfo={playlist}/>

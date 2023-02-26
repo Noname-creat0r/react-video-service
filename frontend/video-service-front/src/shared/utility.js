@@ -76,8 +76,8 @@ export const mapDataToTable = (data, Table) => {
     </tr>
   );
 
-  console.log(tableHeadData);
-  console.log(tableBodyData);
+  //console.log(tableHeadData);
+  //console.log(tableBodyData);
   return (
     <Table> 
       <thead> 

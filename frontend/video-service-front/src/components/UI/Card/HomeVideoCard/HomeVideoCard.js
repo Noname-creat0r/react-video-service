@@ -9,7 +9,9 @@ import Overlay from '../../Overlay/Overlay';
 import UserBadge from '../../User/UserBadge/UserBadge';
 import ActionsIcon from '../../../../assets/images/menu-kebab.svg';
 
+import SpinnerGif from '../../../../assets/gifs/spinner.gif';
 import './HomeVideoCard.css';
+import '../../../../animations/popup.css';
 
 const HomeVideoCard = (props) => {
     const options = (
@@ -30,7 +32,7 @@ const HomeVideoCard = (props) => {
 
     return (
         <Card 
-            className='HomeVideoCard mx-2 my-2'
+            className='HomeVideoCard animate pop mx-2 my-2'
             onClick={props.clicked}>
             <NavLink to={'../video'} className='link'>
                 <Card.Img 
@@ -38,7 +40,7 @@ const HomeVideoCard = (props) => {
                     src={props.thumbnail}
                     alt='VideoThumbnail'
                     width='200px'
-                    height='150px'/> 
+                    height='150px'/>
                 <Card.Body>
                     <Card.Title className='title'> {props.title} </Card.Title>
                 </Card.Body>

@@ -26,14 +26,6 @@ function mapDispatchToProps(dispatch) {
         fetchPlaylistsData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
         notificationSend: (message, type) => dispatch(actions.notificationSend(message, type)),
-        showPlaylistForm: (mode) => dispatch(actions.playlistShowForm(mode)),
-        editPlaylist: (playlistId, actionType, videoId) =>
-             dispatch(actions.playlistEdit(
-                localStorage.getItem('token'),
-                playlistId,
-                actionType,
-                videoId)
-            ),
     };
 }
 
@@ -51,7 +43,6 @@ class Home extends Component {
         else {
             this.props.fetchPlaylistsData(
                 '/', { userId: localStorage.getItem('userId') })
-            this.props.showPlaylistForm(modalModes.ADDING);
         }
     }
 
