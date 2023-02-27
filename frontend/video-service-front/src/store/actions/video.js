@@ -12,7 +12,7 @@ export const videoUpload = (videoData, userData) => {
         dispatch({ type: actionTypes.VIDEO_UPLOAD_START });
         return axios
             .post(
-                '/video/',
+                '/video',
                 {...videoData},
                 { headers: { 
                     'Authorization': userData.token,
