@@ -45,6 +45,12 @@ function mapDispatchToProps(dispatch) {
             actionType: actionType})
         ),
         addView: (videoId) => dispatch(actions.videoAddView(videoId)),
+        playlistSetCurrentVideo: (videoId) => dispatch(actions.playlistSetCurrentVideo(videoId)),
+        profilePutBookmark: (bookmarkData) => 
+            dispatch(actions.profilePutBookmark({
+                userId: localStorage.getItem('userId'),
+                token: localStorage.getItem('token'),
+            }, bookmarkData)),
     };
 }
 
@@ -76,10 +82,18 @@ class Video extends Component {
         await this.props.addView(localStorage.getItem('videoId'));
     };
 
-    componentDidUpdate() {
-        console.log('upd');
-    }
-    
+    videoPlaylistSetVideo = async (type) => {
+        /*if (type === 'next') {
+            
+        } else {
+
+        }*/
+        /*await this.props.profilePutBookmark({
+            videoId: videoId,
+            playlistId: playlistId,
+        });
+        this.props.playlistSetCurrentVideo(videoId);*/
+    };
 
    typeCommentHandler = (event) => {
         const updatedComment = updateObject(this.state.commentary, {

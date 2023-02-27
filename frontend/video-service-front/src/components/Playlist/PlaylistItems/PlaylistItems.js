@@ -11,14 +11,16 @@ import '../../../animations/popup.css';
 const PlaylistItems = (props) => {
     //console.log(props.videosInfo.videos);
     const mappedVideos = props.videosInfo.videos.map((video, id) => {
-        const isCurrent = props.currentVideoId === video._id 
+        const isCurrent = props.currentVideoId === video._id ;
+        const isBookmarked = props.bookmark.video === video._id; 
         return (
-        <Container className={ isCurrent ? 'PlaylistItem current animate pop' : 'PlaylistItem' }>
+        <Container className={isCurrent ? 'PlaylistItem current animate pop' : 'PlaylistItem'}>
             <div onClick={() => props.setCurrent(video._id, localStorage.getItem('playlistId'))}>
                 {
                     isCurrent ? 
                         <Image src={Arrow} width='30' height='30'/> :
                         <bold>{id+1}</bold> 
+                    
                 }
                 <Image 
                     className='PlaylistItemImage my-2 mx-2'
@@ -26,6 +28,7 @@ const PlaylistItems = (props) => {
                     height='100px'
                     width='140px'/>
                 <span className='PlaylistItemTitle'> {video.title} </span>
+                { isBookmarked ?  <span className='text-warning'> last video watched</span> : '' }
             </div>
             <CloseButton 
                 className='PlaylistItemRemove' 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
@@ -30,19 +31,24 @@ const VideoInfo = (props) => {
                 height='45px'
                 width='45px'
                 src={PreviousIcon}/>
-            <Alert
-                className='mx-1 userInteractionSection_container'
-                variant='info'
-                onClick={props.showCurrentPlaylist}>
-                <Image 
-                    className='mx-1 userInteractionSection_item'
-                    src={PlaylistPlay}/>
-                Current playlist
-            </Alert>
+            <NavLink 
+                className='text-info text-decoration-none' 
+                to="/playlist">
+                <Alert
+                    className='mx-1 userInteractionSection_container'
+                    variant='info'
+                    onClick={props.showCurrentPlaylist}>
+                    <Image 
+                        className='mx-1 userInteractionSection_item'
+                        src={PlaylistPlay}/>
+                    Current playlist
+                </Alert>
+            </NavLink>
             <Image 
                 className='userInteractionSection_playlistControl mx-1' 
                 height='45px'
                 width='45px'
+                onClick={props}
                 src={NextIcon}/>
         </div>);
     const items = props.interactionItems;

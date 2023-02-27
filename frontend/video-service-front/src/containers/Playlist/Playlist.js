@@ -17,9 +17,8 @@ function mapStateToProps(state) {
     return {
         userData: state.profile.data,
         playlists: state.playlist.playlists,
-        isFetching: state.playlist.pendingRequests > 0,
+        isFetching: state.playlist.pendingRequests > 0 || state.profile.fetching,
         currentVideoId: state.playlist.currentVideoId,
-        fetchingProfile: state.profile.fetching
     };
 }
 
@@ -44,6 +43,7 @@ function mapDispatchToProps(dispatch) {
             }, bookmarkData)),
         profileFetchData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
+        notificationSend: (message, variant) => dispatch(actions.notificationSend(message, variant)),
     };
 }
 
@@ -51,25 +51,14 @@ class Playlist extends Component {
     
     state = {
         showEditPlaylistForm: false,
-    }
-
-    async componentDidMount() {
-        /*await this.props.fetchPlaylistData(
-            '/', { userId: localStorage.getItem('userId') });
-        await this.props.profileFetchData(
-            localStorage.getItem('userId'),
-            localStorage.getItem('token')
-        );*/
-        const bookmark = this.props.userData.playlistBookmarks
-            .find(bookmark => bookmark.playlist === localStorage.getItem('playlistId'))
-        if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
+        oldPlaylist: '',
     };
 
     showEditPlaylistToggleHandler = () => {
         this.setState( (prevState)  => {
             return { showEditPlaylistForm: !prevState.showEditPlaylistForm };
         });
-    }
+    };
 
     playlistOn = () => {
         if (this.props.playlists.size > 0){
@@ -82,13 +71,21 @@ class Playlist extends Component {
         }
     };
     
+    playlistOff = () => {
+        this.props.playlistOff();
+        this.props.notificationSend(
+            'Playlist mode is off',
+            'warning'
+        );
+    };
+
     playlistSetCurrentVideo = async (videoId, playlistId) => {
         await this.props.profilePutBookmark({
             videoId: videoId,
             playlistId: playlistId,
         });
         this.props.playlistSetCurrentVideo(videoId)
-    }
+    };
 
     playlistEdit = () => {
         if (!localStorage.getItem('userId'))
@@ -97,7 +94,7 @@ class Playlist extends Component {
         else {
             this.setState({ showEditPlaylistForm: true });
         }
-    }
+    };
 
     playlistRemoveVideo = (id) => {
         this.props.playlistEdit(
@@ -105,13 +102,20 @@ class Playlist extends Component {
             modalModes.ADDING,
             id
         )
-    }
+    };
 
     render() {
         if (this.props.isFetching || !this.props.playlists || this.props.playlists.size === 0)
             return <LoadingSpinner />;
-        const playlist = this.props.playlists.get(localStorage.getItem('playlistId')) ;
+        const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
 
+        const bookmark = this.props.userData.playlistBookmarks
+                .find(bookmark => bookmark.playlist === localStorage.getItem('playlistId'));
+
+        if (!this.props.currentVideoId) {
+            if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
+        }
+        
         return (
             <Container className='my-3 w-50'>
                 <Container className='d-flex flex-direction-column'>
@@ -125,10 +129,12 @@ class Playlist extends Component {
                 </Container>
                 <PlaylistControls
                     playlistOn={this.playlistOn}
+                    playlistOff={this.playlistOff}
                     playlistEdit={this.playlistEdit} />
                 <hr />
                 <PlaylistItems 
                     videosInfo={playlist}
+                    bookmark={bookmark}
                     currentVideoId={this.props.currentVideoId}
                     setCurrent={this.playlistSetCurrentVideo}
                     removeItem={this.playlistRemoveVideo}/>
