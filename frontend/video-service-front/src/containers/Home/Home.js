@@ -71,7 +71,8 @@ class Home extends Component {
 
     async componentDidMount() {
         await this.props.fetchVideosInfo( 'info/home', { });
-        await this.props.fetchPlaylistsData('/', { userId: localStorage.getItem('userId') });
+        if (this.props.isAuthenticated)
+            await this.props.fetchPlaylistsData('/', { userId: localStorage.getItem('userId') });
     }
 
     render() {

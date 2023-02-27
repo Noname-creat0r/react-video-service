@@ -63,9 +63,7 @@ export const playlistFetchData = (endpoint, options) => {
                     type: actionTypes.PLAYLIST_FETCH_DATA_FAILED,
                     error: error.response.data.message,
                 });
-                dispatch(actions.notificationSend(
-                    'Failed to upload a playlist',
-                    'warning'));
+                
             });
     }
 };

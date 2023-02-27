@@ -17,10 +17,11 @@ function mapStateToProps(state) {
         videoId: localStorage.getItem('videoId'),
         videosInfo: state.video.videosInfo,
         playlists: state.playlist.playlists,
-        playlistVideoId: state.playlist.currentVideoId,
+        currentVideoId: state.playlist.currentVideoId,
         comments: state.video.comments,
         isAuthenticated: state.auth.token !== null,
         isPlaylist: state.playlist.playing,
+        isFetching: state.video.pendingRequests > 0,
     }
 }
 
@@ -156,6 +157,9 @@ class Video extends Component {
             return <LoadingSpinner />
             //show auth form
         }
+        
+        if (this.props.isFetching)
+            return <LoadingSpinner />
 
         const videoInfo = this.props.videosInfo.get(localStorage.getItem('videoId'));
         return (

@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import {NavLink} from 'react-router-dom';
 
 const PlaylistControls = (props) => {
     return (
@@ -11,7 +12,9 @@ const PlaylistControls = (props) => {
                 className='mx-2 my-2'
                 variant='outline-info'
                 onClick={props.playlistOn}>
-                Play
+                <NavLink to="/video" onClick={props.playlistOn}>
+                    Play
+                </NavLink>
             </Button>
             <Button 
                 size='lg'

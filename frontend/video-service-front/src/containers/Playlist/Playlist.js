@@ -17,7 +17,7 @@ function mapStateToProps(state) {
     return {
         userData: state.profile.data,
         playlists: state.playlist.playlists,
-        pendingRequests: state.playlist.pendingRequests,
+        isFetching: state.playlist.pendingRequests > 0,
         currentVideoId: state.playlist.currentVideoId,
         fetchingProfile: state.profile.fetching
     };
@@ -43,6 +43,7 @@ function mapDispatchToProps(dispatch) {
                 token: localStorage.getItem('token'),
             }, bookmarkData)),
         profileFetchData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
+        videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
     };
 }
 
@@ -71,7 +72,14 @@ class Playlist extends Component {
     }
 
     playlistOn = () => {
-        this.props.playlistOn();
+        if (this.props.playlists.size > 0){
+            const currentVideo = this.props.playlists
+                .get(localStorage.getItem('playlistId'))['videos']
+                .find( playlist => playlist._id === this.props.currentVideoId) || 0
+            localStorage.setItem('videoId', currentVideo._id)
+            this.props.playlistOn();
+            this.props.videoStreamStart( currentVideo._id );
+        }
     };
     
     playlistSetCurrentVideo = async (videoId, playlistId) => {
@@ -80,7 +88,6 @@ class Playlist extends Component {
             playlistId: playlistId,
         });
         this.props.playlistSetCurrentVideo(videoId)
-        // set curplaylistvideoid
     }
 
     playlistEdit = () => {
@@ -101,11 +108,12 @@ class Playlist extends Component {
     }
 
     render() {
-        if (this.props.pendingRequests > 0)
-            return <LoadingSpinner />
+        if (this.props.isFetching || !this.props.playlists)
+            return <LoadingSpinner />;
         //console.log(localStorage.getItem('playlistId'));
         const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
-        //console.log(playlist.videos);
+        console.log(playlist.videos);
+
         return (
             <Container className='my-3 w-50'>
                 <Container className='d-flex flex-direction-column'>
