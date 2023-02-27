@@ -98,8 +98,10 @@ const videoRateFailed = (state) => {
 } 
 
 const videoRateSuccess = (state, action) => {
+    const updatedInfo = new Map([...state.videosInfo]);
+    updatedInfo.set(action.updatedVideo._id, action.updatedVideo);
     return updateObject(state, {
-        videosInfo: new Map([[action.updatedVideo._id, action.updatedVideo]]),
+        videosInfo: updatedInfo,
     });
 };
 

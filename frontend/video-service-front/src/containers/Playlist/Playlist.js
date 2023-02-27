@@ -54,12 +54,12 @@ class Playlist extends Component {
     }
 
     async componentDidMount() {
-        await this.props.fetchPlaylistData(
+        /*await this.props.fetchPlaylistData(
             '/', { userId: localStorage.getItem('userId') });
         await this.props.profileFetchData(
             localStorage.getItem('userId'),
             localStorage.getItem('token')
-        );
+        );*/
         const bookmark = this.props.userData.playlistBookmarks
             .find(bookmark => bookmark.playlist === localStorage.getItem('playlistId'))
         if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
@@ -108,11 +108,9 @@ class Playlist extends Component {
     }
 
     render() {
-        if (this.props.isFetching || !this.props.playlists)
+        if (this.props.isFetching || !this.props.playlists || this.props.playlists.size === 0)
             return <LoadingSpinner />;
-        //console.log(localStorage.getItem('playlistId'));
-        const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
-        console.log(playlist.videos);
+        const playlist = this.props.playlists.get(localStorage.getItem('playlistId')) ;
 
         return (
             <Container className='my-3 w-50'>

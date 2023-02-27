@@ -4,6 +4,7 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
     settings: {},
     data: {},
+    videosInfo: new Map(),
     fetching: false,
 }
 

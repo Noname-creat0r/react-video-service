@@ -138,10 +138,10 @@ class Layout extends Component {
     };
 
     componentDidMount() {
-        this.props.fetchUserData( 
+        /*this.props.fetchUserData( 
             localStorage.getItem('userId'),
             localStorage.getItem('token'));
-        this.props.fetchCategoreis();
+        this.props.fetchCategoreis();*/
     }
 
     notificationToastClickHandler = (event, key) => {

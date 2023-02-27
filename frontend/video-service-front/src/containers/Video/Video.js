@@ -71,7 +71,7 @@ class Video extends Component {
    };
 
     async componentDidMount() {
-        await this.props.fetchVideoInfo(localStorage.getItem('videoId'))
+        //await this.props.fetchVideoInfo(localStorage.getItem('videoId'))
         await this.props.fetchVideoComments(localStorage.getItem('videoId'));
         await this.props.addView(localStorage.getItem('videoId'));
     };
@@ -157,7 +157,7 @@ class Video extends Component {
             return <LoadingSpinner />
             //show auth form
         }
-        
+
         if (this.props.isFetching)
             return <LoadingSpinner />
 

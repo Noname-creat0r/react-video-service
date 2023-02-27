@@ -21,13 +21,13 @@ export const profileFetchData = (userId, token) => {
                 dispatch({
                     type: actionTypes.PROFILE_FETCH_DATA_SUCCESS,
                     data: response.data.data,
-                })
+                });
             })
             .catch(error => {
                 dispatch({
                     type: actionTypes.PROFILE_FETCH_DATA_FAIL,
                     error: error.response.data.message,
-                })
+                });
             });
     };
 };
@@ -49,13 +49,13 @@ export const profilePutBookmark = (userData, bookmarkData) => {
                 dispatch({
                     type: actionTypes.PROFILE_PUT_BOOKMARK_SUCCESS,
                     user: response.data.user,
-                })
+                });
             })
             .catch(error => {
                 dispatch({
                     type: actionTypes.PROFILE_PUT_BOOKMARK_FAIL,
                     error: error.response.data.message,
-                })
+                });
             });
     };
 }

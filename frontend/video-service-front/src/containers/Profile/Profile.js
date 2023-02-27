@@ -84,24 +84,28 @@ class Profile extends Component {
         localStorage.setItem('playlistId', id);
     }
 
-    componentDidUpdate() {}
-    
     componentDidMount() {
-        this.props.fetchVideosInfo(
+        /*this.props.fetchVideosInfo(
             'info',{ userId: localStorage.getItem('userId')});
         this.props.fetchPlaylistData(
-            '/', { userId: localStorage.getItem('userId') });
+            '/', { userId: localStorage.getItem('userId') });*/
     };
 
     render(){
         if (this.props.fetchingVideoData ||
             this.props.fetchingPlaylistData){
             return <LoadingSpinner />
-        }
+        }   
 
+        const videoData = new Map();
+        this.props.videosInfo.forEach(video => {
+            if (video.author === localStorage.getItem('userId')) 
+                videoData.set(video._id, video);
+        });
+        
         const videos = mapVideoInfoToCards(
             { 
-                videos: this.props.videosInfo,
+                videos: videoData,
                 playlists: this.props.playlists,
             },
             {

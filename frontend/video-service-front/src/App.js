@@ -26,22 +26,37 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAutoSignup: () => dispatch( actions.authCheckState() ),
+    tryAutoSignup: () => dispatch( actions.authCheckState() ),
+    fetchUserData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
+    fetchVideosInfo: (endpoint, options) => dispatch(actions.videoFetchInfo(endpoint, options)),
+    fetchCategoreis: () => dispatch(actions.videoFetchCategoreis()),
+    fetchPlaylistsData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options))
   };
 };
 
 class App extends Component {
 
-  componentDidMount() {
-    this.props.onTryAutoSignup();
+  async componentDidMount() {
+    this.props.tryAutoSignup();
+    await this.props.fetchVideosInfo( 'info/home', { });
+    await this.props.fetchCategoreis();
+    
+    if (this.props.isAuthenticated){
+      await this.props.fetchUserData( 
+        localStorage.getItem('userId'),
+        localStorage.getItem('token'));
+      await this.props.fetchPlaylistsData('/', { userId: localStorage.getItem('userId') });
+      
+    }
+   
     if (!localStorage.getItem('views')){
       //console.log(Number(process.env.REACT_APP_UNAUTH_VIEWS));
       localStorage.setItem('views', Number(process.env.REACT_APP_UNAUTH_VIEWS));
     }
-     axios
+     /*axios
       .get('https://geolocation-db.com/json/')
       .then(res => console.log(res.data))
-      .catch(error => console.log(error));
+      .catch(error => console.log(error));*/
   }
 
   render () {
