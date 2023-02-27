@@ -151,7 +151,7 @@ exports.postVideo = async (req, res, next) => {
             if (!err.statusCode){
                 err.statusCode = 500;
             }
-            console.log(err);
+            //console.log(err);
             next(err);
         })
 };
@@ -208,7 +208,7 @@ exports.getVideo = (req, res, next) => {
                     const start = parseInt(parts[0], 10)
                     const end = parts[1] ? parseInt(parts[1], 10): videoSize-1
                     const contentLength = (end - start) + 1; 
-                    console.log("start: " + start + ", end: " + end + ', videoSize: ' + videoSize);
+                    //console.log("start: " + start + ", end: " + end + ', videoSize: ' + videoSize);
                     //console.log(videoSize);
                     const headers = {
                         "Content-Range": `bytes ${start}-${end}/${videoSize}`,
@@ -325,7 +325,7 @@ exports.postView = async (req, res, next) => {
         })
 
     } catch (err) {
-        console.log(err);
+        //console.log(err);
         next(err);
     }
 };

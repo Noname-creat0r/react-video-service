@@ -90,7 +90,7 @@ export const playlistEdit = (token, playlistId, actionType, videoId) => {
             .then(response => {
                 dispatch({
                     type: actionTypes.PLAYLIST_EDIT_SUCCESS,
-                    playlists: response.data.playlist,
+                    playlist: response.data.playlist,
                 });
             })
             .catch(error => {
@@ -138,4 +138,7 @@ export const playlistDelete = (playlistId, token, userId) => {
     }
 };
 
-
+export const playlistSetCurrentVideo = (videoId) => ({
+    type: actionTypes.PLAYLIST_SET_CURRENT_VIDEO,
+    videoId: videoId
+});

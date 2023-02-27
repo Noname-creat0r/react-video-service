@@ -7,6 +7,7 @@ export {
 export {
     profileFetchData,
     profileClearData,
+    profilePutBookmark,
 } from './profile'
 export {
     videoStreamStart,
@@ -25,6 +26,7 @@ export {
     playlistDelete,
     playlistOn,
     playlistOff,
+    playlistSetCurrentVideo,
 } from './playlist';
 export {
     notificationSend,

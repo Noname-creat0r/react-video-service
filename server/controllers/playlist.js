@@ -120,10 +120,9 @@ exports.putPlaylist = async (req, res, next) => {
             _id: Types.ObjectId(req.body.playlistId)
         });
 
-        //
         if (req.body.videoId){
-            const id = playlist.videos.findIndex((video) =>
-                video._id === Types.ObjectId(req.body.videoId).toString());
+            const id = playlist.videos.findIndex((video) => 
+                video._id.toString() ===  req.body.videoId);
             id === -1 ?
                 playlist.videos.push({
                     _id: Types.ObjectId(req.body.videoId)

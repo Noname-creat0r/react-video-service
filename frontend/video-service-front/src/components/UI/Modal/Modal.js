@@ -3,6 +3,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 
 const modal = (props) => (
+
     <Modal  
         show={props.show}
         onHide={props.hide}>
@@ -12,7 +13,7 @@ const modal = (props) => (
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body> 
-                {props.body} 
+                {props.body } 
             </Modal.Body>
             <Modal.Footer>
                 {props.footer}

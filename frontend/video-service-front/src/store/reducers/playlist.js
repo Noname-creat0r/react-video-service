@@ -87,6 +87,12 @@ const playlistOn = (state, action) => {
 
 const playlistOff = (state) => { return updateObject(state, { playing: false})};
 
+const playlistSetCurrentVideo = (state, action) => {
+    return updateObject(state, {
+        currentVideoId: action.videoId
+    });
+};
+
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
         case actionTypes.PLAYLIST_UPLOAD_START: return playlistUploadStart(state);
@@ -106,6 +112,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.PLAYLIST_DELETE_FAILED: return playlistDeleteFailed(state);
         case actionTypes.PLAYLIST_ON: return playlistOn(state, action);
         case actionTypes.PLAYLIST_OFF: return playlistOff(state);
+        case actionTypes.PLAYLIST_SET_CURRENT_VIDEO: return playlistSetCurrentVideo(state, action);
         default: return state;
     };
 };

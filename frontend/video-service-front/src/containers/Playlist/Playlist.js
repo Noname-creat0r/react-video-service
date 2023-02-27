@@ -15,8 +15,10 @@ import './Playlist.css';
 
 function mapStateToProps(state) {
     return {
+        userData: state.profile.data,
         playlists: state.playlist.playlists,
         pendingRequests: state.playlist.pendingRequests,
+        currentVideoId: state.playlist.currentVideoId,
         fetchingProfile: state.profile.fetching
     };
 }
@@ -27,6 +29,7 @@ function mapDispatchToProps(dispatch) {
             dispatch(actions.playlistFetchData(endpoint, options)),
         playlistOn: () => dispatch(actions.playlistOn()),
         playlistOff: () => dispatch(actions.playlistOff()),
+        playlistSetCurrentVideo: (videoId) => dispatch(actions.playlistSetCurrentVideo(videoId)),
         playlistEdit: (playlistId, actionType, videoId) =>
              dispatch(actions.playlistEdit(
                 localStorage.getItem('token'),
@@ -34,6 +37,12 @@ function mapDispatchToProps(dispatch) {
                 actionType,
                 videoId)
             ),
+        profilePutBookmark: (bookmarkData) => 
+            dispatch(actions.profilePutBookmark({
+                userId: localStorage.getItem('userId'),
+                token: localStorage.getItem('token'),
+            }, bookmarkData)),
+        profileFetchData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
     };
 }
 
@@ -42,6 +51,18 @@ class Playlist extends Component {
     state = {
         showEditPlaylistForm: false,
     }
+
+    async componentDidMount() {
+        await this.props.fetchPlaylistData(
+            '/', { userId: localStorage.getItem('userId') });
+        await this.props.profileFetchData(
+            localStorage.getItem('userId'),
+            localStorage.getItem('token')
+        );
+        const bookmark = this.props.userData.playlistBookmarks
+            .find(bookmark => bookmark.playlist === localStorage.getItem('playlistId'))
+        if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
+    };
 
     showEditPlaylistToggleHandler = () => {
         this.setState( (prevState)  => {
@@ -53,6 +74,15 @@ class Playlist extends Component {
         this.props.playlistOn();
     };
     
+    playlistSetCurrentVideo = async (videoId, playlistId) => {
+        await this.props.profilePutBookmark({
+            videoId: videoId,
+            playlistId: playlistId,
+        });
+        this.props.playlistSetCurrentVideo(videoId)
+        // set curplaylistvideoid
+    }
+
     playlistEdit = () => {
         if (!localStorage.getItem('userId'))
             this.props.notificationSend(
@@ -69,11 +99,6 @@ class Playlist extends Component {
             id
         )
     }
-
-    componentDidMount() {
-       this.props.fetchPlaylistData(
-            '/', { userId: localStorage.getItem('userId') });
-    };
 
     render() {
         if (this.props.pendingRequests > 0)
@@ -98,6 +123,8 @@ class Playlist extends Component {
                 <hr />
                 <PlaylistItems 
                     videosInfo={playlist}
+                    currentVideoId={this.props.currentVideoId}
+                    setCurrent={this.playlistSetCurrentVideo}
                     removeItem={this.playlistRemoveVideo}/>
                 <PlaylistForm 
                     show={this.state.showEditPlaylistForm}

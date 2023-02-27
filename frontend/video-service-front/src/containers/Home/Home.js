@@ -30,6 +30,13 @@ function mapDispatchToProps(dispatch) {
         fetchPlaylistsData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
         notificationSend: (message, type) => dispatch(actions.notificationSend(message, type)),
+        playlistEdit: (playlistId, actionType, videoId) =>
+             dispatch(actions.playlistEdit(
+                localStorage.getItem('token'),
+                playlistId,
+                actionType,
+                videoId)
+            ),
     };
 }
 
@@ -61,8 +68,10 @@ class Home extends Component {
         }
     }
 
-    componentDidMount() {
-        this.props.fetchVideosInfo( 'info/home', { });
+
+    async componentDidMount() {
+        await this.props.fetchVideosInfo( 'info/home', { });
+        await this.props.fetchPlaylistsData('/', { userId: localStorage.getItem('userId') });
     }
 
     render() {
@@ -83,15 +92,16 @@ class Home extends Component {
             },
             HomeVideoCard
         );
-        
-        let playlistsList = []
+
+        let playlistList = [];
         if (this.state.showPlaylists){
             const items = [];
             this.props.playlists.forEach((playlist) =>
                 items.push(
                     <ListGroup.Item 
                         action
-                        onClick={() => this.props.editPlaylist(
+                        onClick={() => 
+                            this.props.playlistEdit(
                             playlist._id,
                             modalModes.ADDING,
                             localStorage.getItem('videoId'))}>
@@ -104,16 +114,17 @@ class Home extends Component {
                     action> 
                     <Image 
                         src={AddImage} 
+                        className='mx-1'
                         width='15px'
                         height='15px'/> 
                         <b>Create new </b>
                 </ListGroup.Item>
             );
             //console.log(this.props.playlists);
-            playlistsList=
+            playlistList = (
                 <ListGroup>
                     {items}
-                </ListGroup>
+                </ListGroup>);
         }
 
         return (
@@ -122,7 +133,8 @@ class Home extends Component {
                     show={this.state.showPlaylists}
                     hide={this.showPlaylistsToggleHandler}
                     title="Add to playlist" 
-                    content={playlistsList}/>
+                    body={playlistList}
+                   />
                 {content}
             </Container>
         );

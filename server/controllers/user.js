@@ -52,22 +52,22 @@ exports.editUser = async (req, res, next) => {
 };
 
 exports.putPlaylistBookmark = async (req, res, next) => {
-    if (!req.body.videoId || !req.body.playlistId ||
-        !req.body.userId){
-        const error = new Error('Missing param in body.');
-        error.statusCode(400);
-        throw error;
-    }
-    
     try {
+        if (!req.body.videoId || !req.body.playlistId ||
+            !req.body.userId){
+            const error = new Error('Missing param in body.');
+            error.statusCode = 400;
+            throw error;
+        }
+
         const user = await User.findOne({
             _id: Types.ObjectId(req.body.userId)}
         );
 
         const bookmarks = user.playlistBookmarks;
-        console.log(bookmarks);
+        //console.log(bookmarks);
         const markId = bookmarks.findIndex(bookmark =>
-            bookmark.playlist === req.body.playlistId);
+            bookmark.playlist.toString() === req.body.playlistId);
         if (markId > -1)
             bookmarks[markId].video = Types.ObjectId(req.body.videoId);
         else {

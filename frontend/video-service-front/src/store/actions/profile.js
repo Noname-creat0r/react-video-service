@@ -32,6 +32,34 @@ export const profileFetchData = (userId, token) => {
     };
 };
 
+export const profilePutBookmark = (userData, bookmarkData) => {
+    return dispatch => {
+        dispatch({ type: actionTypes.PROFILE_PUT_BOOKMARK_START });
+        return axios
+            .put(
+                '/user/bookmark',
+                {
+                    userId: userData.userId,
+                    videoId: bookmarkData.videoId,
+                    playlistId: bookmarkData.playlistId
+                },
+                { headers: {'Authorization': userData.token}},
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.PROFILE_PUT_BOOKMARK_SUCCESS,
+                    user: response.data.user,
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.PROFILE_PUT_BOOKMARK_FAIL,
+                    error: error.response.data.message,
+                })
+            });
+    };
+}
+
 
 /*export const profileEdit = (token, editData) => {
     return {

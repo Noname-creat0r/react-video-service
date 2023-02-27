@@ -1,20 +1,10 @@
+import ListGroup from 'react-bootstrap/ListGroup';
+
 export const updateObject = (oldObject, updatedProperties) => {
     return {
         ...oldObject,
         ...updatedProperties
     };
-};
-
-export const getGroupsBy = (arrOfObj, category) => {
-    const groups = {};
-    for (const obj of arrOfObj){
-        if (obj[category] in groups){
-          groups[obj[category]].push(obj);
-        } else {
-          groups[obj[category]] = [obj];
-        }
-    }
-    return groups;
 };
 
 export const mapVideoInfoToCards = (info, handlers, VideoCard) => {
@@ -97,18 +87,31 @@ export const videoCardClickHandler = (id, videoStreamStart) => {
   localStorage.setItem('videoId', id);
 };
 
-export const addToPlaylistClickHandler = (
-  fetchPlaylistMethod,
-  showPlaylistModal,
-  modalMode,
-  notificate 
-) => {
-  if (!localStorage.getItem('userId'))
-    notificate(
-      'Sign in to manage playlists', 'warning');
-  else {
-    fetchPlaylistMethod(
-      '/', { userId: localStorage.getItem('userId') })
-    showPlaylistModal(modalMode);
-  }
-};
+/*export const getAddToPlaylistList = (clickHandler ) => {
+  const items = [];
+  this.props.playlists.forEach((playlist) =>
+      items.push(
+          <ListGroup.Item 
+              action
+              onClick={() => clickHandler(playlist._id)}>
+              {playlist.title} 
+          </ListGroup.Item>
+      )
+  );
+  items.push(
+      <ListGroup.Item 
+          action> 
+          <Image 
+              src={AddImage} 
+              className='mx-1'
+              width='15px'
+              height='15px'/> 
+              <b>Create new </b>
+      </ListGroup.Item>
+  );
+  //console.log(this.props.playlists);
+  return (
+      <ListGroup>
+          {items}
+      </ListGroup>);
+}*/

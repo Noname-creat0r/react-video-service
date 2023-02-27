@@ -5,21 +5,24 @@ import Image from 'react-bootstrap/Image';
 import CloseButton from 'react-bootstrap/CloseButton';
 
 import './PlaylistItems.css';
+import '../../../animations/popup.css';
 
 const PlaylistItems = (props) => {
     //console.log(props.videosInfo.videos);
     const mappedVideos = props.videosInfo.videos.map((video, id) => 
-        <Container className='PlaylistItem'>
-            <bold>{id+1}</bold>
-            <Image 
-                className='PlaylistItemImage my-2 mx-2'
-                src={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
-                height='100px'
-                width='140px'/>
-            <span className='PlaylistItemTitle'> {video.title} </span>
+        <Container className={props.currentVideoId === video._id ? 'PlaylistItem current animate pop' : 'PlaylistItem'}>
+            <div onClick={() => props.setCurrent(video._id, localStorage.getItem('playlistId'))}>
+                <bold>{id+1}</bold>
+                <Image 
+                    className='PlaylistItemImage my-2 mx-2'
+                    src={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
+                    height='100px'
+                    width='140px'/>
+                <span className='PlaylistItemTitle'> {video.title} </span>
+            </div>
             <CloseButton 
                 className='PlaylistItemRemove' 
-                onClick={() => props.removeItem(id)}/>
+                onClick={() => props.removeItem(video._id)}/>
         </Container>
        
     );

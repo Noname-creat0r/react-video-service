@@ -1,20 +1,23 @@
 .PlaylistItem {
     display: flex;
     align-items: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .PlaylistItem:hover {
     transform: scale(1.1);
-    color: #0DCAF0;
     background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(237,250,255,1) 100%);
     border-radius: 10px;
     cursor: pointer;
 }
 
-.PlaylistItem__current {
-    border: 1px solid silver;
-    border-radius: 10px;
-    cursor: pointer;
+.current {
+    border: 1px solid grey;
+    border-style:groove;
+    border-radius: 15px;
 }
 
 .PlaylistItemImage {

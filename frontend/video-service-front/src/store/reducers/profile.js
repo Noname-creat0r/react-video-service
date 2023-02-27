@@ -2,7 +2,6 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../shared/utility';
 
 const initialState = {
-    unsignedUpVideos: 10,
     settings: {},
     data: {},
     fetching: false,
@@ -35,15 +34,15 @@ const profileFetchDataSuccess = (state, action) => {
 };
 
 const profileFetchDataFail = (state, action) => {
-    return updateObject(state, {
-        fetching: false,
-    });
+    return updateObject(state, { fetching: false });
 };
 
 const profileClearData = (state) => {
-    return updateObject(state, {
-        data: {},
-    });
+    return updateObject(state, { data: {},});
+};
+
+const profilePutBookmarkSuccess = (state, action) => {
+    return updateObject(state, { data: action.user });
 };
 
 const reducer = ( state = initialState, action ) => {
@@ -52,6 +51,7 @@ const reducer = ( state = initialState, action ) => {
         case (actionTypes.PROFILE_FETCH_DATA_SUCCESS) : return profileFetchDataSuccess(state, action);
         case (actionTypes.PROFILE_FETCH_DATA_FAIL) : return profileFetchDataFail(state, action);
         case (actionTypes.PROFILE_CLEAR_DATA): return profileClearData(state);
+        case (actionTypes.PROFILE_PUT_BOOKMARK_SUCCESS): return profilePutBookmarkSuccess(state, action); 
         default: return state;
     }
 };
