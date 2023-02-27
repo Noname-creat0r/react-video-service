@@ -1,6 +1,7 @@
 import axios from '../../axios-settings';
 import * as actionTypes from '../actions/actionTypes';
 import * as actions from './index';
+import * as modes from '../../shared/playlistModalModes';
 
 export const playlistOn = () => ({ type: actionTypes.PLAYLIST_ON })
 export const playlistOff = () => ({ type: actionTypes.PLAYLIST_OFF });
@@ -82,7 +83,8 @@ export const playlistEdit = (token, playlistId, actionType, videoId) => {
                 },
                 { headers: {
                     'Authorization': token,
-                    'Content-Type': 'multipart/form-data' }
+                    'Content-Type': actionType === modes.ADDING ? 'application/json' : 
+                        'multipart/form-data'  }
                 }
             )
             .then(response => {

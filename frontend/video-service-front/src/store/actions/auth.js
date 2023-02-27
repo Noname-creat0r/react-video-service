@@ -58,21 +58,30 @@ export const authCheckState = () => {
     }
 };
 
-export const auth = (email, password, name) => {
+export const auth = (userData, mode) => {
     return dispatch => {
         dispatch({ type: actionTypes.AUTH_START});
         const authData = {
-            email: email,
-            password: password
+            email: userData.email,
+            password: userData.password
         };
-        if (name !== undefined){
-            authData["name"] = name;
+        if (mode === 'Sign Up'){
             axios
-                .post('/auth/signup/', authData)
+                .post(
+                    '/auth/signup/',
+                    {...userData},
+                    { headers: {  'Content-Type': 'multipart/form-data', }} 
+                )
                 .then(response => {
                     dispatch(actions.notificationSend(
                         'You created a new profile.',
                         'info'));
+                })
+                .catch( error => {
+                    dispatch(actions.notificationSend(
+                        error.response.data.message,
+                        'warning'
+                    ))
                 });
         }
         else {

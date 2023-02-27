@@ -41,26 +41,19 @@ class PlaylistForm extends Component {
         thumbnailURL: null,
     }
 
-    componentDidUpdate() {
-        console.log('pfupdate');
-    }   
-
     render() {
-        let initialValues = {};
-        if (this.props.playlist){
+        let initialValues = { 
+            title: '',
+            description: '',
+            thumbnail: null, 
+        };
+        if (this.props.playlist)
             initialValues = {   
                 title: this.props.playlist.title,
                 description: this.props.playlist.description,
                 thumbnail: null, 
             };
-        } else {
-            initialValues = { 
-                title: '',
-                description: '',
-                thumbnail: null, 
-            };
-        }
-       
+        
         const content = 
             <Formik
                 initialValues={initialValues}
@@ -202,42 +195,12 @@ class PlaylistForm extends Component {
                     className="mx-2 my-2"
                     size='md'
                     variant="success"
-                    //disabled={!this.state.isFormValid}
                     type="submit"
-                    //onClick={this.upload}
                     form="playlistForm">
                     { this.props.playlist ? 'Edit' : 'Upload'}
                 </Button>
             </Container>
         );
-
-            /*case modalModes.ADDING:
-                const items = [];
-                this.props.playlists.forEach((playlist) =>
-                    items.push(
-                        <ListGroup.Item 
-                            action
-                            onClick={() => this.props.editPlaylist(
-                                playlist._id,
-                                modalModes.ADDING,
-                                this.props.videoId)}>
-                            {playlist.title} 
-                        </ListGroup.Item>
-                    )
-                );
-                items.push(
-                    <ListGroup.Item 
-                        action 
-                        onClick={() => this.props.showModal(modalModes.UPLOADING)}> 
-                        <Image src={AddImage} width='15px' height='15px'/> <b>Create new </b>
-                    </ListGroup.Item>
-                );
-                //console.log(this.props.playlists);
-                content=
-                    <ListGroup>
-                        {items}
-                    </ListGroup>
-                break;*/
 
         return (
             <Modal 

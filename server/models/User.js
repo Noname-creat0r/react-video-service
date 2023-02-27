@@ -19,6 +19,9 @@ const userSchema = new Schema({
         default: 'User',
         required: true
     },
+    avatar: {
+        type: Schema.Types.ObjectId,
+    },
     playlistBookmarks: [
         {
             playlist: {

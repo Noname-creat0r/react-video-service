@@ -16,6 +16,7 @@ exports.fetchData = (req, res, next) => {
             const data = {
                 name: user.name,
                 type: user.type,
+                avatar: user.avatar,
                 playlistBookmarks: user.playlistBookmarks,
             }
            // console.log({ message: 'User data fetched. ', data: data});

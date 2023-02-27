@@ -73,7 +73,7 @@ exports.getPlaylistVideoInfo = async (req, res, next) => {
 
 exports.postPlaylist = async (req, res, next) => {
     try {
-        console.log(req.file);
+        //console.log(req.file);
         const thumbnailFileId = req.file.id;
         if (!req.body.title || !req.body.userId){
             const error = new Error('Missing querry params!');
@@ -120,9 +120,10 @@ exports.putPlaylist = async (req, res, next) => {
             _id: Types.ObjectId(req.body.playlistId)
         });
 
+        //
         if (req.body.videoId){
             const id = playlist.videos.findIndex((video) =>
-                video._id === Types.ObjectId(req.body.videoId));
+                video._id === Types.ObjectId(req.body.videoId).toString());
             id === -1 ?
                 playlist.videos.push({
                     _id: Types.ObjectId(req.body.videoId)
@@ -139,7 +140,7 @@ exports.putPlaylist = async (req, res, next) => {
         });
 
     } catch (error){
-        //console.log(error);
+        console.log(error);
         next(error);
     }
 };
@@ -151,7 +152,6 @@ exports.deletePlaylist = async (req, res, next) => {
             error.statusCode = 400;
             throw error;
         }
-        
 
         const playlist = await Playlist.findOne({ 
             _id: Types.ObjectId(req.query.playlistId)

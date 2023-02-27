@@ -1,47 +1,66 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { Types } = require('mongoose');
 const User = require('../models/User');
 
 const key = process.env.KEY;
 
-exports.signup = (req, res, next) => {
-    // validation
+exports.signup = async (req, res, next) => {
+    try {
 
-    const email = req.body.email;
-    const password = req.body.password;
-    const name = req.body.name;
+        const email = req.body.email;
+        const password = req.body.password;
+        const name = req.body.name;
 
-    bcrypt
-        .hash(password, 12)
-        .then(hasshedPassword => {
-            const user = new User({
-                email: email,
-                password: hasshedPassword,
-                name: name,
-            });
-            return user.save();
-        })
-        .then(result => {
-            res.status(201).json({message: 'New user has been signed up successfully.',
-                userId: result._id});
-        })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
-            next(err);
-        })
+        if (!email || !password || !name || !req.file){
+            const error = new Error('Fill all the inputs in form.');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        const avatarId = req.file.id;
+        const isSignedUp = await User.findOne({
+            email: email
+        });
+
+        if (isSignedUp) {
+            const error = new Error('Error: there is user with this email!');
+            error.statusCode = 403;
+            throw error;
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 12);
+        if (!hashedPassword){
+            const error = new Error('Error while working with password');
+            error.statusCode = 500;
+            throw error;
+        }
+
+        const userData = {
+            email: email,
+            password: hashedPassword,
+            name: name,
+            avatarId: avatarId,
+        }
+
+        const user = await User.create({...userData});
+        await user.save();
+
+        res.status(201).json({
+            message: 'New user has been signed up successfully.',
+            userId: result._id
+        });
+
+     } catch(error) {
+        console.log(error);
+        next(error);
+     }
 };
 
 exports.signin = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     let loadedUser;
-
-    /* TODO: - Check the local storage for server to look for 
-             existing token to prevent signin if user hase already been
-             signed in. 
-             - Avatar uploading */
 
     User.findOne({email: email})
         .then((user) => {

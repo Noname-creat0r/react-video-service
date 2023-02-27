@@ -1,181 +1,15 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { getGroupsBy, updateObject } from '../../shared/utility';
-import * as formMethods from '../../shared/formUtil'; 
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import * as actions from '../../store/actions/index';
+import * as validators from '../../validators/validators';
 
-import Input from '../../components/UI/Input/Input';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-
-class Auth extends Component {
-    
-    state = {
-        currentAuthForm: 'SignIn',
-        isFormValid: false,
-        controls: {
-            email: {
-                elementType: 'input',
-                groupConfig: {
-                    group: 'email',
-                    label: 'Email:',
-                    form: ['SignIn', 'SignUp']
-                },
-                controlConfig: {
-                    type: 'email',
-                    placeholder: 'Your email',
-                },
-                validation: {
-                    valid: false,
-                    required: true
-                },
-                value: '',
-                touched: false
-            },
-            password: {
-                elementType: 'input',
-                groupConfig: {
-                    group: 'password',
-                    label: 'Password:',
-                    form: ['SignIn', 'SignUp']
-                },
-                controlConfig: {
-                    type: 'password',
-                    placeholder: 'Your strong password',
-                },
-                validation: {
-                    valid: false,
-                    required: true
-                },
-                value: '',
-                touched: false
-            },
-            name: {
-                elementType: 'input',
-                groupConfig: {
-                    group: 'name',
-                    label: 'Nickname:',
-                    form: 'SignUp'
-                },
-                controlConfig: {
-                    type: 'text',
-                    placeholder: 'Enter your nickname',
-                },
-                validation: {
-                    valid: false,
-                    required: true
-                },
-                value: '',
-                touched: false
-            },
-            avatar: {
-                elementType: 'input',
-                groupConfig: {
-                    group: 'file',
-                    label: 'Profile picture:',
-                    form: 'SignUp'
-                },
-                controlConfig: {
-                    type: 'file',
-                    accept: 'image/*'
-                },
-                validation: {
-                    valid: false,
-                    required: false
-                },
-                value: '',
-                //file: '',
-                touched: false
-            }
-        },
-    };
-
-    authFormSwitcher = () => {
-        this.setState( (prevState) => {
-            return { currentAuthForm: prevState.currentAuthForm === "SignIn" ?
-                "SignUp" : "SignIn" }
-        });
-    }
-
-    inputChangedHandler = (event) => {
-       this.setState({ controls: formMethods.getUpdatedControls(event, this.state) });
-       this.setState({ isFormValid: formMethods.checkFormValidity(this.state) });
-    }
-
-    authenticate = (event) => {
-        event.preventDefault();
-        this.props.onAuth(
-            this.state.controls['email'].value,
-            this.state.controls['password'].value,
-            this.state.currentAuthForm === 'SignUp' ?
-                this.state.controls['name'].value : undefined); 
-    }
-
-    render(){
-                /* TODO: 
-        - redirect after modal close  */
-
-        const currentFormType = this.state.currentAuthForm === "SignIn" ? 
-        "Sign In" : "Sign Up"; 
-        
-        const formElementsArray = [];
-        for (let key in this.state.controls){
-            if (Array.isArray(this.state.controls[key].groupConfig.form) ||
-                this.state.controls[key].groupConfig.form === this.state.currentAuthForm)
-                formElementsArray.push({
-                    id: key,
-                    config: this.state.controls[key]
-                });
-        }
-
-        const formContent = formMethods.getFormControlGroups(
-            formMethods.getFormInputsArray(formElementsArray, this.inputChangedHandler)
-        );
-
-        return (
-            <Modal 
-                show={this.props.show}
-                onHide={this.props.hide}>
-
-                <Modal.Header> 
-                    {this.state.currentAuthForm}
-                </Modal.Header>
-                <Modal.Body> 
-                    <Form id="authForm">
-                        {formContent}
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Container className="text-center"> 
-                        <Button 
-                            className="mx-2 my-2 btn-md"
-                            variant="secondary"
-                            onClick={this.props.hide}>
-                                Close
-                        </Button>
-                        <Button 
-                            className="mx-2 my-2 btn-md"
-                            variant="success"
-                            disabled={!this.state.isFormValid}
-                            type="submit"
-                            form="authForm"
-                            onClick={this.authenticate}>
-                               {currentFormType}
-                        </Button>
-                        <Button 
-                            className='btn-sm mx-2 btn-success'
-                            onClick={this.authFormSwitcher}>
-                                Switch to {this.state.currentAuthForm === "SignIn" ? 
-                                "Sign Up" : "Sign In"}
-                        </Button>
-                    </Container>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
-};
+import Image from 'react-bootstrap/Image';
+import Modal from '../../components/UI/Modal/Modal';
 
 const mapStateToProps = state => {
     return {
@@ -187,8 +21,229 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password, name) => dispatch(actions.auth( email, password, name)),
+        authenticate: (userData, mode) => dispatch(actions.auth(userData, mode)),
     };
+};
+
+class Auth extends Component {
+    state = {
+        video: null,
+        avatar: null,
+        avatarlURL: null,
+        formMode: "Sign In",
+    };
+
+    authFormSwitcher = () => {
+        this.setState( (prevState) => {
+            return { 
+                formMode: prevState.formMode === "Sign In" ? "Sign Up" : "Sign In" ,
+            }
+        });
+    }
+
+    render(){
+        let initialValues = {
+            email: '',
+            password: '',
+            name: '',
+            avatar: null,
+        };
+        if (this.props.user) {
+            initialValues = {
+                email: this.props.email,
+                password: this.props.user.password,
+                name: this.props.user.name,
+                avatar: null,
+            }
+        } 
+
+        const content = (
+            <Formik 
+                initialValues={initialValues}
+                validationSchema={
+                    Yup.object().shape({
+                        email: Yup
+                            .string()
+                            .email()
+                            .required("email required"),
+                        password: Yup
+                            .string()
+                            .min(5, "short password")
+                            .max(40, "too long password"),
+                        name: Yup
+                            .string()
+                            .min(5, "short nickname")
+                            .max(15, "too long nickname"),
+                    })
+                }
+                onSubmit={(values) => {
+                    //alert(JSON.stringify(values));
+                    const userData = {
+                        email: values.email,
+                        password: values.password,
+                        imageType: 'avatar', 
+                        name: values.name,
+                        avatar: this.state.avatar,
+                    };
+                    this.props.authenticate(userData, this.state.formMode);
+                }}>
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleSubmit,
+                    handleChange,
+                }) => (
+                    <Form id="authForm" onSubmit={handleSubmit}>
+                        <Form.Group>
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                name="email"
+                                type="email"
+                                placeholder="type your email"
+                                value={values.email}
+                                onChange={handleChange}
+                                isValid={touched.email && !errors.email}
+                                isInvalid={!!errors.email}/>
+                                
+                                {errors.email && touched.email && (
+                                    <Form.Control.Feedback 
+                                        className="d-block text-danger mx-2"
+                                        type="invalid">
+                                            {errors.email}
+                                    </Form.Control.Feedback>)}
+                        </Form.Group>
+
+                        <Form.Group className='my-3'>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                name="password"
+                                type="password"
+                                placeholder="strong password here"
+                                value={values.password}
+                                onChange={handleChange}
+                                isValid={touched.password && !errors.password}
+                                isInvalid={!!errors.password}/>
+
+                                {errors.password && touched.password && (
+                                    <Form.Control.Feedback 
+                                        className="d-block text-danger mx-2"
+                                        type="invalid">
+                                            {errors.password}
+                                    </Form.Control.Feedback>)}
+                        </Form.Group>
+                        
+                        {this.state.formMode === 'Sign Up' && (
+                            <div>
+                                <Form.Group className='my-3'>
+                                    <Form.Label>Username</Form.Label>
+                                    <Form.Control
+                                        name="name"
+                                        type="text"
+                                        placeholder="your username"
+                                        value={values.name}
+                                        onChange={handleChange}
+                                        isValid={touched.name && !errors.name}
+                                        isInvalid={!!errors.name}/>
+
+                                        {errors.name && touched.name && (
+                                            <Form.Control.Feedback 
+                                                className="d-block text-danger mx-2"
+                                                type="invalid">
+                                                    {errors.name}
+                                            </Form.Control.Feedback>)}
+                                </Form.Group>
+
+                                <Form.Group>
+                                    <Form.Label>Avatar</Form.Label>
+                                    <Form.Control
+                                        name="avatar" 
+                                        placeholder="coolImage.png" 
+                                        value={values.avatar}
+                                        type="file"
+                                        onChange={(event) => { 
+                                            let reader = new FileReader();
+                                            let file = event.target.files[0];
+                                            reader.onload = () => {
+                                                this.setState({ 
+                                                    avatarURL: reader.result,
+                                                    avatar: event.target.files[0]
+                                                });
+                                            }
+                                            handleChange(event);
+                                            if (validators.fileImgValidator(event)){ 
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }}
+                                        />
+                                        {touched.avatar && !this.state.avatar && (
+                                        <Form.Control.Feedback 
+                                            className="d-block text-danger mx-2"
+                                            type="invalid">
+                                                invalid file type for avatar
+                                        </Form.Control.Feedback>)}
+                                </Form.Group>
+
+                                {(this.state.avatar) && 
+                                    (<Form.Group className="my-2">
+                                        <Form.Label className='d-block my-1 mx-1'>Preview:</Form.Label>
+                                        <Image 
+                                            className="my-2 mx-2"
+                                            src={this.state.avatarURL || 
+                                                'http://localhost:8080/video/thumbnail?id=' + this.props.user.avatar}
+                                            width="256"
+                                            height="240"
+                                            rounded/>
+                                    </Form.Group>)}
+                            </div>
+                        )}
+                    </Form>
+                )}
+            </Formik>
+        );
+
+        const buttons = (
+            <Container className="text-center"> 
+                <Button 
+                    className="mx-2 my-2 btn-md"
+                    variant="secondary"
+                    onClick={() => {
+                        this.props.hide();
+                        this.setState({ 
+                            avatar: null,
+                            avatarURL: null,
+                        });
+                    }}>
+                        Close
+                </Button>
+                <Button 
+                    className="mx-2 my-2 btn-md"
+                    variant="success"
+                    type="submit"
+                    form="authForm">
+                    {this.state.formMode}
+                </Button>
+                <Button 
+                    className='btn-sm mx-2 btn-success'
+                    onClick={() => {
+                            this.authFormSwitcher();
+                            
+                        }}>
+                        Switch to {this.state.formMode === "Sign In" ? 
+                        "Sign Up" : "Sign In"}
+                </Button>
+            </Container>
+        );
+
+        return (
+            <Modal 
+                show={this.props.show}
+                hide={this.props.hide} 
+                title={this.state.formMode}
+                body={content}
+                footer={buttons}/>
+        );
+    }
 };
 
 export default connect( mapStateToProps, mapDispatchToProps )( Auth );
