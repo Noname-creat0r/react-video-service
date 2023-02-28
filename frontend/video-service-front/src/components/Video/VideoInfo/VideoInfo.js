@@ -61,7 +61,8 @@ const VideoInfo = (props) => {
                     <h3>{props.title}</h3>
                     <h4>{props.views} views</h4>
                     <UserBadge 
-                        name={props.author}/> 
+                        name={props.author}
+                        avatarId={props.avatarId}/> 
                 </Col>
                 <Col className='userInteractionSection'>
                     {props.isPlaylist ? playlistPanel : ''}                    

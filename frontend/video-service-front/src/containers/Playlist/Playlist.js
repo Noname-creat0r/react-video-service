@@ -128,7 +128,7 @@ class Playlist extends Component {
                         className='PlaylistThumbnail'  
                         width={'200px'}
                         height={'150px'}
-                        src={'http://localhost:8080/video/thumbnail?id=' + playlist.thumbnail}
+                        src={process.env.REACT_APP_BASE_SERVER_URL + '/image/thumbnail?id=' + playlist.thumbnail}
                         alt='PlaylistThumbnail' />
                     <strong className='PlaylistTitle mx-3'>{playlist.title}</strong>
                 </Container>

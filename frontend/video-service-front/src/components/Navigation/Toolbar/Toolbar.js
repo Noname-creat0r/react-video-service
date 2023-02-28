@@ -24,16 +24,17 @@ const toolbar = (props) => (
             </Col>
             <Col>
                 <Button 
-                        className='mx-2'
-                        variant='outline-info'
-                        onClick={props.filterOptionsClicked}>
-                            Filter
+                    className='mx-2'
+                    variant='outline-info'
+                    onClick={props.filterOptionsClicked}>
+                        Filter
                 </Button>
             </Col>
             <Col md='2'> 
                 { props.isAuthenticated ? 
                     <UserBadge 
-                        name={props.userName} /> :
+                        name={props.userName} 
+                        avatarId={props.avatarId}/> :
                     <Button 
                         variant='success'
                         onClick={props.authModalRequested}>Sign In/ Sign Up</Button>

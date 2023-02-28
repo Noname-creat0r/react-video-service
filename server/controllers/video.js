@@ -12,7 +12,7 @@ const { insertAuthorNames, handleLikeDislike,
     updateVideoLikes, updateVideoDislikes, sortByUploadDate,
     videoSort } = require('../shared/utility');
 
-exports.getVideoThumbnail = async (req, res, next) => {
+/*exports.getVideoThumbnail = async (req, res, next) => {
     //console.log(req.query.id + " thumbnail id");
     const thumbnails = methods.getGridBucket('thumbnails'); 
     thumbnails
@@ -40,7 +40,7 @@ exports.getVideoThumbnail = async (req, res, next) => {
             }
             next(err);
         });
-};
+};*/
 
 exports.getVideosInfoByUserId = async (req, res, next) => {
     const info = [];

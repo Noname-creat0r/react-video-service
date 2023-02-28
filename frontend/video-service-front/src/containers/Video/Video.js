@@ -190,6 +190,7 @@ class Video extends Component {
         if (this.props.videosInfo.size === 0) {
             return <LoadingSpinner />
         }
+
         if (!this.props.isAuthenticated && unauthViews <= 0){
             return <LoadingSpinner />
             //show auth form
@@ -213,6 +214,7 @@ class Video extends Component {
                     title={videoInfo.title}
                     views={videoInfo.views}
                     author={videoInfo.authorName}
+                    avatarId={videoInfo.authorAvatar}
                     description={videoInfo.description}
                     likes={videoInfo.likes}
                     dislikes={videoInfo.dislikes}

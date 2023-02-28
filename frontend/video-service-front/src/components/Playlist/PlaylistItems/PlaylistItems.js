@@ -24,7 +24,7 @@ const PlaylistItems = (props) => {
                 }
                 <Image 
                     className='PlaylistItemImage my-2 mx-2'
-                    src={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
+                    src={process.env.REACT_APP_BASE_SERVER_URL + '/image/thumbnail?id=' + video.thumbnail}
                     height='100px'
                     width='140px'/>
                 <span className='PlaylistItemTitle'> {video.title} </span>

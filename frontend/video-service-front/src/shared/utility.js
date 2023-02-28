@@ -15,7 +15,8 @@ export const mapVideoInfoToCards = (info, handlers, VideoCard) => {
             key={id}
             title={video.title}
             authorName={video.authorName}
-            thumbnail={'http://localhost:8080/video/thumbnail?id=' + video.thumbnail}
+            authorAvatar={video.authorAvatar}
+            thumbnail={process.env.REACT_APP_BASE_SERVER_URL + '/image/thumbnail?id=' + video.thumbnail}
             clicked={event => handlers.click(event, id)}
             addToPlaylist={event => handlers.playlist(event, id)}
         />
@@ -41,7 +42,7 @@ export const mapPlaylistsToCards = (playlistInfo, handlers, PlaylistCard) => {
       playlistArr.push( 
         <PlaylistCard
           key={id}
-          thumbnail={'http://localhost:8080/video/thumbnail?id=' + playlist.thumbnail}
+          thumbnail={process.env.REACT_APP_BASE_SERVER_URL + '/image/thumbnail?id=' + playlist.thumbnail}
           clicked={event => handlers.click(event, id)}
           delete={event => handlers.delete(event, id)}
           title={playlist.title} 

@@ -19,7 +19,8 @@ exports.insertAuthorNames = async (videoInfoArr) => {
             _id: mongoose.Types.ObjectId(videoInfo.author)
         });
         infoArrWithAuthors.push( this.updateObject(videoInfo, {
-            authorName: author.name
+            authorName: author.name,
+            authorAvatar: author.avatar,
         }));
     };
     return infoArrWithAuthors;

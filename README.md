@@ -20,7 +20,7 @@ I will update this project during my futher learning process.
   - [x] Unlimited number of videos to view.
   - [x] Commenting videos.
   - [x] Liking videos (such videos will be saved in "Liked" category)
-  - [ ] Creating/deleting/editig playlists. 
+  - [x] Creating/deleting/editig playlists. 
   
 ## Administration:
   - [ ] Adding/deliting/editing videos.

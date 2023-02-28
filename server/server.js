@@ -17,7 +17,9 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const homeRoutes = require('./routes/home');
 const videoRoutes = require('./routes/video');
+const categoryRouter = require('./routes/category');
 const playlistRouter = require('./routes/playlist');
+const imageRouter = require('./routes/image');
 
 //app.use(cors(corsOptions));
 app.use(bodyParser.json());
@@ -32,9 +34,12 @@ app.use((req, res, next) => {
 
 app.use('/auth', authRoutes); 
 app.use('/user', userRoutes);
+app.use('/image', imageRouter);
 app.use('/home', homeRoutes);
 app.use('/video', videoRoutes);
 app.use('/playlist', playlistRouter);
+app.use('/category', categoryRouter);
+
 
 // Error handling middleware
 app.use((error, req, res, next) => {

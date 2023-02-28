@@ -75,10 +75,10 @@ router.get(
     videoController.getHomeVideoInfo
 );
 
-router.get(
+/*router.get(
     '/thumbnail:id?',
     videoController.getVideoThumbnail
-);
+);*/
 
 router.get(
     ':id?',

@@ -95,9 +95,7 @@ class Layout extends Component {
     };
 
     categoryChangeHandler = (event) => {
-        //console.log(event.target.value);
         this.setState({ currentVideoCategory: event.target.value});
-        //console.log(this.state.currentVideoCategory);
     };
 
     clearFiltersHandler = () => {
@@ -123,7 +121,6 @@ class Layout extends Component {
             }
 
             const currentCategory = this.state.currentVideoCategory;
-            //console.log(currentCategory);
             if (currentCategory)
                 checkedOptions.push({
                     category: 'Category',
@@ -136,13 +133,6 @@ class Layout extends Component {
             });
         }
     };
-
-    componentDidMount() {
-        /*this.props.fetchUserData( 
-            localStorage.getItem('userId'),
-            localStorage.getItem('token'));
-        this.props.fetchCategoreis();*/
-    }
 
     notificationToastClickHandler = (event, key) => {
         this.props.closeNotification(key);
@@ -163,6 +153,7 @@ class Layout extends Component {
                 <Toolbar 
                     isAuthenticated={this.props.isAuthenticated}
                     userName={this.props.userData.name}
+                    avatarId={this.props.userData.avatar}
                     searchHandler={this.searchHandler}
                     filterOptionsClicked={this.filterOptionsToggleHandler}
                     drawerToggleClicked={this.sideDrawerToggleHandler} 

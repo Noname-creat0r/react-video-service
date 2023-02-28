@@ -40,7 +40,7 @@ exports.signup = async (req, res, next) => {
             email: email,
             password: hashedPassword,
             name: name,
-            avatarId: avatarId,
+            avatar: avatarId,
         }
 
         const user = await User.create({...userData});
@@ -48,7 +48,7 @@ exports.signup = async (req, res, next) => {
 
         res.status(201).json({
             message: 'New user has been signed up successfully.',
-            userId: result._id
+            userId: user._id
         });
 
      } catch(error) {

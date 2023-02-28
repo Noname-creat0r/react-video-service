@@ -9,7 +9,7 @@ const userBadge = (props) => (
     //justify-content-lg-end
     <div className='d-flex'> 
         <UserIcon 
-            icon={props.icon}/>
+            avatarId={props.avatarId}/>
         <UserName
             name={props.name}/>
     </div>

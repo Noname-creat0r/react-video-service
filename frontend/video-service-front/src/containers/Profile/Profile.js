@@ -22,6 +22,7 @@ import { mapVideoInfoToCards,
 const mapStateToProps = state => {
     return {
         nickname: state.profile.data.name,
+        avatarId: state.profile.data.avatar,
         fetchingVideoData: state.profile.fetchingInfo,
         fetchingPlaylistData: state.playlist.fetching,
         videosInfo: state.video.videosInfo,
@@ -97,6 +98,9 @@ class Profile extends Component {
             return <LoadingSpinner />
         }   
 
+        const avatar = this.props.avatarId ? 
+            process.env.REACT_APP_BASE_SERVER_URL + '/image/avatar?id=' + this.props.avatarId : UserIcon;
+
         const videoData = new Map();
         this.props.videosInfo.forEach(video => {
             if (video.author === localStorage.getItem('userId')) 
@@ -127,13 +131,14 @@ class Profile extends Component {
         return (
             <Container className="my-2">
                 <Row> 
-                    <Column className="col-3">
+                    <Column className="col-3 my-2">
                         <Image 
-                            src={UserIcon}
+                            className='ProfileAvatar'
+                            src={avatar}
                             width={128}
                             height={128}
                             alt="UserIcon"
-                            rounded/>
+                            />
                     </Column>
                     <Column className="">
                         <span className="ProfileName">{ this.props.nickname }</span>
