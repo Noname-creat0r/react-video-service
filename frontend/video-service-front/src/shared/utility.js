@@ -51,21 +51,37 @@ export const mapPlaylistsToCards = (playlistInfo, handlers, PlaylistCard) => {
  return playlistArr;
 };
 
-export const mapDataToTable = (data, Table) => {
+export const mapDataToTable = (data, Table, handlers) => {
   //console.log(data);
-  const tableHeadData = Object
-    .keys(data[0])
-    .map(key => <th> {key} </th> );
+  const handlerTitles = handlers.map(handler => <th> {handler.title} </th>); 
 
-  const tableBodyData = data.map(element =>
-    <tr>
-      { 
-        Object
-          .keys(element)
-          .map(key => <th> {element[key]} </th> )
-      }
-    </tr>
-  );
+  const tableHeadData = [ 
+    ...handlerTitles, 
+    Object
+      .keys(data[0])
+      .map(key => <th> {key} </th> )
+  ];
+
+  const tableBodyData = data.map(element => {
+    const handlersIcons = handlers.map(handler => 
+      <th> 
+        <img 
+          width='30px'
+          height='30px'
+          src={handler.icon}
+          onClick={() => handler.function(element)}/>
+      </th>
+    );
+
+    const elementData = Object
+      .keys(element)
+      .map(key => <th> {element[key]} </th> );
+      
+    return ( 
+      <tr> { [...handlersIcons, ...elementData]} </tr>
+    );
+
+  });
 
   //console.log(tableHeadData);
   //console.log(tableBodyData);

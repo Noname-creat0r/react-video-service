@@ -100,6 +100,9 @@ export const auth = (userData, mode) => {
                         localStorage.getItem('userId'),
                         localStorage.getItem('token')));
 
+                    dispatch(actions.playlistFetchData(
+                        '/', { userId: localStorage.getItem('userId') }));
+
                     dispatch(actions.notificationSend(
                         'Signed in successfully. Welcome!',
                         'success'));
