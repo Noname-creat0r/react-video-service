@@ -30,6 +30,7 @@ const VideoInfo = (props) => {
                 className='userInteractionSection_playlistControl mx-1' 
                 height='45px'
                 width='45px'
+                onClick={() => props.playlistSetVideo('previous')}
                 src={PreviousIcon}/>
             <NavLink 
                 className='text-info text-decoration-none' 
@@ -48,7 +49,7 @@ const VideoInfo = (props) => {
                 className='userInteractionSection_playlistControl mx-1' 
                 height='45px'
                 width='45px'
-                onClick={props}
+                onClick={() => props.playlistSetVideo('next')}
                 src={NextIcon}/>
         </div>);
     const items = props.interactionItems;

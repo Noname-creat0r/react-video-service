@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import { updateObject } from '../../shared/utility';
 import * as actions from '../../store/actions/index';
@@ -51,6 +50,8 @@ function mapDispatchToProps(dispatch) {
                 userId: localStorage.getItem('userId'),
                 token: localStorage.getItem('token'),
             }, bookmarkData)),
+        notificationSend: (message, variant) => dispatch(actions.notificationSend(message, variant)),
+        videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
     };
 }
 
@@ -83,17 +84,39 @@ class Video extends Component {
     };
 
     videoPlaylistSetVideo = async (type) => {
-        /*if (type === 'next') {
-            
-        } else {
+        const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
+        const videos = playlist.videos;
+        if (!playlist || !videos ) return;
 
-        }*/
-        /*await this.props.profilePutBookmark({
-            videoId: videoId,
-            playlistId: playlistId,
-        });
-        this.props.playlistSetCurrentVideo(videoId);*/
+        const curVidPos = videos.findIndex(video => video._id === this.props.currentVideoId);
+        let newCurVidId = null;
+
+        if (type === 'next') {
+            const isEnd = curVidPos + 1  === videos.length; 
+            isEnd ? 
+                this.props.notificationSend('This is the last video', 'warning') :
+                newCurVidId = videos[curVidPos + 1]._id;
+                console.log('IsEnd: ' + isEnd);
+        } else if (type === 'previous') {
+            const isStart = curVidPos === 0;
+            isStart ? 
+                this.props.notificationSend('This is the first video', 'warning') :
+                newCurVidId = videos[curVidPos - 1]._id;
+                console.log('IsStart: ' + isStart);
+        }
+
+        if (newCurVidId){
+            await this.props.profilePutBookmark({
+                videoId: newCurVidId,
+                playlistId: localStorage.getItem('playlistId'),
+            });
+
+            this.props.playlistSetCurrentVideo(newCurVidId);
+            localStorage.setItem('videoId', newCurVidId);
+            //this.props.videoStreamStart(newCurVidId);
+        }
     };
+
 
    typeCommentHandler = (event) => {
         const updatedComment = updateObject(this.state.commentary, {
@@ -180,6 +203,7 @@ class Video extends Component {
             <Container >
                 <VideoPlayer 
                     videoId={videoInfo._id}
+                    //currentVideoId={this.props.currentVideoId}
                     playing={this.state.playing}
                     viewed={this.state.viewed}
                     addView={this.addViewHandler}
@@ -196,6 +220,7 @@ class Video extends Component {
                     comments={this.props.comments}
                     isPlaylist={this.props.isPlaylist}
                     addToPlaylist={this.videoAddToPlaylistClickHandler}
+                    playlistSetVideo={this.videoPlaylistSetVideo}
                     showCurrentPlaylist={this.showCurrentPlaylistModalToggle}
                     rateVideoHandler={this.rateVideoHandler}
                     typeCommentHandler={this.typeCommentHandler}
