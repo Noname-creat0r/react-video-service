@@ -51,7 +51,7 @@ class Playlist extends Component {
     
     state = {
         showEditPlaylistForm: false,
-        oldPlaylist: '',
+        oldPlaylistId: '',
     };
 
     showEditPlaylistToggleHandler = () => {
@@ -84,7 +84,7 @@ class Playlist extends Component {
             videoId: videoId,
             playlistId: playlistId,
         });
-        this.props.playlistSetCurrentVideo(videoId)
+        this.props.playlistSetCurrentVideo(videoId);
     };
 
     playlistEdit = () => {
@@ -107,15 +107,21 @@ class Playlist extends Component {
     render() {
         if (this.props.isFetching || !this.props.playlists || this.props.playlists.size === 0)
             return <LoadingSpinner />;
+
         const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
-
         const bookmark = this.props.userData.playlistBookmarks
-                .find(bookmark => bookmark.playlist === localStorage.getItem('playlistId'));
+            .find(bookmark => bookmark.playlist === localStorage.getItem('playlistId'));
 
-        if (!this.props.currentVideoId) {
+        if (!this.state.oldPlaylistId) {
+            this.setState({ oldPlaylistId: localStorage.getItem('playlistId') });
             if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
         }
-        
+
+        if (this.state.oldPlaylistId !== localStorage.getItem('playlistId')){
+            this.setState({ oldPlaylistId: localStorage.getItem('playlistId')});
+            if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
+        }
+
         return (
             <Container className='my-3 w-50'>
                 <Container className='d-flex flex-direction-column'>
@@ -128,6 +134,7 @@ class Playlist extends Component {
                     <strong className='PlaylistTitle mx-3'>{playlist.title}</strong>
                 </Container>
                 <PlaylistControls
+                    videosLength={playlist.videos.length}
                     playlistOn={this.playlistOn}
                     playlistOff={this.playlistOff}
                     playlistEdit={this.playlistEdit} />

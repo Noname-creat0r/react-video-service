@@ -15,7 +15,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.ADMIN_FETCH_PROFILES_SUCCESS: 
             return updateObject(state, { 
                 pendingRequests: state.pendingRequests - 1,
-                users: action. users });
+                users: action.users });
         case actionTypes.ADMIN_FETCH_PROFILES_FAILED: 
             return updateObject(state, { 
                 pendingRequests: state.pendingRequests - 1,

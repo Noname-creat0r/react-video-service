@@ -9,19 +9,19 @@ import './PlaylistControls.css';
 const PlaylistControls = (props) => {
     return (
         <Container className='d-flex justify-content-center my-3'>
-            <NavLink 
-                className='text-info text-decoration-none' 
-                to="/video" 
+            <Button 
+                size='lg'
+                className='mx-2 my-2'
+                variant='outline-info'
+                disabled={props.videosLength === 0}
                 onClick={props.playlistOn}>
-                <Button 
-                    size='lg'
-                    className='mx-2 my-2'
-                    variant='outline-info'
-                    disabled={props.currentVideoId}
+                <NavLink 
+                    className='text-info text-decoration-none' 
+                    to="/video" 
                     onClick={props.playlistOn}>
-                        Play
-                </Button>
-            </NavLink>
+                    Play
+                </NavLink>
+            </Button>
             <Button 
                 size='lg'
                 className='mx-2 my-2'

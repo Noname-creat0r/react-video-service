@@ -36,6 +36,13 @@ class Admin extends Component {
         if (this.props.pending > 0)
             return <LoadingSpinner/>
         
+        const mappedVideos = [];
+        if (this.props.videos.size > 0){
+            this.props.videos.forEach(video => 
+                mappedVideos.push(video)
+            );
+        }
+        //console.log(this.props.videos);
         return (
             <Container className='my-5'>
                 <Tabs
@@ -48,8 +55,8 @@ class Admin extends Component {
                             <h3>There are no users...</h3> }
                     </Tab>
                     <Tab eventKey='videos' title='videos'>
-                        { this.props.videos.length > 0 ? 
-                                mapDataToTable(this.props.videos, Table) :
+                        { mappedVideos.length > 0 ? 
+                                mapDataToTable(mappedVideos, Table) :
                                 <h3>There are no videos...</h3> }
                     </Tab>
                     <Tab eventKey='categories' title='categories'>

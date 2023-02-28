@@ -40,7 +40,9 @@ const PlaylistItems = (props) => {
 
     return (
         <Container>
-            {mappedVideos}
+            {mappedVideos.length > 0 ? 
+                mappedVideos : 
+                <h3 className='mx-4'>There are no videos yet...</h3>}
         </Container>
     );
 };

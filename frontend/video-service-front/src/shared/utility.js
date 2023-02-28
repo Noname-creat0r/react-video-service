@@ -52,6 +52,7 @@ export const mapPlaylistsToCards = (playlistInfo, handlers, PlaylistCard) => {
 };
 
 export const mapDataToTable = (data, Table) => {
+  //console.log(data);
   const tableHeadData = Object
     .keys(data[0])
     .map(key => <th> {key} </th> );

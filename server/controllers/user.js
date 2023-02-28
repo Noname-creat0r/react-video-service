@@ -8,9 +8,9 @@ const { insertAuthorNames } = require('../shared/utility');
 exports.fetchData = async (req, res, next) => {
     try {
         const userId = req.query.userId;
-        console.log(userId);
+        //console.log(userId);
         const user = await User.findOne({ _id: Types.ObjectId(userId)});
-        console.log(user);
+        //console.log(user);
 
         if (!user){
             const error = new Error('Could not find user.');
@@ -40,13 +40,17 @@ exports.fetchData = async (req, res, next) => {
 
 exports.fetchAll = async (req, res, next) => {
     try {
-        const users = await User.find({}).lean();
+        const users = await User
+            .find({})
+            .select('email name type')
+            .lean();
+        
         res.status(200).json({
             users: users,
         });
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         next(error);    
     }
 };
