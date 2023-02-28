@@ -29,18 +29,15 @@ function mapDispatchToProps(dispatch) {
         playlistOn: () => dispatch(actions.playlistOn()),
         playlistOff: () => dispatch(actions.playlistOff()),
         playlistSetCurrentVideo: (videoId) => dispatch(actions.playlistSetCurrentVideo(videoId)),
-        playlistEdit: (playlistId, actionType, videoId) =>
-             dispatch(actions.playlistEdit(
-                localStorage.getItem('token'),
-                playlistId,
-                actionType,
-                videoId)
-            ),
-        profilePutBookmark: (bookmarkData) => 
-            dispatch(actions.profilePutBookmark({
-                userId: localStorage.getItem('userId'),
-                token: localStorage.getItem('token'),
-            }, bookmarkData)),
+        playlistEdit: (actionType, playlistInfo) => dispatch(actions.playlistEdit(
+            localStorage.getItem('token'),
+            actionType,
+            playlistInfo)
+        ),
+        profilePutBookmark: (bookmarkData) => dispatch(actions.profilePutBookmark({
+            userId: localStorage.getItem('userId'),
+            token: localStorage.getItem('token'),
+        }, bookmarkData)),
         profileFetchData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
         notificationSend: (message, variant) => dispatch(actions.notificationSend(message, variant)),
@@ -98,14 +95,16 @@ class Playlist extends Component {
 
     playlistRemoveVideo = (id) => {
         this.props.playlistEdit(
-            localStorage.getItem('playlistId'),
             modalModes.ADDING,
-            id
+            {
+                playlistId: localStorage.getItem('playlistId'),
+                videoId: id,
+            }
         )
     };
 
     render() {
-        if (this.props.isFetching || !this.props.playlists || this.props.playlists.size === 0)
+        if (this.props.isFetching || !this.props.playlists || this.props.playlists.size === 0 )
             return <LoadingSpinner />;
 
         const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));

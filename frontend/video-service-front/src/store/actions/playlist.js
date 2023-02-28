@@ -68,16 +68,15 @@ export const playlistFetchData = (endpoint, options) => {
     }
 };
 
-export const playlistEdit = (token, playlistId, actionType, videoId) => {
+export const playlistEdit = (token, actionType, playlistInfo) => {
     return dispatch => {
         dispatch({ type: actionTypes.PLAYLIST_EDIT_START });
         return axios
             .put(
                 '/playlist',
                 { 
-                    playlistId: playlistId,
+                    ...playlistInfo,
                     actionType: actionType,
-                    videoId: videoId 
                 },
                 { headers: {
                     'Authorization': token,
@@ -90,6 +89,10 @@ export const playlistEdit = (token, playlistId, actionType, videoId) => {
                     type: actionTypes.PLAYLIST_EDIT_SUCCESS,
                     playlist: response.data.playlist,
                 });
+                if (actionType === modes.EDITITNG)
+                    dispatch(actions.notificationSend(
+                        'You have edited a playlist info',
+                        'info'));
             })
             .catch(error => {
                 dispatch({

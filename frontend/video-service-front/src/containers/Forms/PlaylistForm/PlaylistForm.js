@@ -24,13 +24,11 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         upload: (data) => dispatch(actions.playlistUpload(data)),
-        edit: (playlistId, actionType, videoId) =>
-             dispatch(actions.playlistEdit(
-                localStorage.getItem('token'),
-                playlistId,
-                actionType,
-                videoId)
-            ),
+        edit: (actionType, playlistInfo) => dispatch(actions.playlistEdit(
+            localStorage.getItem('token'),
+            actionType,
+            playlistInfo)
+        ),
     };
 }
 
@@ -49,10 +47,10 @@ class PlaylistForm extends Component {
         };
         if (this.props.playlist)
             initialValues = {   
-                title: this.props.playlist.title,
-                description: this.props.playlist.description,
+                title: this.props.playlist['title'],
+                description: this.props.playlist['description'],
                 thumbnail: null, 
-            };
+        };
         
         const content = 
             <Formik
@@ -75,13 +73,14 @@ class PlaylistForm extends Component {
                     const playlistData = {
                         token: localStorage.getItem('token'),
                         userId: localStorage.getItem('userId'),
+                        playlistId: localStorage.getItem('playlistId'),
                         title: values.title,
                         description: values.description,
                         imageType: 'thumbnail', 
                         thumbnail: this.state.thumbnail,
                     };
                     this.props.playlist ? 
-                        this.props.edit(playlistData) :
+                        this.props.edit(modalModes.EDITITNG, playlistData) :
                         this.props.upload(playlistData);
                         
                 }}>

@@ -30,13 +30,11 @@ function mapDispatchToProps(dispatch) {
         fetchPlaylistsData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
         videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
         notificationSend: (message, type) => dispatch(actions.notificationSend(message, type)),
-        playlistEdit: (playlistId, actionType, videoId) =>
-             dispatch(actions.playlistEdit(
-                localStorage.getItem('token'),
-                playlistId,
-                actionType,
-                videoId)
-            ),
+        playlistEdit: (actionType, playlistInfo) => dispatch(actions.playlistEdit(
+            localStorage.getItem('token'),
+            actionType,
+            playlistInfo)
+        ),
     };
 }
 
@@ -103,9 +101,12 @@ class Home extends Component {
                         action
                         onClick={() => 
                             this.props.playlistEdit(
-                            playlist._id,
-                            modalModes.ADDING,
-                            localStorage.getItem('videoId'))}>
+                                modalModes.ADDING,
+                                {   
+                                    playlistId: playlist._id,
+                                    videoId: localStorage.getItem('videoId'),
+                                }
+                            )}>
                         {playlist.title} 
                     </ListGroup.Item>
                 )

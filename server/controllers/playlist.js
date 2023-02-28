@@ -115,11 +115,20 @@ exports.putPlaylist = async (req, res, next) => {
             error.statusCode = 400;
             throw error;
         }
-        
+
+        //console.log(req.files);
+        const haveFiles = Array.isArray(req.files);
+
         let playlist = await Playlist.findOne({
             _id: Types.ObjectId(req.body.playlistId)
         });
 
+        await playlist.updateOne({
+            title: req.body.title || playlist.title,
+            description: req.body.description || playlist.description,
+            thumbnail: haveFiles && req.files.length > 0 ? req.files[0].id : playlist.thumbnail
+        });
+        
         if (req.body.videoId){
             const id = playlist.videos.findIndex((video) => 
                 video._id.toString() ===  req.body.videoId);
@@ -130,6 +139,7 @@ exports.putPlaylist = async (req, res, next) => {
                 playlist.videos.splice(id, 1);
         }
 
+        
         await playlist.save();
         playlist = await insertVideoInfoInPlaylist(playlist.toObject());
 

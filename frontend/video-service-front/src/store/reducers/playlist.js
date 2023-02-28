@@ -9,6 +9,7 @@ const initialState = {
     pendingRequests: 0,
     uploading: false,
     playing: false,
+    editing: false,
 };
 
 const playlistUploadStart = (state) => {
@@ -61,14 +62,18 @@ const playlistFetchVideoInfoFailed = (state) => {
     });
 }
 
+const playlistEditStart = (state, action) => {
+    return updateObject(state, {editing: true});
+}
+
 const playlistEditSuccess = (state, action) => {
     const updatedPlaylists = new Map([...state.playlists]);
     updatedPlaylists.set(action.playlist._id, action.playlist);
-    return updateObject( state, { playlists: updatedPlaylists });
+    return updateObject( state, { playlists: updatedPlaylists, editing: false });
 };
 
 const playlistEditFailed = (state) => {
-    return updateObject(state, {});
+    return updateObject(state, {editing: false});
 };
 
 const playlistDeleteSuccess = (state, action) => {
@@ -104,7 +109,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.PLAYLIST_FETCH_VIDEO_INFO_START: return playlistFetchVideoInfoStart(state);
         case actionTypes.PLAYLIST_FETCH_VIDEO_INFO_SUCCESS: return playlistFetchVideoInfoSuccess(state, action);
         case actionTypes.PLAYLIST_FETCH_VIDEO_INFO_FAILED: return playlistFetchVideoInfoFailed(state);
-        case actionTypes.PLAYLIST_EDIT_START: return state;
+        case actionTypes.PLAYLIST_EDIT_START: return playlistEditStart(state);
         case actionTypes.PLAYLIST_EDIT_SUCCESS: return playlistEditSuccess(state, action);
         case actionTypes.PLAYLIST_EDIT_FAILED: return playlistEditFailed(state);
         case actionTypes.PLAYLIST_DELETE_START: return state;
