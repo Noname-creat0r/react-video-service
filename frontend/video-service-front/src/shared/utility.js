@@ -1,4 +1,3 @@
-import ListGroup from 'react-bootstrap/ListGroup';
 
 export const updateObject = (oldObject, updatedProperties) => {
     return {
@@ -53,7 +52,7 @@ export const mapPlaylistsToCards = (playlistInfo, handlers, PlaylistCard) => {
 };
 
 export const mapDataToTable = (data, Table, handlers) => {
-  //console.log(data);
+  const nonDisplay = ['video', 'author'];
   const handlerTitles = handlers.map(handler => <th> {handler.title} </th>); 
 
   const tableHeadData = [ 
@@ -70,13 +69,23 @@ export const mapDataToTable = (data, Table, handlers) => {
           width='30px'
           height='30px'
           src={handler.icon}
-          onClick={() => handler.function(element)}/>
+          onClick={() => { console.log(element); handler.function(element);}}/>
       </th>
     );
 
     const elementData = Object
       .keys(element)
-      .map(key => <th> {element[key]} </th> );
+      .map(key => 
+        <th>
+          { 
+            ['thumbnail', 'avatar'].includes(key) && !nonDisplay.includes(key) ? 
+              <img 
+                src={process.env.REACT_APP_BASE_SERVER_URL + '/image/' + key + '?id=' + element[key] }
+                width='60px'
+                height='60px'/> : 
+              element[key] 
+          } 
+        </th> );
       
     return ( 
       <tr> { [...handlersIcons, ...elementData]} </tr>

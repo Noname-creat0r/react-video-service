@@ -111,7 +111,10 @@ const videoAddViewSuccess = (state, action) => {
 
 const videoEditSuccess = (state, action) => {
     const updVideos = new Map([...state.videosInfo]);
+    console.log(action.video);
+    console.log(updVideos.get(action.video._id));
     updVideos.set(action.video._id, action.video);
+
     return updateObject(state, { videosInfo: updVideos });
 };
 

@@ -184,12 +184,52 @@ export const videoAddView = (videoId) => {
 
 export const videoEdit = (payload) => {
     return dispatch => {
-       
+        return axios
+            .put(
+                '/video',
+                { ...payload },
+                { headers: {
+                    'Authorization': payload.token,
+                    'Content-Type': 'multipart/form-data'  }
+                }
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.VIDEO_EDIT_SUCCESS,
+                    video: response.data.video
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.VIDEO_EDIT_FAILED,
+                    error: error.response.data.error,
+                })
+            });
     };
 };
 
 export const videoDelete = (payload) => {
     return dispatch => {
-        
+        return axios
+            .delete(
+                '/video',
+                { 
+                    params: { videoId: payload.videoId } ,
+                    headers: {'Authorization': payload.token}
+                }
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.VIDEO_DELETE_SUCCESS,
+                    id: response.data.videoId,
+                })
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch({
+                    type: actionTypes.VIDEO_DELETE_FAILED,
+                    //error: error.response.data.error,
+                })
+            });
     };
 };

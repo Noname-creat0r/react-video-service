@@ -6,11 +6,13 @@ const Like = require('../models/Like');
 const Dislike = require('../models/Dislike');
 const Commentary = require('../models/Commentary');
 const Category = require('../models/Category');
+const Playlist = require('../models/Playlist');
 const methods = require('../db/methods');
 
 const { insertAuthorNames, handleLikeDislike, 
     updateVideoLikes, updateVideoDislikes, sortByUploadDate,
-    videoSort } = require('../shared/utility');
+    videoSort, 
+    throwError} = require('../shared/utility');
 
 exports.getVideosInfoByUserId = async (req, res, next) => {
     const info = [];
@@ -298,16 +300,83 @@ exports.postView = async (req, res, next) => {
 
 exports.putVideo = async (req, res, next) => {
     try {
+        if (!req.body.videoId)
+            throwError('Missing param in body', 400);
+        
+        const videoId = mongoose.Types.ObjectId(req.body.videoId);
+        const video = await Video.findOne({ _id: videoId });
+
+        if (!video) 
+            throwError('There is no such video to edit', 400);
+        
+        const haveFiles = Array.isArray(req.files);
+        let thumbnail, videoFile;
+        if (haveFiles){
+            thumbnail = req.files.find(file => file.fieldname === 'thumbnail');
+            videoFile = req.files.find(file => file.fieldname === 'video');
+        }
+
+        await video.updateOne({
+            title: req.body.title || video.title,
+            description: req.body.description || video.description,
+            thumbnail: thumbnail ? thumbnail.id : video.thumbnail,
+            video: videoFile ? videoFile.id : video.file
+        });
+
+        await video.save();
+        let updatedVideo = await Video.findOne({ _id: videoId }).lean();
+        updatedVideo = await insertAuthorNames([updatedVideo]);
+
+        console.log(updatedVideo);
+        res.status(200).json({
+            message: 'Updated a video',
+            video: updatedVideo,
+        })
 
     } catch (error) {
-    
+        console.log(error);
+        next(error);
     }
 };
 
 exports.deleteVideo = async (req, res, next) => {
     try {
-        
-    } catch(error) {
+        if (!req.query.videoId)
+            throwError('Missing param in query.', 400);
 
+        const videoId = mongoose.Types.ObjectId(req.query.videoId);
+        const video = await Video.findOne({ _id: videoId });
+        
+        if (!video)
+            throwError('There is no such video to delete', 400);
+        
+        await video.delete();
+
+        await Like.deleteMany({ video: videoId });
+        await Dislike.deleteMany({ video: videoId });
+
+        for await (const playlist of Playlist.find()){
+            const deletedVideoId = playlist.videos.findIndex(video => videoId === video._id);
+            if (deletedVideoId !== -1) {
+                playlist.videos.splice(deletedVideoId, 1);
+                await playlist.save();
+            }
+        }
+        
+        for await (const user of User.find()){
+            const deletedVideoId = user.playlistBookmarks.findIndex(bookmark => bookmark.video._id === videoId);
+            if (deletedVideoId !== -1)
+                user.playlistBookmarks.splice(deletedVideoId, 1);
+                await user.save();
+        }
+
+        res.status(200).json({
+            message: 'Deleted a video',
+            videoId: req.query.videoId,
+        });
+
+    } catch(error) {
+        console.log(error);
+        next(error);
     }
 };

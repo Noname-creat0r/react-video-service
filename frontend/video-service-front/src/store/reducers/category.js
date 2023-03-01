@@ -36,8 +36,6 @@ const categoryUploadSuccess = (state, action) => {
 };
 
 const categoryDeleteSuccess = (state, action) => {
-    //console.log(action.id);
-    //console.log(state.categories.filter(category => category._id !== action.id) );
     return updateObject(state, { 
         categories: state.categories.filter(category => category._id !== action.id) 
     });

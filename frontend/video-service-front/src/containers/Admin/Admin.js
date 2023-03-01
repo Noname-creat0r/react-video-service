@@ -55,13 +55,19 @@ class Admin extends Component {
 
     videoFormToggleHandler = () => {
         this.setState(( prevState ) => {
-            return { showVideoForm: !prevState.showVideoForm };
+            return { 
+                showVideoForm: !prevState.showVideoForm,
+                currentVideo: null,
+            };
         });
     };
 
     authFormToggleHandler = () => {
         this.setState(( prevState ) => {
-            return { showUserForm: !prevState.showUserForm };
+            return { 
+                showUserForm: !prevState.showUserForm,
+                currentUser: null,
+            };
         });
     };
 
@@ -75,16 +81,19 @@ class Admin extends Component {
     };
 
     deleteVideo = (video) => {
-
+        this.props.deleteVideo({
+            videoId: video.id,
+            token: localStorage.getItem('token')
+        });
     };
 
     editVideo = (video) => {
-
+        this.setState({
+            currentVideo: video,
+            showVideoForm: true,
+        })
     };
 
-    uploadVideo = () => {
-
-    };
 
     deleteUser = (user) => {
 
@@ -94,9 +103,6 @@ class Admin extends Component {
 
     };
 
-    uploadUser = () => {
-
-    };
 
     deleteCategory = (category) => {
         this.props.deleteCategory({
@@ -139,12 +145,14 @@ class Admin extends Component {
                 mappedVideos.push({
                     id: video._id,
                     title: video.title,
+                    description: video.description, 
                     author: video.author,
                     authorName: video.authorName,
                     views: video.views,
                     likes: video.likes,
                     dislikes: video.dislikes,
                     category: video.category,
+                    thumbnail: video.thumbnail,
                 })
             );
         }
@@ -224,9 +232,11 @@ class Admin extends Component {
                     </Tab>
                 </Tabs>
                 <Auth
+                    user={this.state.currentUser}
                     show={this.state.showUserForm}
                     hide={this.authFormToggleHandler}/>
                 <VideoForm 
+                    video={this.state.currentVideo}
                     show={this.state.showVideoForm}
                     hide={this.videoFormToggleHandler}/>
                 <CategoryForm 

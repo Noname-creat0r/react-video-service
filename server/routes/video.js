@@ -3,6 +3,7 @@ const storage = require('../db/storage');
 
 const videoController = require('../controllers/video');
 const isAuth = require('../middleware/is-auth');
+const isAdmin = require('../middleware/is-admin');
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ router.post(
 router.post(
     '/view',
     videoController.postView,
-)
+);
 
 router.post(
     '/comment',
@@ -66,6 +67,21 @@ router.get(
 router.get(
     ':id?',
     videoController.getVideo
+);
+
+router.delete(
+    '/',
+    isAuth,
+    isAdmin,
+    videoController.deleteVideo,
+);
+
+router.put(
+    '/',
+    isAuth,
+    isAdmin,
+    storage.upload.any(),
+    videoController.putVideo,
 );
 
 module.exports = router;

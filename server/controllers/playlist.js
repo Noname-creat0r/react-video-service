@@ -132,9 +132,13 @@ exports.putPlaylist = async (req, res, next) => {
                 playlist.videos.splice(id, 1);
         }
 
-        
         await playlist.save();
-        playlist = await insertVideoInfoInPlaylist(playlist.toObject());
+
+        const updatedPlaylist = await Playlist.findOne({
+            _id: Types.ObjectId(req.body.playlistId)
+        });
+
+        playlist = await insertVideoInfoInPlaylist(updatedPlaylist.toObject());
 
         res.status(200).json({
             message: 'Added a video to playlist.',

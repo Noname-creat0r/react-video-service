@@ -21,8 +21,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        videoUpload: (videoData, token) =>
-            dispatch(actions.videoUpload(videoData, token)),
+        upload: (videoData, token) => dispatch(actions.videoUpload(videoData, token)),
+        edit: (payload) => dispatch(actions.videoEdit(payload)),
+        
     };
 }
 
@@ -31,11 +32,10 @@ class UploadVideoForm extends Component {
         video: '',
         thumbnail: '',
         thumbnailURL: '',
-        category: 'Any',
+        category: this.props.video ? this.props.video.category : 'Any',
     }
 
     upload = (event) => {
-        event.preventDefault();
         this.props.onVideoUpload({
             title: this.state.controls.title.value,
             description: this.state.controls.description.value,
@@ -64,8 +64,8 @@ class UploadVideoForm extends Component {
             initialValues = {   
                 title: this.props.video.title,
                 description: this.props.video.description,
-                category: this.props.video.category, // fix
-                thumbnail: '', 
+                category: this.state.category, // fix
+                thumbnail:'', 
                 video: '',
             };
         
@@ -95,10 +95,18 @@ class UploadVideoForm extends Component {
                         video: this.state.video,
                     };
                     alert(JSON.stringify(videoData));
-                    this.props.videoUpload(videoData,{
-                        token: localStorage.getItem('token'),
-                        userId: localStorage.getItem('userId'),
-                    })
+                    if (this.props.video) {
+                        this.props.edit({
+                            ...videoData,
+                            token: localStorage.getItem('token'),
+                            videoId: this.props.video.id,
+                        });
+                    } else {
+                        this.props.upload(videoData,{
+                            token: localStorage.getItem('token'),
+                            userId: localStorage.getItem('userId'),
+                        })
+                    }
                 }}>
                 {({
                     values,
@@ -201,7 +209,7 @@ class UploadVideoForm extends Component {
                                     reader.onload = () => {
                                         this.setState({ 
                                             thumbnailURL: reader.result,
-                                            thumbnail: event.target.files[0]
+                                            thumbnail: file
                                         });
                                     }
                                     handleChange(event);
@@ -260,7 +268,7 @@ class UploadVideoForm extends Component {
                     variant="success"
                     type="submit"
                     form="videoForm">
-                    Upload
+                    {this.props.video ? 'Edit' : 'Upload'}
                 </Button>
             </Container>
         );
