@@ -18,7 +18,7 @@ const mapStateToProps = state => {
         isAuthenticated: state.auth.token !== null,
         isLoading: state.auth.loading || state.video.pendingRequests > 0,
         userData: state.profile.data,
-        categories: state.video.categories,
+        categories: state.category.categories,
         notifications: state.notification.notifications,
     };
 };
@@ -27,7 +27,6 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchUserData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
         fetchVideosInfo: (endpoint, options) => dispatch(actions.videoFetchInfo(endpoint, options)),
-        fetchCategoreis: () => dispatch(actions.videoFetchCategoreis()),
         closeNotification: (key) => dispatch(actions.notificationClose(key)),
         closeNotifications: () => dispatch(actions.notificationCloseAll()),
     };

@@ -77,8 +77,8 @@ exports.deleteCategory = async (req, res, next) => {
             throwError('Missing param in query', 400);
 
         const category = await Category.findOne({
-            _id: Types.ObjectId(req.query.categoryId)
-        })
+            _id: new Types.ObjectId(req.query.categoryId)
+        });
         
         if (!category)
             throwError('There is no such category to delete', 400);
@@ -93,16 +93,15 @@ exports.deleteCategory = async (req, res, next) => {
             category: defaultCategory.title || 'Any',
         });
 
-        await category.deleteOne();
-        await category.save();
-
+        await category.delete();
 
         res.status(200).json({
             message: 'Category has been deleted',
-            id: req.query.id,
+            id: req.query.categoryId,
         })
 
     } catch(error){
+        console.log(error);
         next(error);
     }
 };

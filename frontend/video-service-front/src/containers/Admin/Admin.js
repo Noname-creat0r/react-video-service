@@ -25,17 +25,16 @@ function mapStateToProps(state) {
         pending: state.admin.pendingRequests,
         users: state.admin.users,
         videos: state.video.videosInfo,
-        categories: state.video.categories,
+        categories: state.category.categories,
     };
 };
 
 function mapDispatchToProps(dispatch) {
     return {
         fetchProfiles: (token) => dispatch(actions.adminFetchProfiles(token)),
-        fetchCategoreis: () => dispatch(actions.videoFetchCategoreis()),
-        deleteCategory: (payload) => dispatch(actions.videoDeleteCategory(payload)),
+        fetchCategoreis: () => dispatch(actions.categoryFetch()),
+        deleteCategory: (payload) => dispatch(actions.categoryDelete(payload)),
         deleteVideo: (payload) => dispatch(actions.videoDelete(payload)), 
-        editVideo: (payload) => dispatch(actions.videoEdit(payload)),
     };
 };
 

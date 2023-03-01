@@ -17,8 +17,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        uploadCategory: (payload) => dispatch(actions.videoUploadCategory(payload)),
-        editCategory: (payload) => dispatch(actions.videoEditCategory(payload))
+        uploadCategory: (payload) => dispatch(actions.categoryUpload(payload)),
+        editCategory: (payload) => dispatch(actions.categoryEdit(payload))
     };
 };
 

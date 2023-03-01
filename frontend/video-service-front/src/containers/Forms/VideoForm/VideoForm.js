@@ -14,7 +14,7 @@ import Image from 'react-bootstrap/Image';
 const mapStateToProps = state => {
     return {
         uploading: state.video.uploading,
-        categories: state.video.categories,
+        categories: state.category.categories,
         fetching: state.video.fetching,
     };
 }
@@ -23,7 +23,6 @@ const mapDispatchToProps = dispatch => {
     return {
         videoUpload: (videoData, token) =>
             dispatch(actions.videoUpload(videoData, token)),
-        fetchCategoreis: () => dispatch(actions.videoFetchCategoreis()),
     };
 }
 
@@ -61,11 +60,11 @@ class UploadVideoForm extends Component {
             thumbnail: '',
             video: '',
         };
-        if (this.props.playlist)
+        if (this.props.video)
             initialValues = {   
-                title: this.props.playlist.title,
-                description: this.props.playlist.description,
-                category: this.props.playlist.category, // fix
+                title: this.props.video.title,
+                description: this.props.video.description,
+                category: this.props.video.category, // fix
                 thumbnail: '', 
                 video: '',
             };
@@ -114,7 +113,7 @@ class UploadVideoForm extends Component {
                             <Form.Control
                                 name="title"
                                 type="text"
-                                placeholder="playlist title"
+                                placeholder="video title"
                                 value={values.title}
                                 onChange={handleChange}
                                 isValid={touched.title && !errors.title}
@@ -224,13 +223,13 @@ class UploadVideoForm extends Component {
                                         invalid file type for thumbnail
                                 </Form.Control.Feedback>)}
                         </Form.Group>
-                        { (this.state.thumbnail || this.props.playlist ) && 
+                        { (this.state.thumbnail || this.props.video ) && 
                             (<Form.Group className="my-2">
                                 <Form.Label className='d-block my-1 mx-1'>Preview:</Form.Label>
                                 <Image 
                                     className="my-2 mx-2"
                                     src={this.state.thumbnailURL || 
-                                        'http://localhost:8080/video/thumbnail?id=' + this.props.playlist.thumbnail}
+                                        process.env.REACT_APP_BASE_SERVER_URL + '/image/thumbnail?id=' + this.props.video.thumbnail}
                                     width="256"
                                     height="240"
                                     rounded/>

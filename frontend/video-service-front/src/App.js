@@ -29,7 +29,7 @@ const mapDispatchToProps = dispatch => {
     tryAutoSignup: () => dispatch( actions.authCheckState() ),
     fetchUserData: (userId, token) => dispatch(actions.profileFetchData(userId, token)),
     fetchVideosInfo: (endpoint, options) => dispatch(actions.videoFetchInfo(endpoint, options)),
-    fetchCategoreis: () => dispatch(actions.videoFetchCategoreis()),
+    fetchCategoreis: () => dispatch(actions.categoryFetch()),
     fetchPlaylistsData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options))
   };
 };

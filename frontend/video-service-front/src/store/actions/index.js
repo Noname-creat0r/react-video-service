@@ -13,16 +13,12 @@ export {
     videoStreamStart,
     videoFetchInfo,
     videoFetchComments,
-    videoFetchCategoreis,
     videoUpload,
     videoUploadComment,
     videoRate,
     videoAddView,
-    videoDeleteCategory,
     videoDelete,
-    videoEditCategory,
     videoEdit,
-    videoUploadCategory,
 } from './video';
 export {
     playlistUpload,
@@ -33,6 +29,12 @@ export {
     playlistOff,
     playlistSetCurrentVideo,
 } from './playlist';
+export {
+    categoryFetch,
+    categoryUpload,
+    categoryEdit,
+    categoryDelete,
+} from './category';
 export {
     notificationSend,
     notificationClose,

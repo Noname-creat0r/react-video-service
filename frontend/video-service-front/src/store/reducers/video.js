@@ -109,48 +109,6 @@ const videoAddViewSuccess = (state, action) => {
     return updateObject(state, {});
 };
 
-const videoFetchCategoriesStart = (state, action) => {
-    return updateObject(state, {
-        fetching: true,
-        pendingRequests: state.pendingRequests + 1,
-    });
-};
-
-const videoFetchCategoriesFailed = (state, action) => {
-    return updateObject(state, {
-        fetching: true,
-        pendingRequests: state.pendingRequests - 1,
-    });
-};
-
-
-const videoFetchCategoriesSuccess = (state, action) => {
-    return updateObject(state, {
-        fetching: false,
-        //pendingRequests: state.pendingRequests - 1,
-        categories: action.categories,
-    });
-};
-
-const videoUploadCategorySuccess = (state, action) => {
-    return updateObject(state, {
-        categories: [...state.categories, action.category]
-    });
-};
-
-const videoDeleteCategorySuccess = (state, action) => {
-    return updateObject(state, { 
-        categories: state.categories.filter(category => category._id !== action.id) 
-    });
-};
-
-const videoEditCategorySuccess = (state, action) => {
-    const updCategories =  [...state.categories];
-    const categoryId = updCategories.findIndex(category => category._id === action.category._id);
-    updCategories[categoryId] = action.category;
-    return updateObject(state, { categories: updCategories });
-};
-
 const videoEditSuccess = (state, action) => {
     const updVideos = new Map([...state.videosInfo]);
     updVideos.set(action.video._id, action.video);
@@ -182,13 +140,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.VIDEO_RATE_SUCCESS: return videoRateSuccess(state, action);
         case actionTypes.VIDEO_RATE_FAILED: return videoRateFailed(state, action);
         case actionTypes.VIDEO_ADD_VIEW_SUCCESS: return videoAddViewSuccess(state, action);
-        case actionTypes.VIDEO_FETCH_CATEGOREIS_SUCCESS: return videoFetchCategoriesSuccess(state, action);
-        case actionTypes.VIDEO_DELETE_CATEGORY_SUCCESS: return videoDeleteCategorySuccess(state, action);
-        case actionTypes.VIDEO_DELETE_CATEGORY_FAILED: return state;
-        case actionTypes.VIDEO_EDIT_CATEGORY_SUCCESS: return videoEditCategorySuccess(state, action);
         case actionTypes.VIDEO_EDIT_SUCCESS: return videoEditSuccess(state, action);
-        case actionTypes.VIDEO_UPLOAD_CATEGORY_SUCCESS: return videoUploadCategorySuccess(state, action);
-        case actionTypes.VIDEO_UPLOAD_CATEGORY_FAILED: return state;
         case actionTypes.VIDEO_EDIT_FAILED: return state;
         case actionTypes.VIDEO_DELETE_SUCCESS: return videoDeleteSuccess(state, action);
         case actionTypes.VIDEO_DELETE_FAILED: return state;

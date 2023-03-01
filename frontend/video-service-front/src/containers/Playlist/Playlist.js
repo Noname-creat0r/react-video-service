@@ -48,7 +48,6 @@ class Playlist extends Component {
     
     state = {
         showEditPlaylistForm: false,
-        oldPlaylistId: '',
     };
 
     showEditPlaylistToggleHandler = () => {
@@ -113,22 +112,6 @@ class Playlist extends Component {
         const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
         const bookmark = this.props.userData.playlistBookmarks
             .find(bookmark => bookmark.playlist === localStorage.getItem('playlistId'));
-        //if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
-        /*if (!bookmark && playlist.size > 0) {
-            this.props.playlistSetCurrentVideo(playlist.keys().next().value);
-        }*/
-
-        /*if (!this.state.oldPlaylistId) {
-            this.setState({ oldPlaylistId: localStorage.getItem('playlistId') });
-            if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
-        }
-
-        if (this.state.oldPlaylistId !== localStorage.getItem('playlistId')){
-            this.setState({ oldPlaylistId: localStorage.getItem('playlistId')});
-            if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
-        }*/
-
-        
 
         return (
             <Container className='my-3 w-50'>

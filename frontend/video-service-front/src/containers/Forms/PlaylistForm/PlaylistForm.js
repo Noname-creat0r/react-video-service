@@ -166,7 +166,7 @@ class PlaylistForm extends Component {
                                 <Image 
                                     className="my-2 mx-2"
                                     src={this.state.thumbnailURL || 
-                                        'http://localhost:8080/video/thumbnail?id=' + this.props.playlist.thumbnail}
+                                        process.env.REACT_APP_BASE_SERVER_URL + '/image/thumbnail?id=' + this.props.playlist.thumbnail}
                                     width="256"
                                     height="240"
                                     rounded/>
