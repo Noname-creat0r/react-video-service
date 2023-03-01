@@ -17,6 +17,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        uploadCategory: (payload) => dispatch(actions.videoUploadCategory(payload)),
+        editCategory: (payload) => dispatch(actions.videoEditCategory(payload))
     };
 };
 
@@ -30,7 +32,7 @@ class CategoryForm extends Component {
         };
         if (this.props.category) {
             initialValues = {
-                title: this.props.title,
+                title: this.props.category.title,
             }
         } 
 
@@ -47,7 +49,17 @@ class CategoryForm extends Component {
                     })
                 }
                 onSubmit={(values) => {
-                    
+                    const categoryData = {
+                        title: values.title,
+                        token: localStorage.getItem('token')
+                    };
+
+                    if (this.props.category) 
+                        this.props.editCategory({ 
+                            categoryId: this.props.category.id, 
+                            ...categoryData});
+                    else 
+                        this.props.uploadCategory(categoryData);
                 }}>
                 {({
                     values,
@@ -85,7 +97,7 @@ class CategoryForm extends Component {
                 <Button 
                     className="mx-2 my-2 btn-md"
                     variant="secondary"
-                    onClick={this.props.hide}>
+                    onClick={ () => { this.props.hide(); }}>
                     Close
                 </Button>
                 <Button 

@@ -18,6 +18,11 @@ export {
     videoUploadComment,
     videoRate,
     videoAddView,
+    videoDeleteCategory,
+    videoDelete,
+    videoEditCategory,
+    videoEdit,
+    videoUploadCategory,
 } from './video';
 export {
     playlistUpload,

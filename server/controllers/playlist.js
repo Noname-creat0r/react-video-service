@@ -100,13 +100,6 @@ exports.postPlaylist = async (req, res, next) => {
     }
 };
 
-exports.addVideoToPlaylist = async (req, res, next) => {
-    try {
-        
-    } catch(error) {
-        next(error);
-    }
-};
 
 exports.putPlaylist = async (req, res, next) => {
     try {

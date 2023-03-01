@@ -93,6 +93,7 @@ export const playlistEdit = (token, actionType, playlistInfo) => {
                     dispatch(actions.notificationSend(
                         'You have edited a playlist info',
                         'info'));
+                
             })
             .catch(error => {
                 dispatch({

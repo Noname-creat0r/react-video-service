@@ -33,6 +33,9 @@ function mapDispatchToProps(dispatch) {
     return {
         fetchProfiles: (token) => dispatch(actions.adminFetchProfiles(token)),
         fetchCategoreis: () => dispatch(actions.videoFetchCategoreis()),
+        deleteCategory: (payload) => dispatch(actions.videoDeleteCategory(payload)),
+        deleteVideo: (payload) => dispatch(actions.videoDelete(payload)), 
+        editVideo: (payload) => dispatch(actions.videoEdit(payload)),
     };
 };
 
@@ -41,7 +44,10 @@ class Admin extends Component {
     state = {
         showVideoForm: false,
         showUserForm: false,
-        showCategoryForm: false
+        showCategoryForm: false,
+        currentCategory: null,
+        currentVideo: null,
+        currentUser: null,
     };
 
     componentDidMount() {
@@ -62,7 +68,10 @@ class Admin extends Component {
 
     categoryFormToggleHandler = () => {
         this.setState(( prevState ) => {
-            return { showCategoryForm: !prevState.showCategoryForm };
+            return { 
+                showCategoryForm: !prevState.showCategoryForm,
+                currentCategory: null,
+            };
         });
     };
 
@@ -74,7 +83,7 @@ class Admin extends Component {
 
     };
 
-    createVideo = () => {
+    uploadVideo = () => {
 
     };
 
@@ -86,20 +95,22 @@ class Admin extends Component {
 
     };
 
-    createUser = () => {
+    uploadUser = () => {
 
     };
 
     deleteCategory = (category) => {
-
+        this.props.deleteCategory({
+            categoryId: category.id,
+            token: localStorage.getItem('token')
+        });
     };
 
     editCategory = (category) => {
-    
-    };
-
-    createCategory = () => {
-
+        this.setState({ 
+            currentCategory: category,
+            showCategoryForm: true,
+        });
     };
 
     render() {
@@ -220,6 +231,7 @@ class Admin extends Component {
                     show={this.state.showVideoForm}
                     hide={this.videoFormToggleHandler}/>
                 <CategoryForm 
+                    category={this.state.currentCategory}
                     show={this.state.showCategoryForm}
                     hide={this.categoryFormToggleHandler}/>
             </Container>   

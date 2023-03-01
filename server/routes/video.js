@@ -1,5 +1,4 @@
 const express = require('express');
-const {body} = require('express-validator');
 const storage = require('../db/storage');
 
 const videoController = require('../controllers/video');
@@ -14,12 +13,6 @@ router.post(
         {name: 'thumbnail', maxCount: 1}]),
     videoController.postVideo
 );
-
-router.post(
-    '/category',
-    //isAuth, //isAdmin - future
-    videoController.postCategory,
-)
 
 router.post(
     '/view',
@@ -42,11 +35,6 @@ router.post(
     '/dislike',
     isAuth,
     videoController.dislikeVideo
-);
-
-router.get(
-    '/categories',
-    videoController.getCategories,
 );
 
 router.get(
@@ -74,11 +62,6 @@ router.get(
     '/info/home',
     videoController.getHomeVideoInfo
 );
-
-/*router.get(
-    '/thumbnail:id?',
-    videoController.getVideoThumbnail
-);*/
 
 router.get(
     ':id?',

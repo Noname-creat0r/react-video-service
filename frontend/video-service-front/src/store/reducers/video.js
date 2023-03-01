@@ -127,9 +127,40 @@ const videoFetchCategoriesFailed = (state, action) => {
 const videoFetchCategoriesSuccess = (state, action) => {
     return updateObject(state, {
         fetching: false,
-        pendingRequests: state.pendingRequests - 1,
+        //pendingRequests: state.pendingRequests - 1,
         categories: action.categories,
     });
+};
+
+const videoUploadCategorySuccess = (state, action) => {
+    return updateObject(state, {
+        categories: [...state.categories, action.category]
+    });
+};
+
+const videoDeleteCategorySuccess = (state, action) => {
+    return updateObject(state, { 
+        categories: state.categories.filter(category => category._id !== action.id) 
+    });
+};
+
+const videoEditCategorySuccess = (state, action) => {
+    const updCategories =  [...state.categories];
+    const categoryId = updCategories.findIndex(category => category._id === action.category._id);
+    updCategories[categoryId] = action.category;
+    return updateObject(state, { categories: updCategories });
+};
+
+const videoEditSuccess = (state, action) => {
+    const updVideos = new Map([...state.videosInfo]);
+    updVideos.set(action.video._id, action.video);
+    return updateObject(state, { videosInfo: updVideos });
+};
+
+const videoDeleteSuccess = (state, action) => {
+    const updVideos = new Map([...state.videosInfo]);
+    updVideos.delete(action.id);
+    return updateObject(state, { videosInfo: updVideos });
 };
 
 const reducer = (state = initialState, action) => {
@@ -140,7 +171,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.VIDEO_FETCH_COMMENTS_START: return videoFetchCommentsStart(state, action);
         case actionTypes.VIDEO_FETCH_COMMENTS_FAILED: return videoFetchCommentsFailed(state, action);
         case actionTypes.VIDEO_FETCH_COMMENTS_SUCCESS: return videoFetchCommentsSuccess(state, action);
-        //case actionTypes.VIDEO_FETCH_CATEGOREIS_START: return 
         case actionTypes.VIDEO_STREAM_START: return videoStreamStart(state, action);
         case actionTypes.VIDEO_UPLOAD_START: return videoUploadStart(state);
         case actionTypes.VIDEO_UPLOAD_FAILED: return videoUploadFailed(state, action);
@@ -153,7 +183,15 @@ const reducer = (state = initialState, action) => {
         case actionTypes.VIDEO_RATE_FAILED: return videoRateFailed(state, action);
         case actionTypes.VIDEO_ADD_VIEW_SUCCESS: return videoAddViewSuccess(state, action);
         case actionTypes.VIDEO_FETCH_CATEGOREIS_SUCCESS: return videoFetchCategoriesSuccess(state, action);
-
+        case actionTypes.VIDEO_DELETE_CATEGORY_SUCCESS: return videoDeleteCategorySuccess(state, action);
+        case actionTypes.VIDEO_DELETE_CATEGORY_FAILED: return state;
+        case actionTypes.VIDEO_EDIT_CATEGORY_SUCCESS: return videoEditCategorySuccess(state, action);
+        case actionTypes.VIDEO_EDIT_SUCCESS: return videoEditSuccess(state, action);
+        case actionTypes.VIDEO_UPLOAD_CATEGORY_SUCCESS: return videoUploadCategorySuccess(state, action);
+        case actionTypes.VIDEO_UPLOAD_CATEGORY_FAILED: return state;
+        case actionTypes.VIDEO_EDIT_FAILED: return state;
+        case actionTypes.VIDEO_DELETE_SUCCESS: return videoDeleteSuccess(state, action);
+        case actionTypes.VIDEO_DELETE_FAILED: return state;
         default: return state;
     }
 };

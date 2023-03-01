@@ -24,7 +24,7 @@ I will update this project during my futher learning process.
   
 ## Administration:
   - [ ] Adding/deliting/editing videos.
-  - [ ] Adding/deliting/editing video categoires.
+  - [x] Adding/deliting/editing video categoires.
   - [ ] User managing (adding/deliting/editing users functionality should be emplented with role managing system with 3 roles: **admin**, **user**, **guest**)
 
 ## Current project state in screenshots

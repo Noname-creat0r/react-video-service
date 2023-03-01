@@ -182,12 +182,11 @@ export const videoAddView = (videoId) => {
     }
 };
 
-
 export const videoFetchCategoreis = () => {
     return dispatch => {
         dispatch({ type: actionTypes.VIDEO_FETCH_CATEGOREIS_START });
         return axios
-            .get('/video/categories')
+            .get('/category')
             .then(response => {
                 dispatch({
                     type: actionTypes.VIDEO_FETCH_CATEGOREIS_SUCCESS,
@@ -203,9 +202,87 @@ export const videoFetchCategoreis = () => {
     }
 };
 
+export const videoUploadCategory = (payload) => {
+    return dispatch => {
+        return axios
+            .post(
+                '/category',
+                {   
+                    categoryId: payload.categoryId ,
+                    title: payload.title,
+                }, { headers: { 'Authorization': payload.token, } }
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.VIDEO_UPLOAD_CATEGORY_SUCCESS,
+                    category: response.data.category,
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.VIDEO_UPLOAD_CATEGORY_FAILED,
+                });
+            });
+    };
+};
+
+export const videoEditCategory = (payload) => {
+    return dispatch => {
+        return axios
+            .put(
+                '/category',
+                {   
+                    categoryId: payload.categoryId ,
+                    title: payload.title,
+                }, { headers: { 'Authorization': payload.token, } }
+            )
+            .then(response => {
+                console.log(response.data.category);
+                dispatch({
+                    type: actionTypes.VIDEO_EDIT_CATEGORY_SUCCESS,
+                    category: response.data.category,
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.VIDEO_EDIT_CATEGORY_FAILED,
+                });
+            });
+    };
+};
+
+export const videoDeleteCategory = (payload) => {
+    return dispatch => {
+        return axios
+            .delete(
+                '/category',
+                { 
+                    params: { categoryId: payload.categoryId },
+                    headers: { 'Authorization': payload.token, } 
+                }
+            )
+            .then(response => {
+                dispatch({
+                    type: actionTypes.VIDEO_DELETE_CATEGORY_SUCCESS,
+                    id: payload.categoryId,
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.VIDEO_DELETE_CATEGORY_FAILED,
+                });
+            });
+    };
+};
 
 export const videoEdit = (payload) => {
     return dispatch => {
        
+    };
+};
+
+export const videoDelete = (payload) => {
+    return dispatch => {
+        
     };
 };

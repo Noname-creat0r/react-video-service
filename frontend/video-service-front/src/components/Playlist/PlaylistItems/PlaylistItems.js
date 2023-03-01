@@ -12,7 +12,7 @@ const PlaylistItems = (props) => {
     //console.log(props.videosInfo.videos);
     const mappedVideos = props.videosInfo.videos.map((video, id) => {
         const isCurrent = props.currentVideoId === video._id ;
-        const isBookmarked = props.bookmark.video === video._id; 
+        const isBookmarked = props.bookmarkVideo === video._id; 
         return (
         <Container className={isCurrent ? 'PlaylistItem current animate pop' : 'PlaylistItem'}>
             <div onClick={() => props.setCurrent(video._id, localStorage.getItem('playlistId'))}>
@@ -36,7 +36,6 @@ const PlaylistItems = (props) => {
         </Container>
         );
     });
-    
 
     return (
         <Container>

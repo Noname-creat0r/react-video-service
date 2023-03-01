@@ -132,3 +132,9 @@ exports.insertVideoInfoInPlaylist = async (playlistDoc) => {
     //console.log(updatedPlaylist);
     return updatedPlaylist;
 };
+
+exports.throwError = (message, code) => {
+    const error = new Error(message);
+    error.statusCode = code;
+    throw error;
+}

@@ -59,12 +59,15 @@ class Playlist extends Component {
 
     playlistOn = () => {
         if (this.props.playlists.size > 0){
-            const currentVideo = this.props.playlists
-                .get(localStorage.getItem('playlistId'))['videos']
-                .find( playlist => playlist._id === this.props.currentVideoId) || 0
-            localStorage.setItem('videoId', currentVideo._id)
+            const playlist = this.props.playlists
+                .get(localStorage.getItem('playlistId'));
+            const currentVideo = playlist['videos']
+                .find( playlist => playlist._id === this.props.currentVideoId);
+            const videoId = !currentVideo ? playlist.videos[0]._id : currentVideo._id;
+            localStorage.setItem('videoId', videoId);
             this.props.playlistOn();
-            this.props.videoStreamStart( currentVideo._id );
+            this.props.videoStreamStart( videoId );
+            this.playlistSetCurrentVideo(videoId, playlist._id);
         }
     };
     
@@ -110,8 +113,12 @@ class Playlist extends Component {
         const playlist = this.props.playlists.get(localStorage.getItem('playlistId'));
         const bookmark = this.props.userData.playlistBookmarks
             .find(bookmark => bookmark.playlist === localStorage.getItem('playlistId'));
+        //if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
+        /*if (!bookmark && playlist.size > 0) {
+            this.props.playlistSetCurrentVideo(playlist.keys().next().value);
+        }*/
 
-        if (!this.state.oldPlaylistId) {
+        /*if (!this.state.oldPlaylistId) {
             this.setState({ oldPlaylistId: localStorage.getItem('playlistId') });
             if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
         }
@@ -119,7 +126,9 @@ class Playlist extends Component {
         if (this.state.oldPlaylistId !== localStorage.getItem('playlistId')){
             this.setState({ oldPlaylistId: localStorage.getItem('playlistId')});
             if (bookmark) this.props.playlistSetCurrentVideo(bookmark.video);
-        }
+        }*/
+
+        
 
         return (
             <Container className='my-3 w-50'>
@@ -140,7 +149,7 @@ class Playlist extends Component {
                 <hr />
                 <PlaylistItems 
                     videosInfo={playlist}
-                    bookmark={bookmark}
+                    bookmarkVideo={bookmark ? bookmark.video : ''}
                     currentVideoId={this.props.currentVideoId}
                     setCurrent={this.playlistSetCurrentVideo}
                     removeItem={this.playlistRemoveVideo}/>

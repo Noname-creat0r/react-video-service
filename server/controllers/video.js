@@ -12,36 +12,6 @@ const { insertAuthorNames, handleLikeDislike,
     updateVideoLikes, updateVideoDislikes, sortByUploadDate,
     videoSort } = require('../shared/utility');
 
-/*exports.getVideoThumbnail = async (req, res, next) => {
-    //console.log(req.query.id + " thumbnail id");
-    const thumbnails = methods.getGridBucket('thumbnails'); 
-    thumbnails
-        .find({ _id: mongoose.Types.ObjectId(req.query.id) })
-        .forEach(thumbnail => {
-            res.setHeader('Content-Type', thumbnail.contentType);
-            res.setHeader('Content-Disposition', 'attachment');
-
-            const downloadStream = thumbnails.openDownloadStreamByName(thumbnail.filename);
-            downloadStream.on('data', data => {
-                return res.status(200).write(data);
-            });
-           
-            downloadStream.on('error', err => {
-                return res.status(404).json({ message: 'Cannot get the image.' });
-            })
-
-            downloadStream.on('end', () => {
-                return res.end();
-            });
-        })
-        .catch(err => {
-            if (!err.statusCode){
-                err.statusCode = 500;
-            }
-            next(err);
-        });
-};*/
-
 exports.getVideosInfoByUserId = async (req, res, next) => {
     const info = [];
     if (req.query.userId){
@@ -67,21 +37,18 @@ exports.getVideoInfoById = async (req, res, next) => {
             })
             .lean();
         video = await insertAuthorNames([video]);
-        //console.log(video);
     }
     res.status(200).json({ videos: video });
 }
 
 exports.getFilterVideoInfo = async (req, res, next) => {
     const videoName = req.query.videoName;
-    //console.log(req.query);
     let videos = await Video
         .find({ title: { $regex: videoName, $options: 'i'}  })
         .lean();
 
     const filters = req.query.filters;
     let filteredVideos = videos;
-    //console.log(filters);
     if (filters) {
         for (const filter of filters){
             switch (filter.category){
@@ -217,7 +184,6 @@ exports.getVideo = (req, res, next) => {
                         "Content-Type": file.contentType,
                     } 
                 
-                
                     res.writeHead(206, headers);
             
                     methods
@@ -330,37 +296,18 @@ exports.postView = async (req, res, next) => {
     }
 };
 
-exports.postCategory = async (req, res, next) => {
+exports.putVideo = async (req, res, next) => {
     try {
-        const title = req.body.title;
-        if (!req.body.title) {
-            const error = new Error('Missing title in req body!');
-            error.statusCode = 400;
-            throw error;
-        }
-        
-        const category = await Category.create({
-            title: title,
-        });
-        await category.save();
 
-        res.status(200).json({
-            message: 'Posted a category',
-            category: category.toObject(),
-        })
-        
-    } catch(err) {
-        //console.log(err);
-        next(err);
+    } catch (error) {
+    
     }
 };
 
-exports.getCategories = async (req, res, next) => {
+exports.deleteVideo = async (req, res, next) => {
     try {
-        const categories = await Category.find({}).lean();
-        res.status(200).json({ categories: categories});
-    } catch(err) {
-        //console.log(err);
-        next(err);
-    };
+        
+    } catch(error) {
+
+    }
 };
