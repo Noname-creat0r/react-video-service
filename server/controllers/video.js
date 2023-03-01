@@ -319,6 +319,7 @@ exports.putVideo = async (req, res, next) => {
         await video.updateOne({
             title: req.body.title || video.title,
             description: req.body.description || video.description,
+            category: req.body.category || video.category,
             thumbnail: thumbnail ? thumbnail.id : video.thumbnail,
             video: videoFile ? videoFile.id : video.file
         });

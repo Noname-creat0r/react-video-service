@@ -196,7 +196,7 @@ export const videoEdit = (payload) => {
             .then(response => {
                 dispatch({
                     type: actionTypes.VIDEO_EDIT_SUCCESS,
-                    video: response.data.video
+                    video: response.data.video[0]
                 })
             })
             .catch(error => {
