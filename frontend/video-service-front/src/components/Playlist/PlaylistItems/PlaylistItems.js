@@ -11,36 +11,36 @@ import '../../../animations/popup.css';
 const PlaylistItems = (props) => {
     //console.log(props.videosInfo.videos);
     const mappedVideos = props.videosInfo.videos.map((video, id) => {
-        const isCurrent = props.currentVideoId === video._id ;
-        const isBookmarked = props.bookmarkVideo === video._id; 
+        const isCurrent = props.currentVideoId === video._id;
+        const isBookmarked = props.bookmarkVideo === video._id;
         return (
-        <Container className={isCurrent ? 'PlaylistItem current animate pop' : 'PlaylistItem'}>
-            <div onClick={() => props.setCurrent(video._id, localStorage.getItem('playlistId'))}>
-                {
-                    isCurrent ? 
-                        <Image src={Arrow} width='30' height='30'/> :
-                        <bold>{id+1}</bold> 
-                    
-                }
-                <Image 
-                    className='PlaylistItemImage my-2 mx-2'
-                    src={process.env.REACT_APP_BASE_SERVER_URL + '/image/thumbnail?id=' + video.thumbnail}
-                    height='100px'
-                    width='140px'/>
-                <span className='PlaylistItemTitle'> {video.title} </span>
-                { isBookmarked ?  <span className='text-warning'> last video watched</span> : '' }
-            </div>
-            <CloseButton 
-                className='PlaylistItemRemove' 
-                onClick={() => props.removeItem(video._id)}/>
-        </Container>
+            <Container className={isCurrent ? 'PlaylistItem current animate pop' : 'PlaylistItem'}>
+                <div onClick={() => props.setCurrent(video._id, localStorage.getItem('playlistId'))}>
+                    {
+                        isCurrent ?
+                            <Image src={Arrow} width='30' height='30' /> :
+                            <bold>{id + 1}</bold>
+
+                    }
+                    <Image
+                        className='PlaylistItemImage my-2 mx-2'
+                        src={process.env.REACT_APP_BASE_SERVER_URL + '/image/thumbnail?id=' + video.thumbnail}
+                        height='100px'
+                        width='140px' />
+                    <span className='PlaylistItemTitle'> {video.title} </span>
+                    {isBookmarked ? <span className='text-warning'> last video watched</span> : ''}
+                </div>
+                <CloseButton
+                    className='PlaylistItemRemove'
+                    onClick={() => props.removeItem(video._id)} />
+            </Container>
         );
     });
 
     return (
         <Container>
-            {mappedVideos.length > 0 ? 
-                mappedVideos : 
+            {mappedVideos.length > 0 ?
+                mappedVideos :
                 <h3 className='mx-4'>There are no videos yet...</h3>}
         </Container>
     );

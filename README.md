@@ -23,7 +23,7 @@ I will update this project during my futher learning process.
   - [x] Creating/deleting/editig playlists. 
   
 ## Administration:
-  - [ ] Adding/deliting/editing videos.
+  - [x] Adding/deliting/editing videos.
   - [x] Adding/deliting/editing video categoires.
   - [ ] User managing (adding/deliting/editing users functionality should be emplented with role managing system with 3 roles: **admin**, **user**, **guest**)
 

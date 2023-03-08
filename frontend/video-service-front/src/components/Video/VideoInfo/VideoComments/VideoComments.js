@@ -9,17 +9,16 @@ import VideoComment from './VideoComment/VideoComment';
 import './VideoComments.css'
 
 const VideoComments = (props) => {
-    // 1. controls
-    // 2. comments gradinet collor 
     const comments = props.comments.map(comment => 
         <VideoComment 
-            authorName={comment.authorName}
+            authorName={comment.author.name}
+            authorAvatar={comment.author.avatar}
             text={comment.text}
             createdAt={comment.createdAt}/>
         );
     return (
         <Container>
-            <Form onSubmit={props.postCommentHandler}>
+            <Form onSubmit={props.postCommentHandler}>   
                 <Form.Group>
                     <Form.Label>Any comments?</Form.Label>
                     <Form.Control 

@@ -87,7 +87,7 @@ export const playlistEdit = (token, actionType, playlistInfo) => {
             .then(response => {
                 dispatch({
                     type: actionTypes.PLAYLIST_EDIT_SUCCESS,
-                    playlist: response.data.playlist,
+                    playlist: response.data.updatedPlaylist,
                 });
                 if (actionType === modes.EDITITNG)
                     dispatch(actions.notificationSend(

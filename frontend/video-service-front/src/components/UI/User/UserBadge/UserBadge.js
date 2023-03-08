@@ -6,7 +6,6 @@ import UserIcon from '../UserIcon/UserIcon';
 import UserName from '../UserName/UserName';
 
 const userBadge = (props) => (
-    //justify-content-lg-end
     <div className='d-flex'> 
         <UserIcon 
             avatarId={props.avatarId}/>

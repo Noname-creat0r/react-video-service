@@ -1,44 +1,43 @@
-const express = require('express');
-const {body} = require('express-validator');
+const express = require('express')
 
-const storage = require('../db/storage');
-const isAuth = require('../middleware/is-auth');
-const playlistController = require('../controllers/playlist');
+const storage = require('../db/storage')
+const isAuth = require('../middleware/is-auth')
+const playlistController = require('../controllers/playlist')
 
-const router = express.Router();
+const router = express.Router()
 
 router.get(
-    '/info:playlistId?',
-    playlistController.getPlaylistVideoInfo,
+  '/info:playlistId?',
+  playlistController.getPlaylistVideoInfo
 )
 
 router.get(
-    ':userId?',
-    playlistController.getUserPlaylists
+  ':userId?',
+  playlistController.getUserPlaylists
 )
 
 router.get(
-    '/',
-    playlistController.getPlaylists
+  '/',
+  playlistController.getPlaylists
 )
 
 router.post(
-    '/',
-    isAuth,
-    storage.upload.single('thumbnail'),
-    playlistController.postPlaylist
+  '/',
+  isAuth,
+  storage.upload.single('thumbnail'),
+  playlistController.postPlaylist
 )
 
 router.put(
-    '/',
-    isAuth,
-    storage.upload.any(),
-    playlistController.putPlaylist,
+  '/',
+  isAuth,
+  storage.upload.any(),
+  playlistController.putPlaylist
 )
 
 router.delete(
-    '/',
-    isAuth,
-    playlistController.deletePlaylist,
+  '/',
+  isAuth,
+  playlistController.deletePlaylist
 )
-module.exports = router;
+module.exports = router

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const methods = require('../db/methods');
 
 const streamImgFromBucket = (bucketName, id, res) => {
-    const bucket = methods.getGridBucket(bucketName); 
+    const bucket = methods.getGridBucket(bucketName);
     bucket
         .find({ _id: mongoose.Types.ObjectId(id) })
         .forEach(image => {
@@ -13,7 +13,7 @@ const streamImgFromBucket = (bucketName, id, res) => {
             downloadStream.on('data', data => {
                 return res.status(200).write(data);
             });
-           
+
             downloadStream.on('error', err => {
                 return res.status(404).json({ message: 'Cannot get the image.' });
             })
@@ -21,11 +21,11 @@ const streamImgFromBucket = (bucketName, id, res) => {
             downloadStream.on('end', () => {
                 return res.end();
             });
-        }) 
+        })
 }
 
 exports.getThumbnail = (req, res, next) => {
-    try { 
+    try {
         if (!req.query.id) {
             const error = new Error('Missing param in query.');
             error.statusCode = 400;

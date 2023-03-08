@@ -20,37 +20,35 @@ import PlaylistPlay from '../../../assets/images/playlist-play.svg';
 
 import './VideoInfo.css';
 
-// show the shit if it is a playlist playing mode and hide otherwise
-// styles and functions
 
 const VideoInfo = (props) => {
     const playlistPanel = (
         <div className='d-flex align-items-center mx-2'>
             <Image
-                className='userInteractionSection_playlistControl mx-1' 
+                className='userInteractionSection_playlistControl mx-1'
                 height='45px'
                 width='45px'
                 onClick={() => props.playlistSetVideo('previous')}
-                src={PreviousIcon}/>
-            <NavLink 
-                className='text-info text-decoration-none' 
+                src={PreviousIcon} />
+            <NavLink
+                className='text-info text-decoration-none'
                 to="/playlist">
                 <Alert
                     className='mx-1 userInteractionSection_container'
                     variant='info'
                     onClick={props.showCurrentPlaylist}>
-                    <Image 
+                    <Image
                         className='mx-1 userInteractionSection_item'
-                        src={PlaylistPlay}/>
+                        src={PlaylistPlay} />
                     Current playlist
                 </Alert>
             </NavLink>
-            <Image 
-                className='userInteractionSection_playlistControl mx-1' 
+            <Image
+                className='userInteractionSection_playlistControl mx-1'
                 height='45px'
                 width='45px'
                 onClick={() => props.playlistSetVideo('next')}
-                src={NextIcon}/>
+                src={NextIcon} />
         </div>);
     const items = props.interactionItems;
 
@@ -60,19 +58,19 @@ const VideoInfo = (props) => {
                 <Col className=''>
                     <h3>{props.title}</h3>
                     <h4>{props.views} views</h4>
-                    <UserBadge 
+                    <UserBadge
                         name={props.author}
-                        avatarId={props.avatarId}/> 
+                        avatarId={props.avatarId} />
                 </Col>
                 <Col className='userInteractionSection'>
-                    {props.isPlaylist ? playlistPanel : ''}                    
+                    {props.isPlaylist ? playlistPanel : ''}
                     <Alert
                         onClick={() => props.addToPlaylist()}
                         className='mx-1 userInteractionSection_container'
                         variant='info'>
-                        <Image 
+                        <Image
                             className='mx-1 userInteractionSection_item'
-                            src={PlaylistIcon}/>
+                            src={PlaylistIcon} />
                         Add
                     </Alert>
                     <Alert
@@ -81,24 +79,24 @@ const VideoInfo = (props) => {
                         variant='success'>
                         <Image
                             className='mx-1 userInteractionSection_item'
-                            src={LikeIcon}/>
-                            {props.likes}
+                            src={LikeIcon} />
+                        {props.likes}
                     </Alert>
                     <Alert
                         onClick={() => props.rateVideoHandler('dislike')}
                         className='userInteractionSection_container'
                         variant='danger'>
-                        <Image 
-                           className='mx-1 userInteractionSection_item'
-                           src={DislikeIcon}/>
-                           {props.dislikes}
+                        <Image
+                            className='mx-1 userInteractionSection_item'
+                            src={DislikeIcon} />
+                        {props.dislikes}
                     </Alert>
                 </Col>
             </Row>
             <Row>
-                <Accordion 
+                <Accordion
                     className='my-3'
-                    defaultActiveKey='Description' 
+                    defaultActiveKey='Description'
                     alwaysOpen>
                     <Accordion.Item eventKey='Description'>
                         <Accordion.Header>Description</Accordion.Header>
@@ -109,10 +107,10 @@ const VideoInfo = (props) => {
                     <Accordion.Item eventKey='Comments'>
                         <Accordion.Header>Comments</Accordion.Header>
                         <Accordion.Body>
-                           <VideoComments 
-                            comments={props.comments}
-                            typeCommentHandler={props.typeCommentHandler}
-                            postCommentHandler={props.postCommentHandler}/>
+                            <VideoComments
+                                comments={props.comments}
+                                typeCommentHandler={props.typeCommentHandler}
+                                postCommentHandler={props.postCommentHandler} />
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>

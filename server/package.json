@@ -23,6 +23,11 @@
   },
   "homepage": "https://github.com/Noname-creat0r/react-video-service#readme",
   "devDependencies": {
+    "eslint": "^8.35.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^2.0.20"
   },
   "dependencies": {

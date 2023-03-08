@@ -13,17 +13,17 @@ module.exports = (req, res, next) => {
 
         const token = authHeader;
         const decodedToken = jwt.verify(token, key);
-       
+
         if (!decodedToken) {
             const error = new Error('Not authenticated.');
             error.statusCode = 401;
             throw error;
         }
-        
+
         req.userId = decodedToken.userId;
         res.locals.userId = decodedToken.userId;
         next();
-        
+
     } catch (error) {
         next(error);
     }

@@ -1,25 +1,24 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../store/actions/index';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions/index";
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Column from 'react-bootstrap/Col';
-import Image from 'react-bootstrap/Image';
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Column from "react-bootstrap/Col";
+import Image from "react-bootstrap/Image";
 
-import UserIcon from '../../assets/images/default-user-icon.svg';
-import ProfileTabs from '../../components/Profile/ProfileTabs/ProfileTabs';
-import VideoForm from '../Forms/VideoForm/VideoForm';
-import PlaylistForm from '../Forms/PlaylistForm/PlaylistForm';
-import ProfileVideoCard from '../../components/UI/Card/ProfileVideoCard/ProfileVideoCard';
-import ProfilePlaylistCard from '../../components/UI/Card/ProfilePlaylistCard/ProfilePlaylistCard';
-import LoadingSpinner from '../../components/UI/LoadingSpinner/LoadingSpinner';
+import UserIcon from "../../assets/images/default-user-icon.svg";
+import ProfileTabs from "../../components/Profile/ProfileTabs/ProfileTabs";
+import VideoForm from "../Forms/VideoForm/VideoForm";
+import PlaylistForm from "../Forms/PlaylistForm/PlaylistForm";
+import ProfileVideoCard from "../../components/UI/Card/ProfileVideoCard/ProfileVideoCard";
+import ProfilePlaylistCard from "../../components/UI/Card/ProfilePlaylistCard/ProfilePlaylistCard";
+import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
 
-import './Profile.css';
-import { mapVideoInfoToCards,
-    mapPlaylistsToCards } from '../../shared/utility';
+import "./Profile.css";
+import { mapVideoInfoToCards, mapPlaylistsToCards } from "../../shared/utility";
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         nickname: state.profile.data.name,
         avatarId: state.profile.data.avatar,
@@ -30,85 +29,91 @@ const mapStateToProps = state => {
     };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        fetchVideosInfo: (endpoint, options) => dispatch(actions.videoFetchInfo(endpoint, options)),
-        fetchPlaylistData: (endpoint, options) => dispatch(actions.playlistFetchData(endpoint, options)),
-        videoStreamStart: (videoId) => dispatch(actions.videoStreamStart(videoId)),
-        deletePlaylist: (playlistId) => dispatch(actions.playlistDelete(
-            playlistId,
-            localStorage.getItem('token'),
-            localStorage.getItem('userId') )),
+        fetchVideosInfo: (endpoint, options) =>
+            dispatch(actions.videoFetchInfo(endpoint, options)),
+        fetchPlaylistData: (endpoint, options) =>
+            dispatch(actions.playlistFetchData(endpoint, options)),
+        videoStreamStart: (videoId) =>
+            dispatch(actions.videoStreamStart(videoId)),
+        deletePlaylist: (playlistId) =>
+            dispatch(
+                actions.playlistDelete(
+                    playlistId,
+                    localStorage.getItem("token"),
+                    localStorage.getItem("userId")
+                )
+            ),
     };
 };
 
 class Profile extends Component {
-
     state = {
         showVideoForm: false,
         showPlaylistForm: false,
-        activeTab: 'Videos',
+        activeTab: "Videos",
     };
 
     videoFormToggleHandler = () => {
-        this.setState( (prevState)  => {
+        this.setState((prevState) => {
             return { showVideoForm: !prevState.showVideoForm };
         });
     };
 
     playlistFormToggleHandler = () => {
-        this.setState( (prevState)  => {
+        this.setState((prevState) => {
             return { showPlaylistForm: !prevState.showPlaylistForm };
         });
     };
 
     tabSelectHandler = (eventKey) => {
-        this.setState( (prevState) => {
+        this.setState((prevState) => {
             return { activeTab: eventKey };
         });
     };
 
     profileVideoCardClickHandler = (event, id) => {
         this.props.videoStreamStart(id);
-        localStorage.setItem('videoId', id);
+        localStorage.setItem("videoId", id);
     };
 
-    profileAddToPlaylistClickHandler = (event, id) => {
-
-    };
+    profileAddToPlaylistClickHandler = (event, id) => {};
 
     profileDeletePlaylistClickHandler = (event, id) => {
         this.props.deletePlaylist(id);
     };
 
     playlistCardClickHandler = (event, id) => {
-        localStorage.setItem('playlistId', id);
-    }
+        localStorage.setItem("playlistId", id);
+    };
 
     componentDidMount() {
         /*this.props.fetchVideosInfo(
             'info',{ userId: localStorage.getItem('userId')});
         this.props.fetchPlaylistData(
             '/', { userId: localStorage.getItem('userId') });*/
-    };
+    }
 
-    render(){
-        if (this.props.fetchingVideoData ||
-            this.props.fetchingPlaylistData){
-            return <LoadingSpinner />
-        }   
+    render() {
+        if (this.props.fetchingVideoData || this.props.fetchingPlaylistData) {
+            return <LoadingSpinner />;
+        }
 
-        const avatar = this.props.avatarId ? 
-            process.env.REACT_APP_BASE_SERVER_URL + '/image/avatar?id=' + this.props.avatarId : UserIcon;
+        const avatar = this.props.avatarId
+            ? process.env.REACT_APP_BASE_SERVER_URL +
+              "/image/avatar?id=" +
+              this.props.avatarId
+            : UserIcon;
 
         const videoData = new Map();
-        this.props.videosInfo.forEach(video => {
-            if (video.author === localStorage.getItem('userId')) 
+        this.props.videosInfo.forEach((video) => {
+            if (video.author === localStorage.getItem("userId"))
                 videoData.set(video._id, video);
         });
-        
+
         const videos = mapVideoInfoToCards(
-            { 
+            {
                 videos: videoData,
                 playlists: this.props.playlists,
             },
@@ -116,7 +121,7 @@ class Profile extends Component {
                 click: this.profileVideoCardClickHandler,
                 playlist: this.profileAddToPlaylistClickHandler,
             },
-            ProfileVideoCard,
+            ProfileVideoCard
         );
 
         const playlists = mapPlaylistsToCards(
@@ -125,47 +130,52 @@ class Profile extends Component {
                 click: this.playlistCardClickHandler,
                 delete: this.profileDeletePlaylistClickHandler,
             },
-            ProfilePlaylistCard,
+            ProfilePlaylistCard
         );
 
         return (
             <Container className="my-2">
-                <Row> 
+                <Row>
                     <Column className="col-3 my-2">
-                        <Image 
-                            className='ProfileAvatar'
+                        <Image
+                            className="ProfileAvatar"
                             src={avatar}
                             width={128}
                             height={128}
                             alt="UserIcon"
-                            />
+                        />
                     </Column>
                     <Column className="">
-                        <span className="ProfileName">{ this.props.nickname }</span>
+                        <span className="ProfileName">
+                            {this.props.nickname}
+                        </span>
                     </Column>
                 </Row>
                 <Row>
-                    <VideoForm 
+                    <VideoForm
                         show={this.state.showVideoForm}
-                        hide={this.videoFormToggleHandler}/>
-                    <PlaylistForm 
+                        hide={this.videoFormToggleHandler}
+                    />
+                    <PlaylistForm
                         show={this.state.showPlaylistForm}
-                        hide={this.playlistFormToggleHandler}/>
+                        hide={this.playlistFormToggleHandler}
+                    />
 
-                    <ProfileTabs 
+                    <ProfileTabs
                         videos={videos}
                         playlists={playlists}
                         uploadVideoCardClicked={this.videoFormToggleHandler}
-                        uploadPlaylistCardClicked={this.playlistFormToggleHandler}
+                        uploadPlaylistCardClicked={
+                            this.playlistFormToggleHandler
+                        }
                         tabSelectHandler={this.tabSelectHandler}
-                        tabActiveKey={this.state.activeTab}/>
+                        tabActiveKey={this.state.activeTab}
+                    />
                 </Row>
-                <Row>
-                    
-                </Row>
+                <Row></Row>
             </Container>
         );
-    };
-};
+    }
+}
 
-export default connect( mapStateToProps, mapDispatchToProps ) ( Profile );
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
