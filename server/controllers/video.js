@@ -298,10 +298,19 @@ exports.dislikeVideo = async (req, res, next) => {
 exports.postView = async (req, res, next) => {
   try {
     const videoId = req.body.videoId
+    const token = req.body.token
+    const trialVideos = req.body.trialVideos
+    if (!token) {
+      if (!trialVideos) {
+        throwError('Missing param in body', 400)
+      }
+      if (Number(trialVideos) <= 0) {
+        throwError('Sign in to watch unlimited number of videos!', 403)
+      }
+    }
+
     if (!videoId) {
-      const error = new Error('Missing videoId in body.')
-      error.statusCode = 400
-      throw error
+      throwError('Missing param in body!', 400)
     }
 
     const video = await Video.findOne({
@@ -312,7 +321,10 @@ exports.postView = async (req, res, next) => {
 
     res
       .status(200)
-      .json({ message: 'Viewed a video.' })
+      .json({
+        message: 'Viewed a video.',
+        trialVideos: trialVideos ? Number(trialVideos) - 1 : 0
+      })
   } catch (err) {
     next(err)
   }

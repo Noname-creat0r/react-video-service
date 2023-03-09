@@ -153,31 +153,28 @@ export const videoRate = (payload) => {
     }
 };
 
-export const videoAddView = (videoId) => {
+export const videoAddView = (payload) => {
     return dispatch => {
         return axios
             .post(
                 '/video/view',
-                { videoId: videoId }
-            )
-            .then(response => {
-                const unauthViews = localStorage.getItem('views');
-                let views = Number(process.env.REACT_APP_UNAUTH_VIEWS);
-
-                if (unauthViews) {
-                    views = views === 0 ? 0 : Number(unauthViews) - 1;
+                { 
+                  videoId: payload.videoId,
+                  token: payload.token,
+                  trialVideos: payload.trialVideos
                 }
-                localStorage.setItem('views', views);
+            )
+            .then(response => { 
+                const trialVideos = response.data.trialVideos
+                if (!payload.token) {
+                  localStorage.setItem('views', Number(trialVideos))
+                }
 
-                dispatch({
-                    type: actionTypes.VIDEO_ADD_VIEW_SUCCESS,
-                })
+                dispatch({ type: actionTypes.VIDEO_ADD_VIEW_SUCCESS })
             })
             .catch(error => {
-                dispatch({
-                    type: actionTypes.VIDEO_ADD_VIEW_FAILED,
-                    error: error.response.data.error,
-                })
+                dispatch({ type: actionTypes.VIDEO_ADD_VIEW_FAILED })
+                dispatch(actions.notificationSend(error, 'warning'))
             });
     }
 };

@@ -10,6 +10,7 @@ import VideoInfo from "../../components/Video/VideoInfo/VideoInfo";
 import VideoFooter from "../../components/Video/VideoFooter/VideoFooter";
 import VideoPlaylistModal from "../../components/Video/VideoInfo/VideoPlaylistModal/VideoPlaylistModal";
 import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
+import Auth from '../Auth/Auth';
 
 function mapStateToProps(state) {
     return {
@@ -49,7 +50,7 @@ function mapDispatchToProps(dispatch) {
                     actionType: actionType,
                 })
             ),
-        addView: videoId => dispatch(actions.videoAddView(videoId)),
+        addView: payload => dispatch(actions.videoAddView(payload)),
         playlistSetCurrentVideo: videoId =>
             dispatch(actions.playlistSetCurrentVideo(videoId)),
         profilePutBookmark: bookmarkData =>
@@ -88,12 +89,17 @@ class Video extends Component {
             },
         },
         showCurrentPlaylistModal: false,
+        showAuthForm: true,
     };
 
     async componentDidMount() {
         //await this.props.fetchVideoInfo(localStorage.getItem('videoId'))
         await this.props.fetchVideoComments(localStorage.getItem("videoId"));
-        await this.props.addView(localStorage.getItem("videoId"));
+        await this.props.addView({ 
+          videoId: localStorage.getItem("videoId"),
+          token: localStorage.getItem('token'),
+          trialVideos: localStorage.getItem('views')
+        });
     }
 
     videoPlaylistSetVideo = async type => {
@@ -204,26 +210,22 @@ class Video extends Component {
 
     render() {
         const unauthViews = localStorage.getItem("views");
-        if (this.props.videosInfo.size === 0) {
+        const unplayable = !this.props.isAuthenticated && unauthViews <= 0 
+        if (this.props.videosInfo.size === 0 || this.props.isFetching) {
             return <LoadingSpinner />;
         }
-
-        if (!this.props.isAuthenticated && unauthViews <= 0) {
-            return <LoadingSpinner />;
-            //show auth form
-        }
-
-        if (this.props.isFetching) return <LoadingSpinner />;
 
         const videoInfo = this.props.videosInfo.get(localStorage.getItem("videoId"));
         return (
             <Container>
+                {unplayable && <Auth show={this.state.showAuthForm} hide={() => this.setState({ showAuthForm: false})}/>}
                 <VideoPlayer
                     videoId={videoInfo._id}
                     //currentVideoId={this.props.currentVideoId}
                     playing={this.state.playing}
                     viewed={this.state.viewed}
                     addView={this.addViewHandler}
+                    controls={!unplayable}    
                     playSwitchHandler={this.playingStateSwitch}
                     playDisableHandler={this.playingStateDisable}
                 />

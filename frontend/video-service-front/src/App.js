@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import CryptoJS from "crypto-js";
 import * as actions from "./store/actions/index";
 import axios from "./axios-settings";
+import { reactivateGuest } from "./shared/utility";
 
 import Layout from "./containers/Layout/Layout";
 import ErrorBoundary from "./hoc/ErrorBoundary/ErrorBoundary";
@@ -51,16 +52,13 @@ class App extends Component {
                 localStorage.getItem("userId"),
                 localStorage.getItem("token")
             );
-            await this.props.fetchPlaylistsData("/", {
+             await this.props.fetchPlaylistsData("/", {
                 userId: localStorage.getItem("userId"),
             });
         }
 
-        if (!localStorage.getItem("views")) {
-            localStorage.setItem(
-                "views",
-                Number(process.env.REACT_APP_UNAUTH_VIEWS)
-            );
+        if (!localStorage.getItem('views') && !this.props.isAuthenticated) {
+          reactivateGuest()  
         }
     }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { activateGuest } from '../../../shared/utility';
 
 import * as actions from '../../../store/actions/index';
 
@@ -10,12 +11,13 @@ class Logout extends Component {
     componentDidMount() {
         this.props.onLogout();
         this.props.clearProfileData();
+        activateGuest()
     }
 
     render () {
         return <Navigate replace to='/'/>;
     }
-};
+}
 
 const mapDispatchToProps = dispatch => {
     return {

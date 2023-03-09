@@ -6,6 +6,7 @@ const initialState = {
     uploading: false,
     streaming: false,
     fetching: false,
+    limitExhausted: false,
     pendingRequests: 0,
     videosInfo: new Map(),
     videoId: null,
@@ -105,7 +106,7 @@ const videoRateSuccess = (state, action) => {
 };
 
 const videoAddViewSuccess = (state, action) => {
-    return updateObject(state, {});
+    return updateObject(state, { });
 };
 
 const videoEditSuccess = (state, action) => {

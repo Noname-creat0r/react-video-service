@@ -6,6 +6,7 @@ const initialState = {
     userId: null,
     error: null,
     loading: false,
+    guest: false,
 };
 
 const authStart = (state, action) => {
@@ -32,6 +33,7 @@ const authLogout = (state, action) => {
         userId: null,
     });
 };  
+
 
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {

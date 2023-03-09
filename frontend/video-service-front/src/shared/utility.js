@@ -1,3 +1,5 @@
+import axios from '../axios-settings';
+
 export const updateObject = (oldObject, updatedProperties) => {
     return {
         ...oldObject,
@@ -128,6 +130,31 @@ export const videoCardClickHandler = (id, videoStreamStart) => {
     videoStreamStart(id);
     localStorage.setItem("videoId", id);
 };
+
+export const activateGuest = () => {
+   axios
+      .get('auth/guest')
+      .then(response => {
+        if (!response.data.trialVideos) {
+          throw new Error('Cannot initialize guest...')  
+        }
+        if (!Number.isInteger(response.data.trialVideos)) {
+          throw new Error('Guest initialization failed. Bad server response...')
+        }
+        localStorage.setItem('views', Number(response.data.trialVideos))
+    })
+
+}
+
+export const deactivateGuest = () => {
+  localStorage.removeItem('views')
+}
+
+export const reactivateGuest = () => {
+  if (!localStorage.getItem('views')) {
+    activateGuest()
+  }
+} 
 
 /*export const getAddToPlaylistList = (clickHandler ) => {
   const items = [];
