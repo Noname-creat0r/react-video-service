@@ -1,41 +1,52 @@
-const express = require('express');
-const {body} = require('express-validator');
+const express = require('express')
 
-const isAuth = require('../middleware/is-auth');
-const isAdmin = require('../middleware/is-admin');
-const userController = require('../controllers/user');
+const isAuth = require('../middleware/is-auth')
+const isAdmin = require('../middleware/is-admin')
+const userController = require('../controllers/user')
+const storage = require('../db/storage')
 
-const router = express.Router();
-
-router.get(
-    '/get',
-    isAuth,
-    userController.fetchData
-);
+const router = express.Router()
 
 router.get(
-    '/all',
-    isAuth,
-    isAdmin,
-    userController.fetchAll
-);
+  '/get',
+  isAuth,
+  userController.fetchData
+)
 
-router.put(
-    '/edit',
-    isAuth,
-    userController.editUser,
-);
+router.get(
+  '/all',
+  isAuth,
+  isAdmin,
+  userController.fetchAll
+)
 
-router.delete(
-    '/delete',
-    isAuth,
-    userController.deleteUser,
+router.post(
+  '/',
+  isAuth,
+  isAdmin,
+  storage.upload.single('avatar'),
+  userController.postUser
 )
 
 router.put(
-    '/bookmark',
-    isAuth,
-    userController.putPlaylistBookmark,
-);
+  '/',
+  isAuth,
+  isAdmin,
+  storage.upload.any(),
+  userController.putUser
+)
 
-module.exports = router;
+router.delete(
+  '/',
+  isAuth,
+  isAdmin,
+  userController.deleteUser
+)
+
+router.put(
+  '/bookmark',
+  isAuth,
+  userController.putPlaylistBookmark
+)
+
+module.exports = router

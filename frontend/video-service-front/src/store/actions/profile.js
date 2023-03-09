@@ -60,20 +60,3 @@ export const profilePutBookmark = (userData, bookmarkData) => {
     };
 }
 
-
-/*export const profileEdit = (token, editData) => {
-    return {
-        type: actionTypes.PROFILE_EDIT,
-        token: token,
-        data: editData,
-    };
-};*/
-
-
-/*export const profileDelete = (token, profileId) => {
-    return {
-        type: actionTypes.PROFILE_DELETE,
-        token: token,
-        profileId: profileId,
-    };
-};*/

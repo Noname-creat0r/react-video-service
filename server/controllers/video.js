@@ -127,12 +127,15 @@ exports.postVideo = async (req, res, next) => {
 
   mongoVideo
     .save()
-    .then((result) => {
-      message.push('Video has been uploaded successfully.')
-      res.status(201)
+    .then(result => {
+      return result.populate('author')
+    })
+    .then(video => {
+      res
+        .status(201)
         .json({
-          video: result.toObject(),
-          message: message.join('\r\n')
+          message: 'Posted video successfully',
+          video: video.toObject()
         })
     })
     .catch((err) => {

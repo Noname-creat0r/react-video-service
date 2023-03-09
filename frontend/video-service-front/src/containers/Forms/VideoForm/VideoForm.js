@@ -1,289 +1,290 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import * as actions from '../../../store/actions/index';
-import * as validators from '../../../validators/validators';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import * as actions from "../../../store/actions/index";
+import * as validators from "../../../validators/validators";
 
-import Modal from '../../../components/UI/Modal/Modal';
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import Image from 'react-bootstrap/Image';
+import Modal from "../../../components/UI/Modal/Modal";
+import Form from "react-bootstrap/Form";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 
 const mapStateToProps = state => {
-    return {
-        uploading: state.video.uploading,
-        categories: state.category.categories,
-        fetching: state.video.fetching,
-    };
-}
+  return {
+    uploading: state.video.uploading,
+    categories: state.category.categories,
+    fetching: state.video.fetching,
+  };
+};
 
 const mapDispatchToProps = dispatch => {
-    return {
-        upload: (videoData, token) => dispatch(actions.videoUpload(videoData, token)),
-        edit: (payload) => dispatch(actions.videoEdit(payload)),
-        
-    };
-}
+  return {
+    upload: (videoData, token) => dispatch(actions.videoUpload(videoData, token)),
+    edit: payload => dispatch(actions.videoEdit(payload)),
+  };
+};
 
 class UploadVideoForm extends Component {
-    state = {
-        video: '',
-        thumbnail: '',
-        thumbnailURL: '',
-        category: this.props.video ? this.props.video.category : 'Any',
-    }
+  state = {
+    video: "",
+    thumbnail: "",
+    thumbnailURL: "",
+    category: this.props.video ? this.props.video.category : "Any",
+  };
 
-    upload = (event) => {
-        this.props.onVideoUpload({
-            title: this.state.controls.title.value,
-            description: this.state.controls.description.value,
-            category: this.state.controls.category.value,
-            userId: localStorage.getItem('userId'),
-            imageType: 'thumbnail',
-            thumbnail: this.state.controls.thumbnail.value,
-            video: this.state.controls.video.value,
-            
-        }, 
-        {
-            token: localStorage.getItem('token'),
-            userId: localStorage.getItem('userId')
-        });
-    }
+  upload = event => {
+    this.props.onVideoUpload(
+      {
+        title: this.state.controls.title.value,
+        description: this.state.controls.description.value,
+        category: this.state.controls.category.value,
+        userId: localStorage.getItem("userId"),
+        imageType: "thumbnail",
+        thumbnail: this.state.controls.thumbnail.value,
+        video: this.state.controls.video.value,
+      },
+      {
+        token: localStorage.getItem("token"),
+        userId: localStorage.getItem("userId"),
+      }
+    );
+  };
 
-    render() {
-        let initialValues = { 
-            title: '',
-            description: '',
-            category: '',
-            thumbnail: '',
-            video: '',
-        };
-        if (this.props.video)
-            initialValues = {   
-                title: this.props.video.title,
-                description: this.props.video.description,
-                category: this.state.category, // fix
-                thumbnail:'', 
-                video: '',
-            };
-        
-        const content = 
-            <Formik
-                initialValues={initialValues}
-                validationSchema={
-                    Yup.object().shape({
-                        title: Yup.string()
-                            .min(3, "title should be at least 3 chars long")
-                            .max(25, "slow down, this is too much for title")
-                            .required("Required"),
-                        description: Yup.string()
-                            .min(3, "write a little about the video")
-                            .max(500, "whoa, are writing a book here?")
-                            .required("Required"),
-                    })
-                }
-                onSubmit={(values) => {
-                    const videoData = {
-                        userId: localStorage.getItem('userId'),
-                        title: values.title,
-                        description: values.description,
-                        category: this.state.category,
-                        imageType: 'thumbnail', 
-                        thumbnail: this.state.thumbnail,
-                        video: this.state.video,
-                    };
-                    alert(JSON.stringify(videoData));
-                    if (this.props.video) {
-                        this.props.edit({
-                            ...videoData,
-                            token: localStorage.getItem('token'),
-                            videoId: this.props.video.id,
-                        });
-                    } else {
-                        this.props.upload(videoData,{
-                            token: localStorage.getItem('token'),
-                            userId: localStorage.getItem('userId'),
-                        })
-                    }
-                }}>
-                {({
-                    values,
-                    errors,
-                    touched,
-                    handleSubmit,
-                    handleChange,
-                }) => (
-                    <Form id="videoForm" onSubmit={handleSubmit}>
-                        <Form.Group>
-                            <Form.Label>Title*</Form.Label>
-                            <Form.Control
-                                name="title"
-                                type="text"
-                                placeholder="video title"
-                                value={values.title}
-                                onChange={handleChange}
-                                isValid={touched.title && !errors.title}
-                                isInvalid={!!errors.title}/>
-                                
-                                {errors.title && touched.title && (
-                                    <Form.Control.Feedback 
-                                        className="d-block text-danger mx-2"
-                                        type="invalid">
-                                            {errors.title}
-                                    </Form.Control.Feedback>)}
-                        </Form.Group>
+  render() {
+    let initialValues = {
+      title: "",
+      description: "",
+      category: "",
+      thumbnail: "",
+      video: "",
+    };
+    if (this.props.video)
+      initialValues = {
+        title: this.props.video.title,
+        description: this.props.video.description,
+        category: this.state.category, // fix
+        thumbnail: "",
+        video: "",
+      };
 
-                        <Form.Group className='my-3'>
-                            <Form.Label>Description*</Form.Label>
-                            <Form.Control
-                                name="description"
-                                as="textarea"
-                                rows={3}
-                                placeholder="about..."
-                                value={values.description}
-                                onChange={handleChange}
-                                isValid={touched.description && !errors.description}
-                                isInvalid={!!errors.description}/>
+    const content = (
+      <Formik
+        initialValues={initialValues}
+        validationSchema={Yup.object().shape({
+          title: Yup.string()
+            .min(3, "title should be at least 3 chars long")
+            .max(25, "slow down, this is too much for title")
+            .required("Required"),
+          description: Yup.string()
+            .min(3, "write a little about the video")
+            .max(500, "whoa, are writing a book here?")
+            .required("Required"),
+        })}
+        onSubmit={values => {
+          const videoData = {
+            userId: localStorage.getItem("userId"),
+            title: values.title,
+            description: values.description,
+            category: this.state.category,
+            imageType: "thumbnail",
+            thumbnail: this.state.thumbnail,
+            video: this.state.video,
+          };
+          alert(JSON.stringify(videoData));
+          if (this.props.video) {
+            this.props.edit({
+              ...videoData,
+              token: localStorage.getItem("token"),
+              videoId: this.props.video.id,
+            });
+          } else {
+            this.props.upload(videoData, {
+              token: localStorage.getItem("token"),
+              userId: localStorage.getItem("userId"),
+            });
+          }
+        }}>
+        {({ values, errors, touched, handleSubmit, handleChange }) => (
+          <Form
+            id="videoForm"
+            onSubmit={handleSubmit}>
+            <Form.Group>
+              <Form.Label>Title*</Form.Label>
+              <Form.Control
+                name="title"
+                type="text"
+                placeholder="video title"
+                value={values.title}
+                onChange={handleChange}
+                isValid={touched.title && !errors.title}
+                isInvalid={!!errors.title}
+              />
 
-                                {errors.description && touched.description && (
-                                    <Form.Control.Feedback 
-                                        className="d-block text-danger mx-2"
-                                        type="invalid">
-                                            {errors.description}
-                                    </Form.Control.Feedback>)}
-                        </Form.Group>
-                        
-                        <Form.Group className='my-3'>
-                            <Form.Label>Category*</Form.Label>
-                            <Form.Select
-                                name="category"
-                                value={this.state.category}
-                                onChange={(event) => {
-                                    this.setState({ category: event.target.value });
-                                }}
-                                isValid={true}>
-                                {this.props.categories.map((category) => 
-                                    <option value={category.title}>
-                                        {category.title}
-                                    </option> )
-                                }
-                            </Form.Select>
-                        </Form.Group>
+              {errors.title && touched.title && (
+                <Form.Control.Feedback
+                  className="d-block text-danger mx-2"
+                  type="invalid">
+                  {errors.title}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
 
-                        <Form.Group>
-                            <Form.Label>Video*</Form.Label>
-                            <Form.Control
-                                name="video" 
-                                value={values.video}
-                                type="file"
-                                onChange={(event) => { 
-                                    handleChange(event);
-                                    if (validators.fileVideoValidator(event)){ 
-                                        let file = event.target.files[0];
-                                        this.setState({ video: file });
-                                    } else {
-                                        this.setState({ video: null });
-                                    }
-                                }}
-                                />
-                                {touched.video && !this.state.video && (
-                                <Form.Control.Feedback 
-                                    className="d-block text-danger mx-2"
-                                    type="invalid">
-                                        invalid file type for thumbnail
-                                </Form.Control.Feedback>)}
-                        </Form.Group>
+            <Form.Group className="my-3">
+              <Form.Label>Description*</Form.Label>
+              <Form.Control
+                name="description"
+                as="textarea"
+                rows={3}
+                placeholder="about..."
+                value={values.description}
+                onChange={handleChange}
+                isValid={touched.description && !errors.description}
+                isInvalid={!!errors.description}
+              />
 
-                        <Form.Group className='my-3'>
-                            <Form.Label>Thumbnail*</Form.Label>
-                            <Form.Control
-                                name="thumbnail" 
-                                placeholder="coolImage.png" 
-                                value={values.thumbnail}
-                                type="file"
-                                onChange={(event) => { 
-                                    let reader = new FileReader();
-                                    let file = event.target.files[0];
-                                    reader.onload = () => {
-                                        this.setState({ 
-                                            thumbnailURL: reader.result,
-                                            thumbnail: file
-                                        });
-                                    }
-                                    handleChange(event);
-                                    if (validators.fileImgValidator(event)){ 
-                                        reader.readAsDataURL(file);
-                                    }
-                                    else {
-                                        this.setState({ 
-                                            thumbnailURL: '',
-                                            thumbnail: ''
-                                        });
-                                    }
-                                }}
-                                />
-                                {touched.thumbnail && !this.state.thumbnail && (
-                                <Form.Control.Feedback 
-                                    className="d-block text-danger mx-2"
-                                    type="invalid">
-                                        invalid file type for thumbnail
-                                </Form.Control.Feedback>)}
-                        </Form.Group>
-                        { (this.state.thumbnail || this.props.video ) && 
-                            (<Form.Group className="my-2">
-                                <Form.Label className='d-block my-1 mx-1'>Preview:</Form.Label>
-                                <Image 
-                                    className="my-2 mx-2"
-                                    src={this.state.thumbnailURL || 
-                                        process.env.REACT_APP_BASE_SERVER_URL + '/image/thumbnail?id=' + this.props.video.thumbnail}
-                                    width="256"
-                                    height="240"
-                                    rounded/>
-                            </Form.Group>)}
-                        
-                    </Form>
-                )}
-            </Formik>
+              {errors.description && touched.description && (
+                <Form.Control.Feedback
+                  className="d-block text-danger mx-2"
+                  type="invalid">
+                  {errors.description}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
 
+            <Form.Group className="my-3">
+              <Form.Label>Category*</Form.Label>
+              <Form.Select
+                name="category"
+                value={this.state.category}
+                onChange={event => {
+                  this.setState({ category: event.target.value });
+                }}
+                isValid={true}>
+                {this.props.categories.map(category => (
+                  <option value={category.title}>{category.title}</option>
+                ))}
+              </Form.Select>
+            </Form.Group>
 
-        const buttons = (
-            <Container className="text-center"> 
-                <Button 
-                    className="mx-2 my-2 btn-md"
-                    variant="secondary"
-                    onClick={() => {
-                        this.props.hide();
-                        this.setState({
-                            thumbnail: '',
-                            thumbnailURL: '',
-                            video: '',
-                        })
-                    }}>
-                        Close
-                </Button>
-                <Button 
-                    className="mx-2 my-2 btn-md"
-                    variant="success"
-                    type="submit"
-                    form="videoForm">
-                    {this.props.video ? 'Edit' : 'Upload'}
-                </Button>
-            </Container>
-        );
+            <Form.Group>
+              <Form.Label>Video*</Form.Label>
+              <Form.Control
+                name="video"
+                value={values.video}
+                type="file"
+                onChange={event => {
+                  handleChange(event);
+                  if (validators.fileVideoValidator(event)) {
+                    let file = event.target.files[0];
+                    this.setState({ video: file });
+                  } else {
+                    this.setState({ video: null });
+                  }
+                }}
+              />
+              {touched.video && !this.state.video && (
+                <Form.Control.Feedback
+                  className="d-block text-danger mx-2"
+                  type="invalid">
+                  invalid file type for thumbnail
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
 
-        return (
-            <Modal 
-                show={this.props.show}
-                hide={this.props.hide}
-                title={this.props.video ? 'Editing' : 'Uploading'}
-                body={content}
-                footer={buttons}/>
-        );
-    }
+            <Form.Group className="my-3">
+              <Form.Label>Thumbnail*</Form.Label>
+              <Form.Control
+                name="thumbnail"
+                placeholder="coolImage.png"
+                value={values.thumbnail}
+                type="file"
+                onChange={event => {
+                  let reader = new FileReader();
+                  let file = event.target.files[0];
+                  reader.onload = () => {
+                    this.setState({
+                      thumbnailURL: reader.result,
+                      thumbnail: file,
+                    });
+                  };
+                  handleChange(event);
+                  if (validators.fileImgValidator(event)) {
+                    reader.readAsDataURL(file);
+                  } else {
+                    this.setState({
+                      thumbnailURL: "",
+                      thumbnail: "",
+                    });
+                  }
+                }}
+              />
+              {touched.thumbnail && !this.state.thumbnail && (
+                <Form.Control.Feedback
+                  className="d-block text-danger mx-2"
+                  type="invalid">
+                  invalid file type for thumbnail
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+            {(this.state.thumbnail || this.props.video) && (
+              <Form.Group className="my-2">
+                <Form.Label className="d-block my-1 mx-1">Preview:</Form.Label>
+                <Image
+                  className="my-2 mx-2"
+                  src={
+                    this.state.thumbnailURL ||
+                    process.env.REACT_APP_BASE_SERVER_URL +
+                      "/image/thumbnail?id=" +
+                      this.props.video.thumbnail
+                  }
+                  width="256"
+                  height="240"
+                  rounded
+                />
+              </Form.Group>
+            )}
+          </Form>
+        )}
+      </Formik>
+    );
+
+    const buttons = (
+      <Container className="text-center">
+        <Button
+          className="mx-2 my-2 btn-md"
+          variant="secondary"
+          onClick={() => {
+            this.props.hide();
+            this.setState({
+              thumbnail: "",
+              thumbnailURL: "",
+              video: "",
+            });
+          }}>
+          Close
+        </Button>
+        <Button
+          className="mx-2 my-2 btn-md"
+          variant="success"
+          type="submit"
+          form="videoForm">
+          {this.props.video ? "Edit" : "Upload"}
+        </Button>
+      </Container>
+    );
+
+    return (
+      <Modal
+        show={this.props.show}
+        hide={this.props.hide}
+        title={this.props.video ? "Editing" : "Uploading"}
+        body={content}
+        footer={buttons}
+      />
+    );
+  }
 }
 
-export default connect(
-    mapStateToProps, mapDispatchToProps
-) ( UploadVideoForm );
+export default connect(mapStateToProps, mapDispatchToProps)(UploadVideoForm);

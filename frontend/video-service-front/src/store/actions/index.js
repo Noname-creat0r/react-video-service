@@ -43,4 +43,7 @@ export {
 export {
     adminFetchProfiles,
     adminFetchVideos,
+    adminCreateUser,
+    adminEditUser,
+    adminDeleteUser,
 } from './admin';

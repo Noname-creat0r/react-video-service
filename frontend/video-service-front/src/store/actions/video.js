@@ -19,6 +19,7 @@ export const videoUpload = (videoData, userData) => {
                     'Content-Type': 'multipart/form-data'}}
             )
             .then(response => {
+                console.log(response.data.video)
                 dispatch({
                     type: actionTypes.VIDEO_UPLOAD_SUCCESS,
                     video: response.data.video,
