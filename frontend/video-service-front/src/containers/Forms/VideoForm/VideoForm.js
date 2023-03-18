@@ -92,7 +92,6 @@ class UploadVideoForm extends Component {
             thumbnail: this.state.thumbnail,
             video: this.state.video,
           };
-          alert(JSON.stringify(videoData));
           if (this.props.video) {
             this.props.edit({
               ...videoData,

@@ -110,7 +110,6 @@ exports.postVideo = async (req, res, next) => {
   const videoFileId = video.id
   const thumbnail = { ...req.files.thumbnail[0] }
   const thumbnailFileId = thumbnail.id
-  const message = []
 
   const mongoVideo = new Video({
     title: req.body.title,

@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { Types } = require('mongoose')
 const { throwError } = require('../shared/utility')
 
 const User = require('../models/User')

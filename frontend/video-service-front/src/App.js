@@ -1,9 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { connect } from "react-redux";
-import CryptoJS from "crypto-js";
+import { connect, useSelector } from "react-redux";
 import * as actions from "./store/actions/index";
-import axios from "./axios-settings";
 import { reactivateGuest } from "./shared/utility";
 
 import Layout from "./containers/Layout/Layout";
@@ -14,19 +12,11 @@ import Video from "./containers/Video/Video";
 import Profile from "./containers/Profile/Profile";
 import Logout from "./containers/Auth/Logout/Logout";
 import Playlist from "./containers/Playlist/Playlist";
-import Auth from "./containers/Auth/Auth";
 import Admin from "./containers/Admin/Admin";
 
 import "./App.css";
 
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated: state.auth.token !== null,
-        profileData: state.profile.data,
-    };
-};
-
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchTo= (dispatch) => {
     return {
         tryAutoSignup: () => dispatch(actions.authCheckState()),
         fetchUserData: (userId, token) =>
@@ -39,64 +29,64 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-class App extends Component {
-    state = {};
+export function App() {
+  const isAuthenticated = useSelector(state => state.auth.token)
+  const profileData = useSelector(state => state.profile.data)
+  
+  useEffect(async () => {
+      tryAutoSignup();
+      await fetchVideosInfo("info/home", {});
+      await fetchCategoreis();
 
-    async componentDidMount() {
-        this.props.tryAutoSignup();
-        await this.props.fetchVideosInfo("info/home", {});
-        await this.props.fetchCategoreis();
-
-        if (this.props.isAuthenticated) {
-            await this.props.fetchUserData(
-                localStorage.getItem("userId"),
-                localStorage.getItem("token")
-            );
-             await this.props.fetchPlaylistsData("/", {
+      if (isAuthenticated) {
+          await fetchUserData(
+              localStorage.getItem("userId"),
+              localStorage.getItem("token")
+         );
+      await fetchPlaylistsData("/", {
                 userId: localStorage.getItem("userId"),
             });
         }
 
-        if (!localStorage.getItem('views') && !this.props.isAuthenticated) {
+        if (!localStorage.getItem('views') && !isAuthenticated) {
           reactivateGuest()  
         }
+    }, [])
+
+    const routes = () => {
+      const basicRoutes = [
+        <Route path="/video" element={<Video />} />,
+        <Route path="/" element={<Home />} />,
+        <Route path="*" element={<NotFound />} />,
+      ];
+
+      const authRoutes = [
+        <Route path="/profile" element={<Profile />} />,
+        <Route path="/playlist" element={<Playlist />} />,
+        <Route path="/logout" element={<Logout />} />,
+      ];
+
+      const adminRoutes = [<Route path="/admin" element={<Admin />} />];
+
+      let routes = [...basicRoutes];
+
+      if (isAuthenticated) routes = [...routes, ...authRoutes];
+
+      if (
+        profileData.type === "Admin" &&
+        isAuthenticated
+      )
+          routes = [...routes, ...adminRoutes]; 
+    
+      return routes;
     }
 
-    render() {
-        const basicRoutes = [
-            <Route path="/video" element={<Video />} />,
-            <Route path="/" element={<Home />} />,
-            <Route path="*" element={<NotFound />} />,
-        ];
-
-        const authRoutes = [
-            <Route path="/profile" element={<Profile />} />,
-            <Route path="/playlist" element={<Playlist />} />,
-            <Route path="/logout" element={<Logout />} />,
-        ];
-
-        const adminRoutes = [<Route path="/admin" element={<Admin />} />];
-
-        let routes = [...basicRoutes];
-
-        if (this.props.isAuthenticated) routes = [...routes, ...authRoutes];
-
-        if (
-            this.props.profileData.type === "Admin" &&
-            this.props.isAuthenticated
-        )
-            routes = [...routes, ...adminRoutes];
-
-        return (
-            <div className="App">
-                <ErrorBoundary>
-                    <Layout>
-                        <Routes>{routes}</Routes>
-                    </Layout>
-                </ErrorBoundary>
-            </div>
-        );
-    }
+    return (
+      <ErrorBoundary>
+        <Layout>
+          <Routes>{routes()}</Routes>
+      </Layout>
+    </ErrorBoundary>
+    );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -69,7 +69,6 @@ class PlaylistForm extends Component {
                     })
                 }
                 onSubmit={(values) => {
-                    //alert(JSON.stringify(values));
                     const playlistData = {
                         token: localStorage.getItem('token'),
                         userId: localStorage.getItem('userId'),

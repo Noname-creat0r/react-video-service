@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/User')
 const Playlist = require('../models/Playlist')
 const Types = require('mongoose').Types
-const UserType = require('../models/UserType')
 
 const { throwError } = require('../shared/utility')
 

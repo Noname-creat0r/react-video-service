@@ -1,106 +1,103 @@
-const Types = require('mongoose').Types;
-const Category = require('../models/Category');
-const Video = require('../models/Video');
+const Types = require('mongoose').Types
+const Category = require('../models/Category')
+const Video = require('../models/Video')
 
-const { throwError } = require('../shared/utility');
+const { throwError } = require('../shared/utility')
 
 exports.getCategories = async (req, res, next) => {
-    try {
-        const categories = await Category.find({}).lean();
-        res.status(200).json({ categories: categories});
-    } catch(err) {
-        next(err);
-    };
-};
+  try {
+    const categories = await Category.find({})
+      .lean()
+    res.status(200)
+      .json({ categories })
+  } catch (err) {
+    next(err)
+  };
+}
 
 exports.postCategory = async (req, res, next) => {
-    try {
-        if (!req.body.title) 
-            throwError('Missing param in body', 400);
-        
-        const isAlreadyPosted = await Category.findOne({
-            title: req.body.title,
-        });
+  try {
+    if (!req.body.title) { throwError('Missing param in body', 400) }
 
-        if (isAlreadyPosted) 
-            throwError('Category with this title is already exists', 400);
-        
-        const category = await Category.create({
-            title: req.body.title,
-        });
-        await category.save();
-    
-        res.status(201).json({
-            message: "Posted a category",
-            category: category.toObject()
-        });
+    const isAlreadyPosted = await Category.findOne({
+      title: req.body.title
+    })
 
-    } catch(error) {
-        next(error);
-    }
-};
+    if (isAlreadyPosted) { throwError('Category with this title is already exists', 400) }
+
+    const category = await Category.create({
+      title: req.body.title
+    })
+    await category.save()
+
+    res.status(201)
+      .json({
+        message: 'Posted a category',
+        category: category.toObject()
+      })
+  } catch (error) {
+    next(error)
+  }
+}
 
 exports.putCategory = async (req, res, next) => {
-    try {
-        if (!req.body.title || !req.body.categoryId) 
-            throwError('Missing param in body', 400);
+  try {
+    if (!req.body.title || !req.body.categoryId) { throwError('Missing param in body', 400) }
 
-        const category = await Category.findOne({
-            _id: Types.ObjectId(req.body.categoryId)
-        });
+    const category = await Category.findOne({
+      _id: Types.ObjectId(req.body.categoryId)
+    })
 
-        if (!category) 
-            throwError('There is no category with such id', 400);
-        
-        await category.updateOne({
-            title: req.body.title
-        });
-        await category.save();
+    if (!category) { throwError('There is no category with such id', 400) }
 
-        const updatedCategory = await Category.findOne({
-            _id: Types.ObjectId(req.body.categoryId)
-        }).lean();
+    await category.updateOne({
+      title: req.body.title
+    })
+    await category.save()
 
-        res.status(200).json({
-            message: 'Updated a category',
-            category: updatedCategory,
-        });
+    const updatedCategory = await Category.findOne({
+      _id: Types.ObjectId(req.body.categoryId)
+    })
+      .lean()
 
-    } catch(error) {
-        next(error);
-    }
-};
+    res.status(200)
+      .json({
+        message: 'Updated a category',
+        category: updatedCategory
+      })
+  } catch (error) {
+    next(error)
+  }
+}
 
 exports.deleteCategory = async (req, res, next) => {
-    try {
-        if (!req.query.categoryId) 
-            throwError('Missing param in query', 400);
+  try {
+    if (!req.query.categoryId) { throwError('Missing param in query', 400) }
 
-        const category = await Category.findOne({
-            _id: new Types.ObjectId(req.query.categoryId)
-        });
-        
-        if (!category)
-            throwError('There is no such category to delete', 400);
+    const category = await Category.findOne({
+      _id: new Types.ObjectId(req.query.categoryId)
+    })
 
-        const defaultCategory = await Category.findOne({
-            title: 'Any',
-        });
+    if (!category) { throwError('There is no such category to delete', 400) }
 
-        await Video.updateMany({
-            category: category.title
-        }, {
-            category: defaultCategory.title || 'Any',
-        });
+    const defaultCategory = await Category.findOne({
+      title: 'Any'
+    })
 
-        await category.delete();
+    await Video.updateMany({
+      category: category.title
+    }, {
+      category: defaultCategory.title || 'Any'
+    })
 
-        res.status(200).json({
-            message: 'Category has been deleted',
-            id: req.query.categoryId,
-        })
+    await category.delete()
 
-    } catch(error){
-        next(error);
-    }
-};
+    res.status(200)
+      .json({
+        message: 'Category has been deleted',
+        id: req.query.categoryId
+      })
+  } catch (error) {
+    next(error)
+  }
+}
