@@ -18,7 +18,6 @@
         "react"
     ],
     "rules": {
-        "no-unused-vars":  "off",
-        "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }]
+        "no-unused-vars":  "off"
     }
 }

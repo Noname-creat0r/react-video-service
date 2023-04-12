@@ -10,12 +10,12 @@ router.get(
   authController.initGuest
 )
 
+router.post('/signin', authController.signin)
+
 router.post(
   '/signup',
   storage.upload.single('avatar'),
   authController.signup
 )
-
-router.post('/signin', authController.signin)
 
 module.exports = router
