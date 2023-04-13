@@ -119,6 +119,6 @@ class CategoryForm extends Component {
                 footer={buttons}/>
         );
     }
-};
+}
 
 export default connect( mapStateToProps, mapDispatchToProps )( CategoryForm );

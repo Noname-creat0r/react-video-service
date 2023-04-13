@@ -1,4 +1,4 @@
-const updateStateProperty = (state, dataObj) => {
+/*const updateStateProperty = (state, dataObj) => {
 
     const updateArray = (array, action) => {
         switch (action){
@@ -33,4 +33,4 @@ const updateState = (state, action) => {
     for (const dataObj of action.data)
         updatedState[dataObj.label] = updateStateProperty(updatedState, dataObj);
     return updatedState;
-};
+};*/
