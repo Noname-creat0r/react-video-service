@@ -72,7 +72,7 @@ export default function App() {
          />,
          <Route
             path="/logout"
-            element={<Logout />}
+            component={Logout}
          />,
       ]
 
@@ -96,7 +96,11 @@ export default function App() {
    return (
       <ErrorBoundary>
          <Layout>
-            <Routes>{routes}</Routes>
+            <Routes>
+               <Route path="/" element={<Home />} />
+               <Route path="/logout" element={<Logout />} />
+      
+            </Routes>
          </Layout>
       </ErrorBoundary>
    )

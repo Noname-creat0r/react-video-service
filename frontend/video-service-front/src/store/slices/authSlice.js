@@ -1,9 +1,7 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { apiSlice } from "../api/apiSlice"
-import axios from "../../axios-settings"
+import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
-   token: null,
+   token: localStorage.getItem('token'),
    error: null,
    loading: false,
    guest: false,
@@ -17,10 +15,12 @@ const authSlice = createSlice({
       setCredentials: (state, action) => {
          state.token = action.payload.token
          state.userId = action.payload.userId
+         localStorage.setItem('token', action.payload.token)
       },
       logOut(state) {
          state.token = null
          state.userId = null
+         localStorage.removeItem('token')
       },
    },
 })

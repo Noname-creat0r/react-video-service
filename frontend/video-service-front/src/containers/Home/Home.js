@@ -42,7 +42,7 @@ function mapDispatchToProps(dispatch) {
 
 export default function Home(props) {
    const [showPlaylists, setShowPlaylists] = useState(false)
-   let content = "Home"
+   let content = <LoadingSpinner />
 
    const homeVideoCardClickHandler = (event, id) => {
       //this.props.videoStreamStart(id)
@@ -108,11 +108,6 @@ export default function Home(props) {
 
    return (
       <Container className="d-flex flex-wrap my-3">
-         <Modal
-            show={showPlaylists}
-            hide={setShowPlaylists(false)}
-            title="Add to playlist"
-         />
          {content}
       </Container>
    )

@@ -1,29 +1,13 @@
-import React, { Component } from 'react';
+import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { activateGuest } from '../../../shared/utility';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../../store/slices/authSlice';
 
-import * as actions from '../../../store/actions/index';
+function Logout(props) {
+    const dispatch = useDispatch()
+    dispatch(logOut())
 
-// Logout + profile name and link today
-
-class Logout extends Component {
-    componentDidMount() {
-        this.props.onLogout();
-        this.props.clearProfileData();
-        activateGuest()
-    }
-
-    render () {
-        return <Navigate replace to='/'/>;
-    }
+    return ( <Navigate  to="/"/>);
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onLogout: () => dispatch(actions.logout('You were logged out.')),
-        clearProfileData: () => dispatch(actions.profileClearData()),
-    };
-};
-
-export default connect(null, mapDispatchToProps) ( Logout );
+export default Logout;
