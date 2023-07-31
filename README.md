@@ -27,27 +27,27 @@ I will update this project during my futher learning process.
   - [x] Adding/deliting/editing video categoires.
   - [ ] User managing (adding/deliting/editing users functionality should be emplented with role managing system with 3 roles: **admin**, **user**, **guest**)
 
-## Current project state in screenshots
+## Brief visual review
 #### Home
-![HomeScreen](/screenshots/HomeV1.png)
+![HomeScreen](/screenshots/Home.png)
 
 #### Video page
-![VideoPageScreen](/screenshots/VideoPageV1.png)
+![VideoPageScreen](/screenshots/VideoPageError.png)
 
-![VideoInfoScreen](/screenshots/VideoInfoV1.png)
-
-#### Filter/Search
-![FilterScreen](/screenshots/FilterV1.png)
-
-![SearchScreen](/screenshots/SearchV1.png)
+![VideoInfoScreen](/screenshots/Comment.png)
 
 #### Profile page
-![ProfilePageScreen](/screenshots/ProfilePageV1.png)
+![ProfilePageScreen](/screenshots/ProfilePage.png)
 
-#### Forms
-![VideoUploadFormScreen](/screenshots/VideoUploadFormV1.png)
+![UploadingVideoScreen](/screenshots/UploadingVideo.png)
 
-![SignInForm](/screenshots/SignInFormV1.png)
+#### Playlist page
+![PlaylistPage](/screenshots/PlaylistPage.png)
 
-![SignUpForm](/screenshots/SignUpFormV1.png)
+#### Admin page
+
+![AdminPage](/screenshots/Admin.png)
+
+#### Auth
+![AuthForm](/screenshots/Auth.png)
 
